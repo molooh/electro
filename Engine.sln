@@ -129,6 +129,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightTypeTest", "src\Engine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppBrowserWinForms", "src\Engine\Examples\AppBrowserWinForms\AppBrowserWinForms.csproj", "{8E4914D0-07E1-48F7-91E2-04B19C36CCA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MousePosition", "MousePosition\MousePosition.csproj", "{40BF9E0E-728C-43AC-9BFC-44448A979955}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -256,6 +258,12 @@ Global
 		{8E4914D0-07E1-48F7-91E2-04B19C36CCA3}.Debug+Web|x86.Build.0 = Debug|x86
 		{8E4914D0-07E1-48F7-91E2-04B19C36CCA3}.Release|x86.ActiveCfg = Release|x86
 		{8E4914D0-07E1-48F7-91E2-04B19C36CCA3}.Release|x86.Build.0 = Release|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Debug|x86.ActiveCfg = Debug|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Debug|x86.Build.0 = Debug|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Debug+Web|x86.ActiveCfg = Debug+Web|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Debug+Web|x86.Build.0 = Debug+Web|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Release|x86.ActiveCfg = Release|x86
+		{40BF9E0E-728C-43AC-9BFC-44448A979955}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
