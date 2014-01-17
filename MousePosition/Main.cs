@@ -16,7 +16,7 @@ namespace Examples.MousePosition
         private IShaderParam _colorParam;
         private IShaderParam _textureParam;
         private ITexture _iTex;
-        private float4x4 mtxCam = float4x4.CreateTranslation(0, 2, -10);
+        private float4x4 mtxCam = float4x4.CreateTranslation(0, 0, -10);
 
         public override void Init()
         {
@@ -44,7 +44,7 @@ namespace Examples.MousePosition
                 float4 worldCorClick  = RC.InvModelViewProjection * new float4(xProj, yProj, 0.2f, 1);
 
                 // calculation of the collision between xz-plain and ray
-                float4 camPos = new float4(0, 2, -10, 1);
+                float4 camPos = new float4(0, 0, -10, 1);
                 float4 rayDirection = (worldCorClick - camPos);
                 
                 /*

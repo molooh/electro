@@ -1204,7 +1204,7 @@ namespace Fusee.Math
             /* calculate determinant */
             var det = mat.M11*m11 + mat.M12*m12 + mat.M13*m13 + mat.M14*m14;
 
-            if (det > MathHelper.EpsilonFloat || det < MathHelper.EpsilonFloat)
+            if (det > MathHelper.EpsilonFloat || det < -MathHelper.EpsilonFloat)
             {
                 det = 1/det;
 
@@ -1293,10 +1293,10 @@ namespace Fusee.Math
         public static float4 TransformPremult(float4 vector, float4x4 matrix)
         {
             return new float4(
-                ((matrix.M11 * vector.x) + (matrix.M21 * vector.y) + (matrix.M31 * vector.z) + (matrix.M41*vector.w)),
-                ((matrix.M12 * vector.x) + (matrix.M22 * vector.y) + (matrix.M32 * vector.z) + (matrix.M42*vector.w)),
-                ((matrix.M13 * vector.x) + (matrix.M23 * vector.y) + (matrix.M33 * vector.z) + (matrix.M43*vector.w)),
-                (matrix.M41 * vector.x) + (matrix.M42 * vector.y) + (matrix.M43 * vector.z) + (matrix.M44 * vector.w));
+                (matrix.M11 * vector.x) + (matrix.M21 * vector.y) + (matrix.M31 * vector.z) + (matrix.M41*vector.w),
+                (matrix.M12 * vector.x) + (matrix.M22 * vector.y) + (matrix.M32 * vector.z) + (matrix.M42*vector.w),
+                (matrix.M13 * vector.x) + (matrix.M23 * vector.y) + (matrix.M33 * vector.z) + (matrix.M43*vector.w),
+                (matrix.M14 * vector.x) + (matrix.M24 * vector.y) + (matrix.M34 * vector.z) + (matrix.M44*vector.w));
         }
 
         /// <summary>
