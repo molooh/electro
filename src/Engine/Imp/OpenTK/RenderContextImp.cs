@@ -527,6 +527,13 @@ namespace Fusee.Engine
 
             int vboBytes;
             int vertsBytes = vertices.Length*3*sizeof (float);
+
+            if (!((MeshImp)mr).VertexBufferValid)
+            {
+                GL.DeleteBuffer(((MeshImp)mr).VertexBufferObject);
+                ((MeshImp)mr).VertexBufferObject = 0;
+            }
+            
             if (((MeshImp) mr).VertexBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).VertexBufferObject);
 
@@ -538,6 +545,7 @@ namespace Fusee.Engine
                     "Problem uploading vertex buffer to VBO (vertices). Tried to upload {0} bytes, uploaded {1}.",
                     vertsBytes, vboBytes));
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            ((MeshImp)mr).VertexBufferValid = true;
         }
 
 
@@ -557,6 +565,13 @@ namespace Fusee.Engine
 
             int vboBytes;
             int normsBytes = normals.Length*3*sizeof (float);
+
+            if (!((MeshImp)mr).NormalBufferValid)
+            {
+                GL.DeleteBuffer(((MeshImp)mr).NormalBufferObject);
+                ((MeshImp)mr).NormalBufferObject = 0;
+            }
+            
             if (((MeshImp) mr).NormalBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).NormalBufferObject);
 
@@ -568,6 +583,7 @@ namespace Fusee.Engine
                     "Problem uploading normal buffer to VBO (normals). Tried to upload {0} bytes, uploaded {1}.",
                     normsBytes, vboBytes));
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            ((MeshImp)mr).NormalBufferValid = true;
         }
 
         /// <summary>
@@ -586,6 +602,13 @@ namespace Fusee.Engine
 
             int vboBytes;
             int uvsBytes = uvs.Length*2*sizeof (float);
+
+            if (!((MeshImp)mr).UVBufferValid)
+            {
+                GL.DeleteBuffer(((MeshImp)mr).UVBufferObject);
+                ((MeshImp)mr).UVBufferObject = 0;
+            }
+            
             if (((MeshImp) mr).UVBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).UVBufferObject);
 
@@ -597,6 +620,7 @@ namespace Fusee.Engine
                     "Problem uploading uv buffer to VBO (uvs). Tried to upload {0} bytes, uploaded {1}.",
                     uvsBytes, vboBytes));
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            ((MeshImp)mr).UVBufferValid = true;
         }
 
 
@@ -616,6 +640,14 @@ namespace Fusee.Engine
 
             int vboBytes;
             int colsBytes = colors.Length*sizeof (uint);
+
+            if (!((MeshImp)mr).ColorBufferValid)
+            {
+                GL.DeleteBuffer(((MeshImp)mr).ColorBufferObject);
+                ((MeshImp)mr).ColorBufferObject = 0;
+            }
+
+
             if (((MeshImp) mr).ColorBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).ColorBufferObject);
 
@@ -627,6 +659,7 @@ namespace Fusee.Engine
                     "Problem uploading color buffer to VBO (colors). Tried to upload {0} bytes, uploaded {1}.",
                     colsBytes, vboBytes));
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            ((MeshImp)mr).ColorBufferValid = true;
         }
 
         /// <summary>
@@ -646,6 +679,12 @@ namespace Fusee.Engine
             int vboBytes;
             int trisBytes = triangleIndices.Length*sizeof (short);
 
+            if (!((MeshImp)mr).ElementBufferValid)
+            {
+                GL.DeleteBuffer(((MeshImp)mr).ElementBufferObject);
+                ((MeshImp)mr).ElementBufferObject = 0;
+            }
+ 
             if (((MeshImp) mr).ElementBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).ElementBufferObject);
             // Upload the index buffer (elements inside the vertex buffer, not color indices as per the IndexPointer function!)
@@ -658,6 +697,7 @@ namespace Fusee.Engine
                     "Problem uploading vertex buffer to VBO (offsets). Tried to upload {0} bytes, uploaded {1}.",
                     trisBytes, vboBytes));
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            ((MeshImp)mr).ElementBufferValid = true;
         }
 
         /// <summary>
