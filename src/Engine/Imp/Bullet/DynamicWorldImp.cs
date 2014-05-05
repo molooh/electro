@@ -52,12 +52,10 @@ namespace Fusee.Engine
             BtWorld.PerformDiscreteCollisionDetection();
             
             //GImpactCollisionAlgorithm.RegisterAlgorithm(BtDispatcher);
-           // BtWorld.SetInternalTickCallback(MyTickCallBack);
-            //BtWorld.SetInternalTickCallback(TickTack);
 
-            //ManifoldPoint.ContactAdded += OnContactAdded;
-            //PersistentManifold.ContactDestroyed += OnContactDestroyed;
-            //PersistentManifold.ContactProcessed += OnContactProcessed;
+            ManifoldPoint.ContactAdded += OnContactAdded;
+            PersistentManifold.ContactDestroyed += OnContactDestroyed;
+            PersistentManifold.ContactProcessed += OnContactProcessed;
         }
 
 
@@ -72,7 +70,7 @@ namespace Fusee.Engine
         private void OnContactAdded(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0,
             CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
         {
-            //Debug.WriteLine("OnContactAdded");
+           // Debug.WriteLine("OnContactAdded");
             int numManifolds = BtWorld.Dispatcher.NumManifolds;
 
             for (int i = 0; i < numManifolds; i++)
@@ -91,7 +89,7 @@ namespace Fusee.Engine
                     RigidBodyImp rigidBodyB = new RigidBodyImp();
                     rigidBodyA._rbi = btRigidBodyA;
                     rigidBodyB._rbi = btRigidBodyB;
-                    rigidBodyA.OnCollision(rigidBodyB);
+                    rigidBodyA.OnCollisionAdded(rigidBodyB);
                 }
             }
         }
@@ -121,32 +119,6 @@ namespace Fusee.Engine
            // Debug.WriteLine("OnContactDestroyed");
         }
 
-        /*private void MyTickCallBack(ManifoldPoint cp, CollisionObjectWrapper colobj0wrap, int partid0, int index0, CollisionObjectWrapper colobj1wrap, int partid1, int index1)
-        {
-            Debug.WriteLine("MyTickCallBack");
-            int numManifolds = BtWorld.Dispatcher.NumManifolds;
-            RigidBodyImp myRb;
-            //Debug.WriteLine("numManifolds: " + numManifolds);
-            for (int i = 0; i < numManifolds; i++)
-            {
-                PersistentManifold contactManifold = BtWorld.Dispatcher.GetManifoldByIndexInternal(i);
-                int numContacts = contactManifold.NumContacts;
-                if (numContacts > 0)
-                {
-                    CollisionObject obA = (CollisionObject) contactManifold.Body0;
-                    CollisionObject obB = (CollisionObject) contactManifold.Body1;
-
-                   // Debug.WriteLine(numContacts);
-                    var pnA = obA.UserObject;
-
-                    for (int j = 0; j < numContacts; j++)
-                    {
-                        ManifoldPoint pt = contactManifold.GetContactPoint(j);
-
-                    }
-                }
-            }
-        }*/
 
 
         public IRigidBodyImp AddRigidBody(float mass, float3 worldTransform, float3 orientation, ICollisionShapeImp colShape/*, float3 intertia*/)
@@ -277,30 +249,7 @@ namespace Fusee.Engine
         }
 
 
-        public void CheckCollisions()
-        {
-            Debug.WriteLine("CheckCollisions()");
-            int numManifolds = BtWorld.Dispatcher.NumManifolds;
-            for (int i = 0; i < numManifolds; i++)
-            {
-                PersistentManifold contactManifold = BtWorld.Dispatcher.GetManifoldByIndexInternal(i);
-                CollisionObject obA = contactManifold.Body0 as CollisionObject;
-                CollisionObject obB = contactManifold.Body1 as CollisionObject;
 
-                int numContacts = contactManifold.NumContacts;
-                for (int j = 0; j < numContacts; j++)
-                {
-                    ManifoldPoint pt = contactManifold.GetContactPoint(j);
-                    if (pt.Distance < 0.0f)
-                    {
-                        Vector3 ptA = pt.PositionWorldOnA;
-                        Vector3 ptB = pt.PositionWorldOnB;
-                        Vector3 normalOnB = pt.NormalWorldOnB;
-                    }
-                }
-            }
-            
-        }
 
         public IRigidBodyImp GetRigidBody(int i)
         {
@@ -793,13 +742,10 @@ namespace Fusee.Engine
         {
             if (BtWorld != null)
             {
-                
-                /* for (int d = 0; d < BtWorld.Dispatcher.NumManifolds; d++)
-                {
-                    var m = BtWorld.Dispatcher.GetManifoldByIndexInternal(d);
-                    BtWorld.Dispatcher.ReleaseManifold(m);
-                    ;
-                }*/
+                //remove ContactAdded/ContactDestroyed/ContactProcessed events
+                ManifoldPoint.ContactAdded -= OnContactAdded;
+                PersistentManifold.ContactDestroyed -= OnContactDestroyed;
+                PersistentManifold.ContactProcessed -= OnContactProcessed;
                 
 
                 //remove/dispose constraints
