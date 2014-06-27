@@ -50,9 +50,9 @@ namespace Fusee.Engine
             BtWorld.SolverInfo.NumIterations = 5;
 
             BtWorld.PerformDiscreteCollisionDetection();
-            
             //GImpactCollisionAlgorithm.RegisterAlgorithm(BtDispatcher);
 
+            BtWorld.DispatchInfo.UseContinuous = true;
             ManifoldPoint.ContactAdded += OnContactAdded;
             PersistentManifold.ContactDestroyed += OnContactDestroyed;
             PersistentManifold.ContactProcessed += OnContactProcessed;
@@ -85,11 +85,27 @@ namespace Fusee.Engine
                     CollisionObject obB = (CollisionObject) contactManifold.Body1;
                     RigidBody btRigidBodyA = (RigidBody) obA;
                     RigidBody btRigidBodyB = (RigidBody)obB;
+
+                    RigidBodyImp rigidBodyA = (RigidBodyImp)btRigidBodyA.UserObject;
+                    RigidBodyImp rigidBodyB = (RigidBodyImp)btRigidBodyB.UserObject;
+
+                    //.Collided += delegate(IRigidBodyImp imp) { rigidBodyA.Collided(rigidBodyB); };
+
+                    //rigidBodyA.UserObject;
+                    /*if (Collided != null)
+                    {
+                        
+                        rigidBodyA.Collided(rigidBodyB);
+                    }
+                    // rigidBodyA.OnCollision(rigidBodyB);*/
+
+
+                    /*
                     RigidBodyImp rigidBodyA = new RigidBodyImp();
                     RigidBodyImp rigidBodyB = new RigidBodyImp();
                     rigidBodyA._rbi = btRigidBodyA;
                     rigidBodyB._rbi = btRigidBodyB;
-                    rigidBodyA.OnCollisionAdded(rigidBodyB);
+                     */
                 }
             }
         }
@@ -241,6 +257,20 @@ namespace Fusee.Engine
             retval._rbi = btRigidBody;
             btRigidBody.UserObject = retval;
             return retval;
+        }
+
+        public void RemoveRigidBody(IRigidBodyImp iRigidBodyImp)
+        {
+            var rigidBodyImp = (RigidBodyImp)iRigidBodyImp;
+            var btRigidBody = rigidBodyImp._rbi;
+            CollisionObject obj = (CollisionObject)btRigidBody;
+            RigidBody body = btRigidBody;
+            if (body != null && body.MotionState != null)
+            {
+                body.MotionState.Dispose();
+            }
+            BtWorld.RemoveCollisionObject(obj);
+            obj.Dispose();
         }
 
         public int StepSimulation(float timeSteps, int maxSubSteps, float fixedTimeSteps)

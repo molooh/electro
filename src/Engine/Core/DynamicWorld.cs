@@ -98,15 +98,19 @@ namespace Fusee.Engine
                     break;
             }
 
-           // IRigidBodyImp rbi = _dwi.AddRigidBody(mass, worldTransform, /* shape, */inertia);
-       
+         
             var retval = new RigidBody();
-            //retval.Mesh = mesh;
             retval._iRigidBodyImp = rbi;
             rbi.UserObject = retval;
+            rbi.Collided += retval.OnCollided;
 
             return retval;
         }
+        public void RemoveRigidBody(RigidBody rigidbody)
+        {
+            _dwi.RemoveRigidBody(rigidbody._iRigidBodyImp);
+        }
+
 
         public int StepSimulation(float timeSteps, int maxSubSteps, float fixedTimeSteps = 1/60)
         {

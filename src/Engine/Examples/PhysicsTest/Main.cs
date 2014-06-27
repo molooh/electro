@@ -275,7 +275,14 @@ namespace Examples.PhysicsTest
             var mtxCam = float4x4.LookAt(0, 20, 120, 0, 0, 0, 0, 1, 0) * mtxRot;
 
 
-
+            if (Input.Instance.IsKeyDown(KeyCodes.R))
+            {
+                if (_physic.World.NumberRigidBodies()  > 0)
+                {
+                    var rb = _physic.World.GetRigidBody(_physic.World.NumberRigidBodies()-1);
+                    _physic.World.RemoveRigidBody(rb);
+                }
+            }
 
     
 

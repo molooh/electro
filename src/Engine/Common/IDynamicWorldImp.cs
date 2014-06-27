@@ -11,6 +11,7 @@ namespace Fusee.Engine
         float3 Gravity { get; set; }
 
         IRigidBodyImp AddRigidBody(float mass, float3 position, float3 orientation, ICollisionShapeImp colShape/*, float3 intertia*/);
+        void RemoveRigidBody(IRigidBodyImp iRigidBodyImp);
         IRigidBodyImp GetRigidBody(int i);
         int StepSimulation(float timeSteps, int maxSubSteps, float fixedTimeSteps);
         int NumberRigidBodies();
