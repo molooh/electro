@@ -156,7 +156,7 @@ namespace Examples.PhysicsTest
 
 
         //Physic
-        private static Physics _physic;
+        private Physics _physic;
         private int currentScene = 1;
 
         //Gui
@@ -345,6 +345,12 @@ namespace Examples.PhysicsTest
             Present();
         }
 
+        public override void DeInit()
+        {
+            base.DeInit();
+            _physic.World.Dispose();
+        }
+
         public override void Resize()
         {
             // is called when the window is resized
@@ -359,8 +365,6 @@ namespace Examples.PhysicsTest
         {
             var app = new PhysicsTest();
             app.Run();
-            _physic.World.Dispose();
-
         }
 
     }
