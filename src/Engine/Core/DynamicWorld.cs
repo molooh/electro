@@ -25,18 +25,6 @@ namespace Fusee.Engine
 
         public RigidBody AddRigidBody(float mass, float3 position, float3 orientation, CollisionShape colShape/*, float3 inertia*/)
         {
-
-           /* var meshTrianglesCount = mesh.Triangles.Length;
-            int [] meshTrianglesArray = new int[meshTrianglesCount];
-            for (int c = 0; c < meshTrianglesCount; c++)
-            {
-                meshTrianglesArray[c] = Convert.ToInt32(mesh.Triangles[c]);
-            }
-
-            int meshVerteciesCount = mesh.Vertices.Length;
-            float3[] meshVerteciesArray = new float3[meshVerteciesCount];
-            meshVerteciesArray = mesh.Vertices;
-            */
             var shapeType = colShape.GetType().ToString();
             IRigidBodyImp rbi;
             switch (shapeType)
@@ -102,10 +90,9 @@ namespace Fusee.Engine
             var retval = new RigidBody();
             retval._iRigidBodyImp = rbi;
             rbi.UserObject = retval;
-            rbi.Collided += retval.OnCollided;
-
             return retval;
         }
+
         public void RemoveRigidBody(RigidBody rigidbody)
         {
             _dwi.RemoveRigidBody(rigidbody._iRigidBodyImp);
