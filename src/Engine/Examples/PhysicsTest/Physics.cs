@@ -81,8 +81,8 @@ namespace Examples.PhysicsTest
             InitWorld();
             InitColliders();
             GroundPlane(float3.Zero, float3.Zero);
-
-            var box1 = _world.AddRigidBody(1, new float3(0,20,0), float3.Zero, MyBoxCollider);
+            CollisionTest();
+            shapes = "BoxShape, SphereShape";
         }
 
 
@@ -131,9 +131,9 @@ namespace Examples.PhysicsTest
         {
             var groundShape = _world.AddBoxShape(30, 0.1f, 30);
             var ground = _world.AddRigidBody(0, pos, rot, groundShape);
-           
             ground.Restitution = 1f;
             ground.Friction = 1;
+            ground.IsTrigger = false;
             _numRB++;
         }
 
@@ -161,19 +161,18 @@ namespace Examples.PhysicsTest
 
         public void FallingTower1()
         {
-            for (int k = 0; k < 1; k++)
+            for (int k = -1; k < 2; k++)
             {
-                for (int h = -2; h < 1; h++)
+                for (int h = -1; h < 2; h++)
                 {
-                    for (int j = -2; j < 1; j++)
+                    for (int j = -1; j < 2; j++)
                     {
-                        var pos = new float3((4 * h) , 20 + (k * 4), 4 * j);
+                        var pos = new float3((2* h) , 15+ (k * 2), 2 * j);
 
-                        var cube = _world.AddRigidBody(1, pos, float3.Zero, MyBoxCollider);
-
+                        RigidBody cube = _world.AddRigidBody(1, pos, float3.Zero, MyBoxCollider);
                         cube.Friction = 1.0f;
-                        cube.Restitution = 0.7f;
-                        cube.SetDrag(0.0f, 0.05f);
+                        cube.Restitution = 0.75f;
+                        cube.IsTrigger = false;
                         _numRB++;
                     }
                 }
@@ -194,6 +193,7 @@ namespace Examples.PhysicsTest
                         var sphere = _world.AddRigidBody(1, pos, float3.Zero, MySphereCollider);
                         sphere.Friction = 0.5f;
                         sphere.Restitution = 0.8f;
+                        sphere.IsTrigger = false;
                         _numRB++;
                     }
                 }
@@ -340,15 +340,56 @@ namespace Examples.PhysicsTest
             _numRB++;
         }
 
-        public void Tester()
+
+        public void CollisionTest()
         {
-            InitWorld();
-            InitColliders();
-            GroundPlane(float3.Zero, new float3(0, 0, (float)Math.PI / 6));
-            var compound = _world.AddCompoundShape(true);
-            var rb1 = _world.AddRigidBody(1, new float3(0, 10, 0), new float3(0, 0, -(float)Math.PI / 6), compound);
+            RigidBody box1 = _world.AddRigidBody(1, new float3(-10, 30, 0), float3.Zero, MyBoxCollider);
+            box1.Friction = 0.5f;
+            box1.Restitution = 0.8f;
+            box1.IsTrigger = true;
+            RigidBody box2 = _world.AddRigidBody(1, new float3(-10, 20, -10), float3.Zero, MyBoxCollider);
+            box2.Friction = 0.5f;
+            box2.Restitution = 0.8f;
+            box2.IsTrigger = true;
+            RigidBody box3 = _world.AddRigidBody(1, new float3(-10, 40, -20), float3.Zero, MyBoxCollider);
+            box3.Friction = 0.5f;
+            box3.Restitution = 0.8f;
+            box3.IsTrigger = true;
+            RigidBody box4 = _world.AddRigidBody(1, new float3(30, 20, 0), float3.Zero, MyBoxCollider);
+            box4.Friction = 0.5f;
+            box4.Restitution = 0.8f;
+            box4.IsTrigger = true;
+            RigidBody box5 = _world.AddRigidBody(1, new float3(-10, 20, 30), float3.Zero, MyBoxCollider);
+            box5.Friction = 0.5f;
+            box5.Restitution = 0.8f;
+            box5.IsTrigger = true;
            
+             RigidBody sphere1 = _world.AddRigidBody(1, new float3(10, 20, 0), float3.Zero, MySphereCollider);
+            sphere1.Friction = 0.5f;
+            sphere1.Restitution = 0.8f;
+            sphere1.IsTrigger = true;
+
+            RigidBody sphere2 = _world.AddRigidBody(1, new float3(10, 40, 0), float3.Zero, MySphereCollider);
+            sphere2.Friction = 0.5f;
+            sphere2.Restitution = 0.8f;
+            sphere2.IsTrigger = true;
+
+            RigidBody sphere3 = _world.AddRigidBody(1, new float3(20, 20, 0), float3.Zero, MySphereCollider);
+            sphere3.Friction = 0.5f;
+            sphere3.Restitution = 0.8f;
+            sphere3.IsTrigger = true;
+
+            RigidBody sphere4 = _world.AddRigidBody(1, new float3(10, 20, -20), float3.Zero, MySphereCollider);
+            sphere4.Friction = 0.5f;
+            sphere4.Restitution = 0.8f;
+            sphere4.IsTrigger = true;
+
+            RigidBody sphere5 = _world.AddRigidBody(1, new float3(10, 50, -20), float3.Zero, MySphereCollider);
+            sphere5.Friction = 0.5f;
+            sphere5.Restitution = 0.8f;
+            sphere5.IsTrigger = true;
             
+            shapes = "BoxShape, SphereShape";
         }
 
     }

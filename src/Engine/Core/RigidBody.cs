@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Configuration;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Fusee.Engine;
 using Fusee.Math;
-using System.Collections.Generic;
 
 namespace Fusee.Engine
 {
     /// <summary>
     /// The RigidBody class ...
     /// </summary>
-    public class RigidBody
+  
+    
+    public class RigidBody : IRigidBody
     {
 
-        public event EventHandler WhileCollidingEvent = delegate { };
         internal IRigidBodyImp _iRigidBodyImp;
 
        // public Mesh Mesh { get; set; }
@@ -263,7 +261,7 @@ namespace Fusee.Engine
         }
 
 
-
+        #region CollisionShape
         public CollisionShape CollisionShape
         {
             get
@@ -401,5 +399,34 @@ namespace Fusee.Engine
                 }
             }
         }
+        #endregion
+
+        #region CollisionStuff
+
+        
+        internal bool _isTrigger;
+        public bool IsTrigger
+        {
+            get
+            {
+                return _isTrigger; 
+            }
+            set
+            {
+                _iRigidBodyImp.IsTrigger = value;
+                _isTrigger = value;
+            }
+        }
+
+        public void OnCollisionEnter(IRigidBodyImp rigidBodyImp)
+        {
+            //Debug.WriteLine("OnCollisionEnter");
+        }
+
+        public void OnCollisionExit()
+        {
+            //Debug.WriteLine("ExitCollision");
+        }
+        #endregion
     }
 }

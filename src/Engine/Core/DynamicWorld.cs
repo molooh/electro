@@ -90,6 +90,7 @@ namespace Fusee.Engine
             var retval = new RigidBody();
             retval._iRigidBodyImp = rbi;
             rbi.UserObject = retval;
+            rbi.IsTrigger = false;
             return retval;
         }
 

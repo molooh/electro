@@ -3,6 +3,7 @@ using Fusee.Math;
 
 namespace Fusee.Engine
 {
+    
     public interface IRigidBodyImp
     {
         // IRigidBodyImp RigidBody(float mass, float3 worldTransform, /*shape, */ float3 inertia);
@@ -45,6 +46,11 @@ namespace Fusee.Engine
         
         object UserObject { get; set; }
 
-        void OnCollision(IRigidBodyImp other);
+
+        bool IsTrigger { set; }
+        void OnCollisionEnter(IRigidBodyImp other);
+        void OnCollisionExit();
     }
+
+   
 }

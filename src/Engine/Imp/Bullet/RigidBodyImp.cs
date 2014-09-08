@@ -1,33 +1,31 @@
 ﻿
+using System;
 using System.Diagnostics;
 using Fusee.Math;
+using Fusee.Engine;
 using BulletSharp;
 using Quaternion = Fusee.Math.Quaternion;
-
 
 namespace Fusee.Engine
 {
     public class RigidBodyImp : IRigidBodyImp
     {
 
-        internal RigidBody _rbi;
+        internal RigidBody BtRigidBody;
         internal CollisionShape btColShape;
         internal Translater Translater = new Translater();
-
-
-
 
         public float3 Gravity
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.Gravity);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.Gravity);
                 return retval;
             }
             set
             {
-                var o = (RigidBodyImp) _rbi.UserObject;
-                o._rbi.Gravity = Translater.Float3ToBtVector3(value);
+                var o = (RigidBodyImp) BtRigidBody.UserObject;
+                o.BtRigidBody.Gravity = Translater.Float3ToBtVector3(value);
             }
         }
         private float _mass;
@@ -39,9 +37,9 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                var btInertia = o._rbi.CollisionShape.CalculateLocalInertia(value);
-                o._rbi.SetMassProps(value, btInertia);
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                var btInertia = o.BtRigidBody.CollisionShape.CalculateLocalInertia(value);
+                o.BtRigidBody.SetMassProps(value, btInertia);
                 _mass = value;
             } 
         }
@@ -55,8 +53,8 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.SetMassProps(_mass, Translater.Float3ToBtVector3(value));
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.SetMassProps(_mass, Translater.Float3ToBtVector3(value));
                 _inertia = value;
             } 
         }
@@ -65,13 +63,14 @@ namespace Fusee.Engine
         {
             get
             {
-                var retval = Translater.BtMatrixToFloat4X4(_rbi.WorldTransform);           
+                var retval = Translater.BtMatrixToFloat4X4(BtRigidBody.WorldTransform);           
                 return retval;
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.WorldTransform = Translater.Float4X4ToBtMatrix(value);
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                Matrix wt = Translater.Float4X4ToBtMatrix(value);
+                o.BtRigidBody.MotionState.WorldTransform = wt;
             }
         }
 
@@ -79,15 +78,17 @@ namespace Fusee.Engine
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.CenterOfMassPosition);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.CenterOfMassPosition);
                 return retval;
             }
             set
             {
-                var m = new Matrix();
-                m.set_Rows(3, new Vector4(value.x, value.y, value.z, 1));
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.CenterOfMassTransform.set_Rows(3, new Vector4(value.x, value.y, value.z, 1));
+                var m = float4x4.Identity;
+                m *= float4x4.CreateTranslation(value);
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.CenterOfMassTransform = Translater.Float4X4ToBtMatrix(m);
+                //o.BtRigidBody.WorldTransform = Translater.Float4X4ToBtMatrix(m);
+               
             }
         }
 
@@ -95,14 +96,14 @@ namespace Fusee.Engine
         {
             get
             {
-                return Translater.BtQuaternionToQuaternion(_rbi.Orientation);
+                return Translater.BtQuaternionToQuaternion(BtRigidBody.Orientation);
             }
         }
    
         public void ApplyForce(float3 force, float3 relPos)
         {
-            var o = (RigidBodyImp)_rbi.UserObject;
-            o._rbi.ApplyForce(Translater.Float3ToBtVector3(force), Translater.Float3ToBtVector3(relPos));
+            var o = (RigidBodyImp)BtRigidBody.UserObject;
+            o.BtRigidBody.ApplyForce(Translater.Float3ToBtVector3(force), Translater.Float3ToBtVector3(relPos));
         }
 
         private float3 _applyTorque;
@@ -114,16 +115,15 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.ApplyTorque(Translater.Float3ToBtVector3(value));
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.ApplyTorque(Translater.Float3ToBtVector3(value));
             }
         }
 
         public void ApplyImpulse(float3 impulse, float3 relPos)
         {
-            var o = (RigidBodyImp)_rbi.UserObject;
-           // impulse *= 10;
-            o._rbi.ApplyImpulse(Translater.Float3ToBtVector3(impulse)*10, Translater.Float3ToBtVector3(relPos));
+            var o = (RigidBodyImp)BtRigidBody.UserObject;
+            o.BtRigidBody.ApplyImpulse(Translater.Float3ToBtVector3(impulse)*10, Translater.Float3ToBtVector3(relPos));
         }
 
         private float3 _torqueImpulse;
@@ -135,8 +135,8 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.ApplyTorqueImpulse(Translater.Float3ToBtVector3(value));
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.ApplyTorqueImpulse(Translater.Float3ToBtVector3(value));
                 _torqueImpulse = value*10;
             }
         }
@@ -150,8 +150,8 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.ApplyCentralForce(Translater.Float3ToBtVector3(value));
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.ApplyCentralForce(Translater.Float3ToBtVector3(value));
                 _centralForce = value;
             }
         }
@@ -165,8 +165,8 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.ApplyCentralImpulse(Translater.Float3ToBtVector3(value));
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.ApplyCentralImpulse(Translater.Float3ToBtVector3(value));
                 _centralImpulse = value*10;
             }
         }
@@ -175,28 +175,29 @@ namespace Fusee.Engine
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.LinearVelocity);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.LinearVelocity);
                 return retval;
             } 
             set
             {
                 var linVel = Translater.Float3ToBtVector3(value);
-                var o = (RigidBodyImp) _rbi.UserObject;
-                o._rbi.LinearVelocity = linVel;
+                var o = (RigidBodyImp) BtRigidBody.UserObject;
+                o.BtRigidBody.LinearVelocity = linVel;
             }
         }
+
         public float3 AngularVelocity
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.AngularVelocity);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.AngularVelocity);
                 return retval;
             }
             set
             {
                 var angVel = Translater.Float3ToBtVector3(value);
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.AngularVelocity = angVel;
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.AngularVelocity = angVel;
             }
         }
 
@@ -204,28 +205,28 @@ namespace Fusee.Engine
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.LinearFactor);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.LinearFactor);
                 return retval;
             }
             set
             {
                 var linfac = Translater.Float3ToBtVector3(value);
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.LinearFactor = linfac;
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.LinearFactor = linfac;
             }
         }
         public float3 AngularFactor
         {
             get
             {
-                var retval = Translater.BtVector3ToFloat3(_rbi.AngularFactor);
+                var retval = Translater.BtVector3ToFloat3(BtRigidBody.AngularFactor);
                 return retval;
             }
             set
             {
                 var angfac = Translater.Float3ToBtVector3(value);
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.AngularFactor = angfac;
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.AngularFactor = angfac;
             }
         }
 
@@ -234,40 +235,40 @@ namespace Fusee.Engine
         {
             get
             {
-                return _rbi.Restitution;
+                return BtRigidBody.Restitution;
             }
             set
             {
-                var o = (RigidBodyImp) _rbi.UserObject;
-                o._rbi.Restitution = value;
+                var o = (RigidBodyImp) BtRigidBody.UserObject;
+                o.BtRigidBody.Restitution = value;
             }
         }
 
         public float Friction
         {
-            get { return _rbi.Friction; }
+            get { return BtRigidBody.Friction; }
             set
             {
-                var o = (RigidBodyImp) _rbi.UserObject;
-                o._rbi.Friction = value;
+                var o = (RigidBodyImp) BtRigidBody.UserObject;
+                o.BtRigidBody.Friction = value;
             }
         }
 
         public void SetDrag(float linearDrag, float anglularDrag)
         {
-            var o = (RigidBodyImp) _rbi.UserObject;
-            o._rbi.SetDamping(linearDrag, anglularDrag);
+            var o = (RigidBodyImp) BtRigidBody.UserObject;
+            o.BtRigidBody.SetDamping(linearDrag, anglularDrag);
         }
 
         public float LinearDrag
         {
-            get { return _rbi.LinearDamping; }
+            get { return BtRigidBody.LinearDamping; }
             
         }
 
         public float AngularDrag
         {
-            get { return _rbi.AngularDamping; }
+            get { return BtRigidBody.AngularDamping; }
         }
 
 
@@ -275,8 +276,8 @@ namespace Fusee.Engine
         {
             get
             {
-                var type = _rbi.CollisionShape.GetType().ToString();
-                var btShape = _rbi.CollisionShape;
+                var type = BtRigidBody.CollisionShape.GetType().ToString();
+                var btShape = BtRigidBody.CollisionShape;
                 /*var colShape = new CollisonShapeImp();
                 colShape.BtCollisionShape = btShape;
                 btShape.UserObject = colShape;
@@ -434,36 +435,45 @@ namespace Fusee.Engine
                         break;
                 }
 
-                var o = (RigidBodyImp)_rbi.UserObject;
-                o._rbi.CollisionShape = btColShape;
+                var o = (RigidBodyImp)BtRigidBody.UserObject;
+                o.BtRigidBody.CollisionShape = btColShape;
 
             }
         }
 
       
+        
+
+
+
+        internal bool _isTrigger;
+        public bool IsTrigger
+        {
+            set
+            {
+                _isTrigger = value;
+                BtRigidBody.CollisionFlags = value == true ? CollisionFlags.CustomMaterialCallback : CollisionFlags.None;
+            }
+        }
+
+        public void OnCollisionEnter(IRigidBodyImp other)
+        {
+           IRigidBody irb = (IRigidBody)this.UserObject;
+           irb.OnCollisionEnter(other);
+        }
+
+        public void OnCollisionExit()
+        {
+            IRigidBody irb = (IRigidBody)this.UserObject;
+            irb.OnCollisionExit();
+        }
+
+
         private object _userObject;
         public object UserObject
         {
             get { return _userObject; }
             set { _userObject = value; }
         }
-
-
-        /// <summary>
-        /// OnCollision is called once per frame for every rigidbody theis rigidbody is colliding.
-        /// Send ffrom here Massage to the Rigidbody.OnCollision(RigidBodyImp other) by an Events
-        /// </summary>
-        /// <param name="other">the other Rigidbody that is collided </param>
-        public virtual void OnCollision(IRigidBodyImp other)
-        {
-            
-            //Debug.WriteLine("RigidBodyImp.OnCollision");
-            //TODO: Event to the RigidBody.cs class 
-            //var otherRb = (RigidBodyImp)other;
-            //otherRb.ApplyTorqueImpulse = new float3(10,10,10);
-
-        }
-
-
     }
 }
