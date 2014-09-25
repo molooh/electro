@@ -84,7 +84,7 @@ namespace Examples.CubeAndTiles
 
             // Modifications for trypticon
             //VideoWall(1, 1, true, true);
-            SetWindowSize(1280, 800, true, 100, 100);
+            SetWindowSize(1280, 800, false, 100, 100);
             _stereo3D = new Stereo3D(Stereo3DMode.OverUnder, 1280, 800);
             _stereo3D.AttachToContext(RC);
 

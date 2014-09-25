@@ -1,4 +1,5 @@
-﻿using Fusee.Math;
+﻿using System;
+using Fusee.Math;
 
 namespace Fusee.Engine
 {
@@ -416,16 +417,20 @@ namespace Fusee.Engine
         /// </summary>
         public void Display()
         {
-            // TODO - RenderState is propably dirty.
+            // StereoRenderState is propably dirty.
             // so we have to do some clean ups etc.
             if (_renderState == StereoRenderState.Dirty)
             {
                 _guiLImage.DetachFromContext();
                 _guiRImage.DetachFromContext();
+                
+                _guiLImage = null;
+                _guiRImage = null;
 
                 AttachToContext(_rc);
 
                 _renderState = StereoRenderState.Clean;
+                return;
             }
 
             _rc.ClearColor = new float4(0, 0, 0, 0); // _clearColor

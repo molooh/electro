@@ -64,6 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Fusee_Linux.targets = Fusee_Linux.targets
 		Fusee_Windows.targets = Fusee_Windows.targets
+		Performance1.psess = Performance1.psess
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{FC35C4A4-7608-4A73-9C7E-C6837FD24AB2}"
@@ -717,5 +718,8 @@ Global
 		{94E609C8-3BEF-4522-812E-AD56B73536B4} = {78AE9C6E-7E62-4316-B813-FC6D8D683192}
 		{F091790C-ED62-44D2-8622-966030A98E0B} = {5FDDCF63-DBEF-479B-B2DA-12DAE97EC533}
 		{04AC1FCC-3B50-4CE0-94D5-A3FCE152572C} = {5FDDCF63-DBEF-479B-B2DA-12DAE97EC533}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
