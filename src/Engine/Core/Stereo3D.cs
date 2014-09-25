@@ -29,7 +29,11 @@ namespace Fusee.Engine
         /// <summary>
         /// The oculus rift mode = 1.
         /// </summary>
-        Oculus
+        Oculus,
+        /// <summary>
+        /// The over under mode = 2.
+        /// </summary>
+        OverUnder
     }
 
     internal static class Stereo3DParams
@@ -64,6 +68,8 @@ namespace Fusee.Engine
         private GUIImage _guiRImage;
 
         private ShaderProgram _shaderProgram;
+        private ShaderProgram _spTexture;
+
         private IShaderParam _shaderTexture;
 
         private readonly int _screenWidth;
@@ -168,6 +174,40 @@ namespace Fusee.Engine
 
         #endregion
 
+        #region Anaglyph
+
+        // shader for anagylph mode
+        private const string OverUnderVs = @"
+            attribute vec3 fuVertex;
+            attribute vec2 fuUV;
+            attribute vec4 fuColor;
+
+            varying vec2 vUV;
+
+            void main()
+            {
+                vUV = fuUV;
+                gl_Position = vec4(fuVertex, 1);
+            }";
+
+        private const string OverUnderPs = @"
+            #ifdef GL_ES
+                precision highp float;
+            #endif
+        
+            uniform sampler2D vTexture;
+            varying vec2 vUV;
+
+            void main()
+            {
+                vec4 colTex = texture2D(vTexture, vUV);
+                vec4 _redBalance = vec4(0.1, 0.65, 0.25, 0);
+                float _redColor = (colTex.r * _redBalance.r + colTex.g * _redBalance.g + colTex.b * _redBalance.b) * 1.5;
+                gl_FragColor = vec4(_redColor, colTex.g, colTex.b, 1) * 1.4; // * dot(vNormal, vec3(0, 0, -1))  lefthanded change???
+            }";
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -229,6 +269,21 @@ namespace Fusee.Engine
                     _guiLImage.Refresh();
 
                     break;
+
+                case Stereo3DMode.OverUnder:
+                    _shaderProgram = _rc.CreateShader(OverUnderVs, OverUnderPs);
+                    _shaderTexture = _shaderProgram.GetShaderParam("vTexture");
+                    
+
+                    _guiLImage = new GUIImage(null, 0, 0, _screenWidth, _screenHeight);
+                    _guiLImage.AttachToContext(rc);
+                    _guiLImage.Refresh();
+
+                    _guiRImage = new GUIImage(null, _screenWidth/2, 0, _screenWidth/2, _screenHeight);
+                    _guiRImage.AttachToContext(rc);
+                    _guiRImage.Refresh();
+
+                    break;
             }
         }
 
@@ -239,13 +294,12 @@ namespace Fusee.Engine
         public void Prepare(Stereo3DEye eye)
         {
             _currentEye = eye;
-
+            const int cuttingEdge = 100;
             switch (_activeMode)
             {
                 case Stereo3DMode.Oculus:
                     _currentEye = eye;
-                    const int cuttingEdge = 100;
-
+                    
                     switch (eye)
                     {
                         case Stereo3DEye.Left:
@@ -258,6 +312,21 @@ namespace Fusee.Engine
                     }
 
                     break;
+
+                case Stereo3DMode.OverUnder:
+                    switch (eye)
+                    {
+                        case Stereo3DEye.Left:
+                            _rc.Viewport(0, 0, _screenWidth, _screenHeight/2);
+                            break;
+
+                        case Stereo3DEye.Right:
+                            _rc.Viewport(0, _screenHeight/2, _screenWidth, _screenHeight/2);
+                            break;
+                    }
+
+                    break;
+
             }
 
             _rc.ClearColor = _clearColor;
@@ -269,11 +338,12 @@ namespace Fusee.Engine
         /// </summary>
         public void Save()
         {
+            
             switch (_activeMode)
             {
+                    
                 case Stereo3DMode.Oculus:
                     const int picTrans = 81;
-
                     switch (_currentEye)
                     {
                         case Stereo3DEye.Left:
@@ -288,13 +358,15 @@ namespace Fusee.Engine
 
                     _rc.Viewport(0, 0, _screenWidth, _screenHeight);
 
-                    break;
+                break;
 
                 case Stereo3DMode.Anaglyph:
-                    _rc.GetBufferContent(new Rectangle(0, 0, _screenWidth, _screenHeight),
-                        (_currentEye == Stereo3DEye.Left) ? _contentLTex : _contentRTex);
-
+                    _rc.GetBufferContent(new Rectangle(0, 0, _screenWidth, _screenHeight), (_currentEye == Stereo3DEye.Left) ? _contentLTex : _contentRTex);
                     break;
+
+                case Stereo3DMode.OverUnder:
+                    _rc.GetBufferContent(new Rectangle(0, 0, _screenWidth, _screenHeight), (_currentEye == Stereo3DEye.Left) ? _contentLTex : _contentRTex);
+                break;
             }
         }
 
@@ -327,6 +399,15 @@ namespace Fusee.Engine
 
                     _rc.ColorMask(true, true, true, false);
 
+                    break;
+
+                case Stereo3DMode.OverUnder:
+                    _rc.SetShader(_shaderProgram);
+
+                    RenderOverUnderEye(Stereo3DEye.Left);
+                    _rc.Clear(ClearFlags.Depth);
+                    RenderOverUnderEye(Stereo3DEye.Right);
+                    
                     break;
             }
 
@@ -403,5 +484,16 @@ namespace Fusee.Engine
         }
 
         #endregion
+
+        /// <summary>
+        /// Render the corresponding eye.
+        /// </summary>
+        /// <param name="eye"></param>
+        private void RenderOverUnderEye(Stereo3DEye eye)
+        {
+            _rc.SetShaderParamTexture(_shaderTexture, eye == Stereo3DEye.Left ? _contentLTex : _contentRTex);
+            _rc.Render(eye == Stereo3DEye.Left ? _guiLImage.GUIMesh : _guiRImage.GUIMesh);
+        }
+
     }
 }

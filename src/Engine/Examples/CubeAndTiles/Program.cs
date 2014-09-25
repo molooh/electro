@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Windows.Forms;
 using Fusee.Engine;
 using Fusee.Math;
+using MouseButtons = Fusee.Engine.MouseButtons;
+
 
 namespace Examples.CubeAndTiles
 {
@@ -67,15 +70,23 @@ namespace Examples.CubeAndTiles
         private const float RotationSpeed = 1f;
         private const float Damping = 0.92f;
 
+        // Modifications for trypticon
+        private const int _dispHorz = 1;
+        private const int _dispVert = 1;
+
         // Init()
         public override void Init()
         {
-            RC.ClearColor = new float4(0, 0, 0, 1);
+            RC.ClearColor = new float4(0f, 0f, 0f, 1);
             
             _shaderProgram = RC.CreateShader(Vs, Ps);
             RC.SetShader(_shaderProgram);
 
-            _stereo3D = new Stereo3D(Stereo3DMode.Anaglyph, Width, Height);
+            // Modifications for trypticon
+            //VideoWall(_dispHorz, _dispVert, true, true);
+            //SetWindowSize(1024, 768, false, 200, 200);
+            //_stereo3D = new Stereo3D(Stereo3DMode.OverUnder, Screen.PrimaryScreen.Bounds.Width * _dispHorz, Screen.PrimaryScreen.Bounds.Height);
+            _stereo3D = new Stereo3D(Stereo3DMode.OverUnder, 1280, 800);
             _stereo3D.AttachToContext(RC);
 
             _exampleLevel = new Level(RC, _shaderProgram, _stereo3D);
@@ -107,11 +118,15 @@ namespace Examples.CubeAndTiles
                 }
             }
 
+            // Pull user input.
+            if (Input.Instance.IsKey(KeyCodes.Escape))
+                CloseGameWindow(); // Call to opentk to close the application.
+
             if (Input.Instance.IsKeyDown(KeyCodes.S))
                 Audio.Instance.SetVolume(Audio.Instance.GetVolume() > 0 ? 0 : 100);
 
             if (Input.Instance.IsKeyDown(KeyCodes.C))
-                _exampleLevel.UseStereo3D = !_exampleLevel.UseStereo3D;
+               _exampleLevel.UseStereo3D = !_exampleLevel.UseStereo3D;
 
             if (Input.Instance.IsKey(KeyCodes.Left))
                 _exampleLevel.MoveCube(Level.Directions.Left);
@@ -155,15 +170,16 @@ namespace Examples.CubeAndTiles
 
             if (_exampleLevel.UseStereo3D)
                 _stereo3D.Display();
+             
 
             Present();
+            Resize();
         }
 
         public override void Resize()
         {
+            var aspectRatio = Width / (float)Height;
             RC.Viewport(0, 0, Width, Height);
-
-            var aspectRatio = Width/(float) Height;
             RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
         }
 
