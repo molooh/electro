@@ -85,7 +85,7 @@ namespace Examples.CubeAndTiles
             // Modifications for trypticon
             VideoWall(1, 1, true, true);
             //SetWindowSize(1920, 1200, true, 0, 0);
-            _stereo3D = new Stereo3D(Stereo3DMode.OverUnder, 1280, 800);
+            _stereo3D = new Stereo3D(Stereo3DMode.LeftRight, 1280, 800);
             _stereo3D.AttachToContext(RC);
 
             _exampleLevel = new Level(RC, _shaderProgram, _stereo3D);
@@ -176,7 +176,7 @@ namespace Examples.CubeAndTiles
 
         public override void Resize()
         {
-            var aspectRatio = 2 * Width / (float)Height;
+            var aspectRatio = _stereo3D.CalculateAspectRatio();
             RC.Viewport(0, 0, Width, Height);
             RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
 
