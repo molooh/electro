@@ -83,9 +83,9 @@ namespace Examples.CubeAndTiles
             RC.SetShader(_shaderProgram);
 
             // Modifications for trypticon
-            VideoWall(1, 1, true, true);
-            //SetWindowSize(1920, 1200, true, 0, 0);
-            _stereo3D = new Stereo3D(Stereo3DMode.LeftRight, 1280, 800);
+            //VideoWall(1, 1, true, true);
+            SetWindowSize(1280, 800, true, 100, 100);
+            _stereo3D = new Stereo3D(Stereo3DMode.OverUnder, 1280, 800);
             _stereo3D.AttachToContext(RC);
 
             _exampleLevel = new Level(RC, _shaderProgram, _stereo3D);
@@ -182,8 +182,7 @@ namespace Examples.CubeAndTiles
 
             // Set Width and Height and do resize.
             _stereo3D.ScreenWidth = Width;
-            _stereo3D.ScreenHeigth = Height;
-            _stereo3D.AttachToContext(RC);
+            _stereo3D.ScreenHeight = Height;
         }
 
         public static void Main()

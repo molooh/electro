@@ -40,6 +40,19 @@ namespace Fusee.Engine
         LeftRight
     }
 
+    public enum StereoRenderState
+    {
+        /// <summary>
+        /// This is the normal state. Everything is okey.
+        /// </summary>
+        Clean,
+        /// <summary>
+        /// Something is not okey, instance should be reinitialized.
+        /// This can occure after a resize has been done etc.
+        /// </summary>
+        Dirty
+    }
+
     internal static class Stereo3DParams
     {
         internal static float EyeDistance = 30f;
@@ -56,6 +69,7 @@ namespace Fusee.Engine
 
         private readonly Stereo3DMode _activeMode;
         private Stereo3DEye _currentEye;
+        private StereoRenderState _renderState;
 
         private GUIImage _guiLImage;
         private GUIImage _guiRImage;
@@ -82,19 +96,21 @@ namespace Fusee.Engine
         public int ScreenWidth
         {
             get { return _screenWidth; }
-            set { _screenWidth = value; }
-
-            // TODO - This has to be changed.
-            // maybe AttachToContext() or mark as dirty ...
+            set
+            {
+                _screenWidth = value;
+                _renderState = StereoRenderState.Dirty;
+            }
         }
 
-        public int ScreenHeigth
+        public int ScreenHeight
         {
             get { return _screenHeight; }
-            set { _screenHeight = value; }
-
-            // TODO - This has to be changed.
-            // maybe AttachToContext() or mark as dirty ...
+            set
+            {
+                _screenHeight = value;
+                _renderState = StereoRenderState.Dirty;
+            }
         }
 
         #region Stereo3D Shaders
@@ -241,6 +257,8 @@ namespace Fusee.Engine
 
             _screenWidth = width;
             _screenHeight = height;
+
+            _renderState = StereoRenderState.Clean;
         }
 
         /// <summary>
@@ -398,6 +416,18 @@ namespace Fusee.Engine
         /// </summary>
         public void Display()
         {
+            // TODO - RenderState is propably dirty.
+            // so we have to do some clean ups etc.
+            if (_renderState == StereoRenderState.Dirty)
+            {
+                _guiLImage.DetachFromContext();
+                _guiRImage.DetachFromContext();
+
+                AttachToContext(_rc);
+
+                _renderState = StereoRenderState.Clean;
+            }
+
             _rc.ClearColor = new float4(0, 0, 0, 0); // _clearColor
             _rc.Clear(ClearFlags.Color | ClearFlags.Depth);
 
