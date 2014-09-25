@@ -34,6 +34,9 @@ namespace Fusee.Engine
         /// The over under mode = 2.
         /// </summary>
         OverUnder,
+        /// <summary>
+        /// The left right mode = 3.
+        /// </summary>
         LeftRight
     }
 
@@ -65,11 +68,6 @@ namespace Fusee.Engine
         private int _screenWidth;
         private int _screenHeight;
 
-        #region Stereo3D Shaders
-
-        private ITexture _contentLTex;
-        private ITexture _contentRTex;
-
         /// <summary>
         /// Gets the current eye.
         /// </summary>
@@ -87,7 +85,7 @@ namespace Fusee.Engine
             set { _screenWidth = value; }
 
             // TODO - This has to be changed.
-            // in AttachToContext() or mark as dirty ...
+            // maybe AttachToContext() or mark as dirty ...
         }
 
         public int ScreenHeigth
@@ -96,8 +94,13 @@ namespace Fusee.Engine
             set { _screenHeight = value; }
 
             // TODO - This has to be changed.
-            // in AttachToContext() or mark as dirty ...
+            // maybe AttachToContext() or mark as dirty ...
         }
+
+        #region Stereo3D Shaders
+
+        private ITexture _contentLTex;
+        private ITexture _contentRTex;
 
         #region OculusRift
 
@@ -193,7 +196,7 @@ namespace Fusee.Engine
 
         #endregion
 
-        #region OverUnder
+        #region NormalWithoutShaderAction
 
         // shader for OverUnder mode
         private const string NoActionVs = @"
@@ -443,6 +446,7 @@ namespace Fusee.Engine
             _rc.SetShader(currShader);
         }
 
+
         #region OculusRift
 
         private void RenderDistortedEye(Stereo3DEye eye)
@@ -490,28 +494,6 @@ namespace Fusee.Engine
 			// change lookat ?? lefthanded change
             _rc.Render(_guiLImage.GUIMesh);
         }
-
-        /// <summary>
-        /// Aligns the <see cref="Stereo3DEye"/> to the target point.
-        /// </summary>
-        /// <param name="eye">The <see cref="Stereo3DEye"/>.</param>
-        /// <param name="eyeV">The eye vector.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="up">Up vector.</param>
-        /// <returns>A Matrix that represents the current eye's orientation towards a target point.</returns>
-        public float4x4 LookAt3D(Stereo3DEye eye, float3 eyeV, float3 target, float3 up)
-        {
-            var x = (eye == Stereo3DEye.Left)
-                ? eyeV.x - Stereo3DParams.EyeDistance
-                : eyeV.x + Stereo3DParams.EyeDistance;
-
-            var newEye = new float3(x, eyeV.y, eyeV.z);
-            var newTarget = new float3(target.x, target.y, target.z);
-
-			// change lookat ?? lefthanded change
-            return float4x4.LookAt(newEye, newTarget, up);
-        }
-
         #endregion
 
         #region NormalModes
@@ -537,6 +519,32 @@ namespace Fusee.Engine
         #endregion
 
 
+        /// <summary>
+        /// Aligns the <see cref="Stereo3DEye"/> to the target point.
+        /// </summary>
+        /// <param name="eye">The <see cref="Stereo3DEye"/>.</param>
+        /// <param name="eyeV">The eye vector.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="up">Up vector.</param>
+        /// <returns>A Matrix that represents the current eye's orientation towards a target point.</returns>
+        public float4x4 LookAt3D(Stereo3DEye eye, float3 eyeV, float3 target, float3 up)
+        {
+            var x = (eye == Stereo3DEye.Left)
+                ? eyeV.x - Stereo3DParams.EyeDistance
+                : eyeV.x + Stereo3DParams.EyeDistance;
+
+            var newEye = new float3(x, eyeV.y, eyeV.z);
+            var newTarget = new float3(target.x, target.y, target.z);
+
+            // change lookat ?? lefthanded change
+            return float4x4.LookAt(newEye, newTarget, up);
+        }
+
+        /// <summary>
+        /// Calculates an aspect ratio for the resize method in main.
+        /// Dependends on the current stereo mode.
+        /// </summary>
+        /// <returns></returns>
         public float CalculateAspectRatio()
         {
             switch (_activeMode)
@@ -548,7 +556,9 @@ namespace Fusee.Engine
                         return _screenWidth / (float)_screenHeight / 2f;
                     break;
                     case Stereo3DMode.Anaglyph:
+                    // TODO - Fill if needed
                     case Stereo3DMode.Oculus:
+                    // TODO - Fill if needed
                 default:
                     return _screenWidth / (float)_screenHeight;
                     break;
