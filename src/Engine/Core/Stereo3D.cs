@@ -53,6 +53,22 @@ namespace Fusee.Engine
         private readonly Stereo3DMode _activeMode;
         private Stereo3DEye _currentEye;
 
+        private GUIImage _guiLImage;
+        private GUIImage _guiRImage;
+
+        private ShaderProgram _shaderProgram;
+        private ShaderProgram _spTexture;
+
+        private IShaderParam _shaderTexture;
+
+        private int _screenWidth;
+        private int _screenHeight;
+
+        #region Stereo3D Shaders
+
+        private ITexture _contentLTex;
+        private ITexture _contentRTex;
+
         /// <summary>
         /// Gets the current eye.
         /// </summary>
@@ -64,21 +80,23 @@ namespace Fusee.Engine
             get { return _currentEye; }
         }
 
-        private GUIImage _guiLImage;
-        private GUIImage _guiRImage;
+        public int ScreenWidth
+        {
+            get { return _screenWidth; }
+            set { _screenWidth = value; }
 
-        private ShaderProgram _shaderProgram;
-        private ShaderProgram _spTexture;
+            // TODO - This has to be changed.
+            // in AttachToContext() or mark as dirty ...
+        }
 
-        private IShaderParam _shaderTexture;
+        public int ScreenHeigth
+        {
+            get { return _screenHeight; }
+            set { _screenHeight = value; }
 
-        private readonly int _screenWidth;
-        private readonly int _screenHeight;
-
-        #region Stereo3D Shaders
-
-        private ITexture _contentLTex;
-        private ITexture _contentRTex;
+            // TODO - This has to be changed.
+            // in AttachToContext() or mark as dirty ...
+        }
 
         #region OculusRift
 
@@ -174,9 +192,9 @@ namespace Fusee.Engine
 
         #endregion
 
-        #region Anaglyph
+        #region OverUnder
 
-        // shader for anagylph mode
+        // shader for OverUnder mode
         private const string OverUnderVs = @"
             attribute vec3 fuVertex;
             attribute vec2 fuUV;
@@ -200,10 +218,7 @@ namespace Fusee.Engine
 
             void main()
             {
-                vec4 colTex = texture2D(vTexture, vUV);
-                vec4 _redBalance = vec4(0.1, 0.65, 0.25, 0);
-                float _redColor = (colTex.r * _redBalance.r + colTex.g * _redBalance.g + colTex.b * _redBalance.b) * 1.5;
-                gl_FragColor = vec4(_redColor, colTex.g, colTex.b, 1) * 1.4; // * dot(vNormal, vec3(0, 0, -1))  lefthanded change???
+                gl_FragColor = texture2D(vTexture, vUV);
             }";
 
         #endregion
@@ -274,12 +289,11 @@ namespace Fusee.Engine
                     _shaderProgram = _rc.CreateShader(OverUnderVs, OverUnderPs);
                     _shaderTexture = _shaderProgram.GetShaderParam("vTexture");
                     
-
-                    _guiLImage = new GUIImage(null, 0, 0, _screenWidth, _screenHeight);
+                    _guiLImage = new GUIImage(null, 0, 0, _screenWidth, _screenHeight/2);
                     _guiLImage.AttachToContext(rc);
                     _guiLImage.Refresh();
 
-                    _guiRImage = new GUIImage(null, _screenWidth/2, 0, _screenWidth/2, _screenHeight);
+                    _guiRImage = new GUIImage(null, 0, _screenHeight/2, _screenWidth, _screenHeight/2);
                     _guiRImage.AttachToContext(rc);
                     _guiRImage.Refresh();
 
@@ -312,7 +326,7 @@ namespace Fusee.Engine
                     }
 
                     break;
-
+                /*
                 case Stereo3DMode.OverUnder:
                     switch (eye)
                     {
@@ -326,6 +340,7 @@ namespace Fusee.Engine
                     }
 
                     break;
+                 */
 
             }
 

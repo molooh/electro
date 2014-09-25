@@ -71,7 +71,7 @@ namespace Examples.CubeAndTiles
         private const float Damping = 0.92f;
 
         // Modifications for trypticon
-        private const int _dispHorz = 1;
+        private const int _dispHorz = 3;
         private const int _dispVert = 1;
 
         // Init()
@@ -83,9 +83,8 @@ namespace Examples.CubeAndTiles
             RC.SetShader(_shaderProgram);
 
             // Modifications for trypticon
-            //VideoWall(_dispHorz, _dispVert, true, true);
-            //SetWindowSize(1024, 768, false, 200, 200);
-            //_stereo3D = new Stereo3D(Stereo3DMode.OverUnder, Screen.PrimaryScreen.Bounds.Width * _dispHorz, Screen.PrimaryScreen.Bounds.Height);
+            VideoWall(1, 1, true, true);
+            //SetWindowSize(1920, 1200, true, 0, 0);
             _stereo3D = new Stereo3D(Stereo3DMode.OverUnder, 1280, 800);
             _stereo3D.AttachToContext(RC);
 
@@ -173,14 +172,18 @@ namespace Examples.CubeAndTiles
              
 
             Present();
-            Resize();
         }
 
         public override void Resize()
         {
-            var aspectRatio = Width / (float)Height;
+            var aspectRatio = 2 * Width / (float)Height;
             RC.Viewport(0, 0, Width, Height);
             RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
+
+            // Set Width and Height and do resize.
+            _stereo3D.ScreenWidth = Width;
+            _stereo3D.ScreenHeigth = Height;
+            _stereo3D.AttachToContext(RC);
         }
 
         public static void Main()
