@@ -105,6 +105,11 @@
     <Compile Include="RenderStateSet.cs" />
     <Compile Include="ShaderEffect.cs" />
     <Compile Include="Stereo3D.cs" />
+    <Compile Include="IStereoMode.cs" />
+    <Compile Include="StereoModeAnaglyph.cs" />
+    <Compile Include="StereoModeLeftRight.cs" />
+    <Compile Include="StereoModeOculus.cs" />
+    <Compile Include="StereoModeOverUnder.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="VideoManager.cs" />
     <Compile Include="VideoStream.cs" />
