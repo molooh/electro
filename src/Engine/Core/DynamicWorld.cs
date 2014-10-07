@@ -88,11 +88,18 @@ namespace Fusee.Engine
 
          
             var retval = new RigidBody();
+            //Initialising collision events
+            rbi.OnCollisionEnterEvent += new CollisionDelegate(retval.OnCollisionEnter);
+            rbi.OnCollisionExitEvent += new CollisionDelegate(retval.OnCollisionExit);
+
             retval._iRigidBodyImp = rbi;
+
             rbi.UserObject = retval;
             rbi.IsTrigger = false;
             return retval;
         }
+
+ 
 
         public void RemoveRigidBody(RigidBody rigidbody)
         {

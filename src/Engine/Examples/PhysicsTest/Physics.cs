@@ -347,47 +347,11 @@ namespace Examples.PhysicsTest
             box1.Friction = 0.5f;
             box1.Restitution = 0.8f;
             box1.IsTrigger = true;
-            RigidBody box2 = _world.AddRigidBody(1, new float3(-10, 20, -10), float3.Zero, MyBoxCollider);
-            box2.Friction = 0.5f;
-            box2.Restitution = 0.8f;
-            box2.IsTrigger = true;
-            RigidBody box3 = _world.AddRigidBody(1, new float3(-10, 40, -20), float3.Zero, MyBoxCollider);
-            box3.Friction = 0.5f;
-            box3.Restitution = 0.8f;
-            box3.IsTrigger = true;
-            RigidBody box4 = _world.AddRigidBody(1, new float3(30, 20, 0), float3.Zero, MyBoxCollider);
-            box4.Friction = 0.5f;
-            box4.Restitution = 0.8f;
-            box4.IsTrigger = true;
-            RigidBody box5 = _world.AddRigidBody(1, new float3(-10, 20, 30), float3.Zero, MyBoxCollider);
-            box5.Friction = 0.5f;
-            box5.Restitution = 0.8f;
-            box5.IsTrigger = true;
            
-             RigidBody sphere1 = _world.AddRigidBody(1, new float3(10, 20, 0), float3.Zero, MySphereCollider);
+            RigidBody sphere1 = _world.AddRigidBody(1, new float3(10, 20, 0), float3.Zero, MySphereCollider);
             sphere1.Friction = 0.5f;
             sphere1.Restitution = 0.8f;
             sphere1.IsTrigger = true;
-
-            RigidBody sphere2 = _world.AddRigidBody(1, new float3(10, 40, 0), float3.Zero, MySphereCollider);
-            sphere2.Friction = 0.5f;
-            sphere2.Restitution = 0.8f;
-            sphere2.IsTrigger = true;
-
-            RigidBody sphere3 = _world.AddRigidBody(1, new float3(20, 20, 0), float3.Zero, MySphereCollider);
-            sphere3.Friction = 0.5f;
-            sphere3.Restitution = 0.8f;
-            sphere3.IsTrigger = true;
-
-            RigidBody sphere4 = _world.AddRigidBody(1, new float3(10, 20, -20), float3.Zero, MySphereCollider);
-            sphere4.Friction = 0.5f;
-            sphere4.Restitution = 0.8f;
-            sphere4.IsTrigger = true;
-
-            RigidBody sphere5 = _world.AddRigidBody(1, new float3(10, 50, -20), float3.Zero, MySphereCollider);
-            sphere5.Friction = 0.5f;
-            sphere5.Restitution = 0.8f;
-            sphere5.IsTrigger = true;
             
             shapes = "BoxShape, SphereShape";
         }

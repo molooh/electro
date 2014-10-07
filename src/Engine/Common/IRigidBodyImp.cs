@@ -3,7 +3,7 @@ using Fusee.Math;
 
 namespace Fusee.Engine
 {
-    
+    public delegate void CollisionDelegate(IRigidBodyImp other);
     public interface IRigidBodyImp
     {
         // IRigidBodyImp RigidBody(float mass, float3 worldTransform, /*shape, */ float3 inertia);
@@ -16,16 +16,16 @@ namespace Fusee.Engine
         float3 Position { get; set; }
         Quaternion Rotation { get; }
 
-        void ApplyForce(float3 force, float3 relPos);      //Rel_Pos definition????
+        void ApplyForce(float3 force, float3 relPos); //Rel_Pos definition????
         float3 ApplyTorque { get; set; } // als Field in bullet als void
-        void ApplyImpulse(float3 impulse, float3 relPos);  //Rel_Pos definition????
-        
+        void ApplyImpulse(float3 impulse, float3 relPos); //Rel_Pos definition????
+
 
         // diese drei als Field in bullet als void
-        float3 ApplyTorqueImpulse { get; set; }             
-        float3 ApplyCentralForce{ get; set; }             
+        float3 ApplyTorqueImpulse { get; set; }
+        float3 ApplyCentralForce { get; set; }
         float3 ApplyCentralImpulse { get; set; }
-         
+
 
         //Translate RigidBody by a Vector
         float3 LinearVelocity { get; set; }
@@ -43,14 +43,14 @@ namespace Fusee.Engine
         float AngularDrag { get; }
 
         ICollisionShapeImp CollisionShape { get; set; }
-        
+
         object UserObject { get; set; }
 
 
         bool IsTrigger { set; }
         void OnCollisionEnter(IRigidBodyImp other);
         void OnCollisionExit();
+        event CollisionDelegate OnCollisionEnterEvent;
+        event CollisionDelegate OnCollisionExitEvent;
     }
-
-   
 }

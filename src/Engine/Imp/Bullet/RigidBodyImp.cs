@@ -88,7 +88,6 @@ namespace Fusee.Engine
                 var o = (RigidBodyImp)BtRigidBody.UserObject;
                 o.BtRigidBody.CenterOfMassTransform = Translater.Float4X4ToBtMatrix(m);
                 //o.BtRigidBody.WorldTransform = Translater.Float4X4ToBtMatrix(m);
-               
             }
         }
 
@@ -441,10 +440,9 @@ namespace Fusee.Engine
             }
         }
 
-      
-        
 
-
+        public event CollisionDelegate OnCollisionEnterEvent;
+        public event CollisionDelegate OnCollisionExitEvent;
 
         internal bool _isTrigger;
         public bool IsTrigger
@@ -456,18 +454,22 @@ namespace Fusee.Engine
             }
         }
 
+     
         public void OnCollisionEnter(IRigidBodyImp other)
         {
-           IRigidBody irb = (IRigidBody)this.UserObject;
-           irb.OnCollisionEnter(other);
+            if (OnCollisionEnterEvent != null)
+            {
+                OnCollisionEnterEvent(other);
+            }
         }
 
         public void OnCollisionExit()
         {
-            IRigidBody irb = (IRigidBody)this.UserObject;
-            irb.OnCollisionExit();
+            if (OnCollisionExitEvent != null)
+            {
+                OnCollisionExitEvent(null);
+            }
         }
-
 
         private object _userObject;
         public object UserObject

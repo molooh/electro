@@ -88,7 +88,6 @@
     <Compile Include="IPoint2PointConstraintImp.cs" />
     <Compile Include="IRenderCanvasImp.cs" />
     <Compile Include="IRenderContextImp.cs" />
-    <Compile Include="IRigidBody.cs" />
     <Compile Include="IRigidBodyImp.cs" />
     <Compile Include="IShaderParam.cs" />
     <Compile Include="IShaderProgramImp.cs" />

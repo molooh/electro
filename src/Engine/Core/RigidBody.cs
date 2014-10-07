@@ -10,12 +10,10 @@ namespace Fusee.Engine
     /// </summary>
   
     
-    public class RigidBody : IRigidBody
+    public class RigidBody
     {
 
         internal IRigidBodyImp _iRigidBodyImp;
-
-       // public Mesh Mesh { get; set; }
 
         public float3 Gravity
         {
@@ -153,7 +151,7 @@ namespace Fusee.Engine
         }
 
         /// <summary>
-        /// Adds an impulse 
+        /// Adds an impulse
         /// </summary>
         public float3 ApplyCentralImpulse
         {
@@ -401,9 +399,7 @@ namespace Fusee.Engine
         }
         #endregion
 
-        #region CollisionStuff
-
-        
+    
         internal bool _isTrigger;
         public bool IsTrigger
         {
@@ -420,13 +416,12 @@ namespace Fusee.Engine
 
         public void OnCollisionEnter(IRigidBodyImp rigidBodyImp)
         {
-            //Debug.WriteLine("OnCollisionEnter");
+
         }
 
-        public void OnCollisionExit()
+        public void OnCollisionExit(object o)
         {
-            //Debug.WriteLine("ExitCollision");
+
         }
-        #endregion
     }
 }
