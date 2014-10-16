@@ -46,7 +46,7 @@ namespace Fusee.Engine
 
         ICapsuleShapeImp AddCapsuleShape(float radius, float height);
 
-        ICylinderShapeImp AddCylinderShape(float halfExtents);
+        //ICylinderShapeImp AddCylinderShape(float halfExtents);
         ICylinderShapeImp AddCylinderShape(float3 halfExtents);
         ICylinderShapeImp AddCylinderShape(float halfExtentsX, float halfExtentsY, float halfExtentsZ);
         IConeShapeImp AddConeShape(float radius, float height);
@@ -55,7 +55,7 @@ namespace Fusee.Engine
 
         ICompoundShapeImp AddCompoundShape(bool enableDynamicAabbTree);
 
-        IEmptyShapeImp AddEmptyShape();
+        //IEmptyShapeImp AddEmptyShape();
 
         IConvexHullShapeImp AddConvexHullShape();
         IConvexHullShapeImp AddConvexHullShape(float3[] points, bool optimized);

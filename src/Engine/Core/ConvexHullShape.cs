@@ -28,15 +28,15 @@ namespace Fusee.Engine
         }
 
 
-        public float3 GetScaledPoint(int index)
+       /* public float3 GetScaledPoint(int index)
         {
             return ConvexHullShapeImp.GetScaledPoint(index);
-        }
+        }*/
 
-        public float3[] GetUnscaledPoints()
+       /* public float3[] GetUnscaledPoints()
         {
             return ConvexHullShapeImp.GetUnscaledPoints();
-        }
+        }*/
 
         public int GetNumPoints()
         {

@@ -56,15 +56,15 @@ namespace Fusee.Engine
         {
             CompoundShapeImp.AddChildShape(localTransform, childShape.MultiSphereShapeImp);
         }
-        public void AddChildShape(float4x4 localTransform, EmptyShape childShape)
+        /*public void AddChildShape(float4x4 localTransform, EmptyShape childShape)
         {
             CompoundShapeImp.AddChildShape(localTransform, childShape.EmtyShapeImp);
-        }
+        }*/
 
-        public void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia)
+        /*public void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia)
         {
             CompoundShapeImp.CalculatePrincipalAxisTransform(masses, principal, inertia);
-        }
+        }*/
 
         //Inherited
         public float Margin

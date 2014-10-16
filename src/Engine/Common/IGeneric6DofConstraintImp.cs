@@ -18,13 +18,13 @@ namespace Fusee.Engine
         float4x4 CalculatedTransformA { get; }
         float4x4 CalculatedTransformB { get; }
 
-        float4x4 FrameOffsetA { get; set; }
-        float4x4 FrameOffsetB { get; set; }
+        float4x4 FrameOffsetA { get; /*set;*/ }
+        float4x4 FrameOffsetB { get; /*set;*/ }
 
         float GetAngle(int axisIndex);
-        float3 GetAxis(int axisIndex);
+        //float3 GetAxis(int axisIndex);
 
-        float GetRelativePivotPosition(int axisIndex);
+        //float GetRelativePivotPosition(int axisIndex);
         //Todo: RotationalLimitMotor
 
         bool IsLimited(int limitIndex);

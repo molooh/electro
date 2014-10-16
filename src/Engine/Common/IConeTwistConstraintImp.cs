@@ -21,7 +21,7 @@ namespace Fusee.Engine
         float4x4 FrameOffsetA { get; }
         float4x4 FrameOffsetB { get; }
 
-        float3 GetPointForAngle(float fAngleInRadius, float fLength);
+        //float3 GetPointForAngle(float fAngleInRadius, float fLength);
         
         bool IsPastSwingLimit { get; }
 

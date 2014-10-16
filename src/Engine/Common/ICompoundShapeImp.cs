@@ -14,9 +14,9 @@ namespace Fusee.Engine
         void AddChildShape(float4x4 localTransform, IConeShapeImp shape);
         void AddChildShape(float4x4 localTransform, ICylinderShapeImp shape);
         void AddChildShape(float4x4 localTransform, IMultiSphereShapeImp shape);
-        void AddChildShape(float4x4 localTransform, IEmptyShapeImp shape);
+        //void AddChildShape(float4x4 localTransform, IEmptyShapeImp shape);
 
-        void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia);
+       // void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia);
 
 
     }

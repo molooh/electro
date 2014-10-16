@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Fusee.Engine
 {
-    public class EmptyShape : CollisionShape
+    /*public class EmptyShape : CollisionShape
     {
         internal IEmptyShapeImp EmtyShapeImp;
         //Inherited
@@ -23,5 +23,5 @@ namespace Fusee.Engine
                 o.BoxShapeImp.Margin = value;
             }
         }
-    }
+    }*/
 }

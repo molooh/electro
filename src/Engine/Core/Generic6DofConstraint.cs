@@ -74,11 +74,11 @@ namespace Fusee.Engine
                 var retval = _IG6DofConstraintImp.FrameOffsetA;
                 return retval;
             }
-            set
+            /*set
             {
                 var o = (Generic6DofConstraint)_IG6DofConstraintImp.UserObject;
                 o._IG6DofConstraintImp.FrameOffsetA = value;
-            }
+            }*/
         }
         public float4x4 FrameOffsetB
         {
@@ -87,11 +87,11 @@ namespace Fusee.Engine
                 var retval = _IG6DofConstraintImp.FrameOffsetB;
                 return retval;
             }
-            set
+            /*set
             {
                 var o = (Generic6DofConstraint)_IG6DofConstraintImp.UserObject;
                 o._IG6DofConstraintImp.FrameOffsetB = value;
-            }
+            }*/
         }
 
         public float GetAngle(int axisIndex)
@@ -99,17 +99,17 @@ namespace Fusee.Engine
             var retval = _IG6DofConstraintImp.GetAngle(axisIndex);
             return retval;
         }
-        public float3 GetAxis(int axisIndex)
+        /*public float3 GetAxis(int axisIndex)
         {
             var retval = _IG6DofConstraintImp.GetAxis(axisIndex);
             return retval;
-        }
+        }*/
 
-        public float GetRelativePivotPosition(int axisIndex)
+        /*public float GetRelativePivotPosition(int axisIndex)
         {
             var retval = _IG6DofConstraintImp.GetRelativePivotPosition(axisIndex);
             return retval;
-        }
+        }*/
 
         public bool IsLimited(int limitIndex)
         {

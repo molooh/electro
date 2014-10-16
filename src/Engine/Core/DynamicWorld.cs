@@ -60,10 +60,10 @@ namespace Fusee.Engine
                     var compShape = (CompoundShape)colShape;
                     rbi = _dwi.AddRigidBody(mass, position, orientation, compShape.CompoundShapeImp/*, inertia*/);
                     break;
-                case "Fusee.Engine.EmptyShape":
+                /*case "Fusee.Engine.EmptyShape":
                     var empty = (EmptyShape)colShape;
-                    rbi = _dwi.AddRigidBody(mass, position, orientation, empty.EmtyShapeImp/*, inertia*/);
-                    break;
+                    rbi = _dwi.AddRigidBody(mass, position, orientation, empty.EmtyShapeImp/*, inertia/);
+                    break;*/
 
                 //Meshes
                 case "Fusee.Engine.ConvexHullShape":
@@ -80,10 +80,13 @@ namespace Fusee.Engine
                     break;
                 //Default
                 default:
-                    var defaultShape = new EmptyShape();
-                    Debug.WriteLine("default");
-                    rbi = _dwi.AddRigidBody(mass, position, orientation, defaultShape.EmtyShapeImp/*, inertia*/);
+                    var boxDefault =(BoxShape) colShape;
+                    rbi = _dwi.AddRigidBody(mass, position, orientation, boxDefault.BoxShapeImp/*, inertia*/);
                     break;
+                    /*var defaultShape = new EmptyShape();
+                    Debug.WriteLine("default");
+                    rbi = _dwi.AddRigidBody(mass, position, orientation, defaultShape.EmtyShapeImp/*, inertia/);
+                    break;*/
             }
 
          
@@ -301,14 +304,14 @@ namespace Fusee.Engine
         }
 
         //CylinderShape
-        public CylinderShape AddCylinderShape(float halfExtents)
+        /*public CylinderShape AddCylinderShape(float halfExtents)
         {
             ICylinderShapeImp iCylinderShapeImp = _dwi.AddCylinderShape(halfExtents);
             var retval = new CylinderShape();
             retval.CylinderShapeImp = iCylinderShapeImp;
             iCylinderShapeImp.UserObject = retval;
             return retval;
-        }
+        }*/
         public CylinderShape AddCylinderShape(float halfExtentsX, float halfExtentsY, float halfExtentsZ)
         {
             ICylinderShapeImp iCylinderShapeImp = _dwi.AddCylinderShape(halfExtentsX, halfExtentsY, halfExtentsZ);
@@ -356,14 +359,14 @@ namespace Fusee.Engine
             return retval;
         }
 
-        public EmptyShape AddEmptyShape()
+        /*public EmptyShape AddEmptyShape()
         {
             IEmptyShapeImp iEmptyShapeImp = _dwi.AddEmptyShape();
             var retval = new EmptyShape();
             retval.EmtyShapeImp = iEmptyShapeImp;
             iEmptyShapeImp.UserObject = retval;
             return retval;
-        }
+        }*/
 
         public ConvexHullShape AddConvexHullShape()
         {

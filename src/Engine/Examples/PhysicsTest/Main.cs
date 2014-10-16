@@ -253,7 +253,13 @@ namespace Examples.PhysicsTest
                 currentScene = 4;
                 _gui.SetUp(_physic.GetNumRB(), _physic.GetShapes());
             }
-
+            if (Input.Instance.IsKeyDown(KeyCodes.NumPad5))
+            {
+                _physic.World.Dispose();
+                _physic.InitScene5();
+                currentScene = 5;
+                _gui.SetUp(_physic.GetNumRB(), _physic.GetShapes());
+            }
             if (Input.Instance.IsKeyDown(KeyCodes.Left))
             {
                rb2.ApplyCentralImpulse = new float3(-10, 0, 0);
@@ -325,13 +331,13 @@ namespace Examples.PhysicsTest
                 {
                     if (currentScene == 2)
                     {
-                    RC.ModelView = mtxCam * matrix * float4x4.Scale(1.0f);
+                        RC.ModelView = mtxCam * matrix * float4x4.Scale(1.0f);
                         RC.SetShader(_spCustom);
                         RC.SetShaderParam(_colorCustom, new float4(2f, 2f, 2, 1));
                         RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
                         RC.Render(_meshPlatinic);
                     }
-                    if (currentScene == 4)
+                    if (currentScene == 4 || currentScene == 5)
                     {
                         RC.ModelView = mtxCam * matrix * float4x4.Scale(0.05f);
                         RC.SetShader(_spColor);

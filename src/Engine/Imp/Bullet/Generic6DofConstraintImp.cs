@@ -22,7 +22,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (Generic6DofConstraintImp) _g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp) _g6dofci.Userobject;
                 o._g6dofci.AngularLowerLimit = Translater.Float3ToBtVector3(value);
             }
         }
@@ -35,7 +35,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (Generic6DofConstraintImp)_g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.AngularUpperLimit = Translater.Float3ToBtVector3(value);
             }
         }
@@ -77,11 +77,11 @@ namespace Fusee.Engine
                 var retval = Translater.BtMatrixToFloat4X4(_g6dofci.FrameOffsetA);
                 return retval;
             }
-            set
+            /*set
             {
-                var o = (Generic6DofConstraintImp) _g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.FrameOffsetA = Translater.Float4X4ToBtMatrix(value);
-            }
+            }*/
         }
         public float4x4 FrameOffsetB
         {
@@ -90,11 +90,11 @@ namespace Fusee.Engine
                 var retval = Translater.BtMatrixToFloat4X4(_g6dofci.FrameOffsetB);
                 return retval;
             }
-            set
+            /*set
             {
-                var o = (Generic6DofConstraintImp)_g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.FrameOffsetB = Translater.Float4X4ToBtMatrix(value);
-            }
+            }*/
         }
 
         public float GetAngle(int axisIndex)
@@ -102,11 +102,11 @@ namespace Fusee.Engine
             var retval = _g6dofci.GetAngle(axisIndex);
             return retval;
         }
-        public float3 GetAxis(int axisIndex)
+        /*public float3 GetAxis(int axisIndex)
         {
             var retval = Translater.BtVector3ToFloat3(_g6dofci.GetAxis(axisIndex));
             return retval;
-        }
+        }*/
 
         public float GetRelativePivotPosition(int axisIndex)
         {
@@ -128,7 +128,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (Generic6DofConstraintImp)_g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.LinearLowerLimit = Translater.Float3ToBtVector3(value);
             }
         }
@@ -141,7 +141,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (Generic6DofConstraintImp)_g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.LinearUpperLimit = Translater.Float3ToBtVector3(value);
             }
         }
@@ -174,7 +174,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (Generic6DofConstraintImp) _g6dofci.UserObject;
+                var o = (Generic6DofConstraintImp)_g6dofci.Userobject;
                 o._g6dofci.UseFrameOffset = value;
             }
         }

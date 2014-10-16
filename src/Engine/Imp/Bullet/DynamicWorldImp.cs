@@ -1,14 +1,10 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security;
-using System.Text;
 using BulletSharp;
-using BulletSharp.MultiThreaded;
 using Fusee.Engine;
 using Fusee.Math;
-
 
 
 
@@ -19,7 +15,12 @@ namespace Fusee.Engine
     {
         internal Translater Translater = new Translater();
 
-        internal DiscreteDynamicsWorld BtWorld;
+        internal DynamicsWorld _btWorld;
+        public DynamicsWorld BtWorld
+        {
+            get { return _btWorld; }
+            protected set { _btWorld = value; }
+        }
         internal CollisionConfiguration BtCollisionConf;
         internal CollisionDispatcher BtDispatcher;
         internal BroadphaseInterface BtBroadphase;
@@ -36,7 +37,14 @@ namespace Fusee.Engine
             BtBroadphase = new DbvtBroadphase();
             BtSolver = new SequentialImpulseConstraintSolver();
            // BtCollisionShapes = new AlignedCollisionShapeArray();
-            
+            // collision configuration contains default setup for memory, collision setup
+            /*
+
+            BtBroadphase = new DbvtBroadphase();
+            BtCollisionConf = new DefaultCollisionConfiguration();
+            BtDispatcher = new CollisionDispatcher(BtCollisionConf);
+            BtWorld = new DiscreteDynamicsWorld(BtDispatcher, BtBroadphase, null, BtCollisionConf);
+            BtWorld.Gravity = new Vector3(0, -10, 0);*/
 
            
             BtWorld = new DiscreteDynamicsWorld(BtDispatcher, BtBroadphase, BtSolver, BtCollisionConf)
@@ -187,20 +195,20 @@ namespace Fusee.Engine
                     btColShape = new CompoundShape(true);
                     btColShape = compShape.BtCompoundShape;
                     break;
-                case "Fusee.Engine.EmptyShapeImp":
+                /*case "Fusee.Engine.EmptyShapeImp":
                     btColShape = new EmptyShape();
-                    break;
+                    break;*/
 
                 //Meshes
                 case "Fusee.Engine.ConvexHullShapeImp":
                     var convHull = (ConvexHullShapeImp) colShape;
-                    var btPoints= new Vector3[convHull.GetNumPoints()];
+                    /*var btPoints= new Vector3[convHull.GetNumPoints()];
                     for (int i = 0; i < convHull.GetNumPoints(); i++)
                     {
                         var point = convHull.GetScaledPoint(i);
                         btPoints[i] = Translater.Float3ToBtVector3(point);
-                    }
-                    btColShape = new ConvexHullShape(btPoints);
+                    }*/
+                    btColShape = convHull.BtConvexHullShape;//new ConvexHullShape(btPoints);
                     //btColShape.LocalScaling = new Vector3(3,3,3);
                     break;
                 case "Fusee.Engine.StaticPlaneShapeImp":  
@@ -223,9 +231,13 @@ namespace Fusee.Engine
                     break;
                 //Default
                 default:
-                    Debug.WriteLine("defaultImp");
-                    btColShape = new EmptyShape();
+                    var boxDefault = (BoxShapeImp) colShape;
+                    var btBoxHalfExtentsDefault = 1;
+                    btColShape = new BoxShape(btBoxHalfExtentsDefault);
                     break;
+                    /*Debug.WriteLine("defaultImp");
+                    btColShape = new EmptyShape();
+                    break;*/
             }
             
             var btLocalInertia = btColShape.CalculateLocalInertia(mass);
@@ -236,7 +248,7 @@ namespace Fusee.Engine
             var btRigidBody = new RigidBody(btRbcInfo);
             btRigidBody.Restitution = 0.2f;
             btRigidBody.Friction = 0.2f;
-            btRigidBody.CollisionFlags = CollisionFlags.None;
+            //btRigidBody.CollisionFlags = CollisionFlags.DisableSpuCollisionProcessing;
             BtWorld.AddRigidBody(btRigidBody);
             btRbcInfo.Dispose();
             RigidBodyImp retval = new RigidBodyImp();
@@ -295,7 +307,7 @@ namespace Fusee.Engine
 
             var retval = new Point2PointConstraintImp();
             retval._p2pci = btP2PConstraint;
-            btP2PConstraint.UserObject = retval;
+            btP2PConstraint.Userobject = retval;
             return retval;
         }
         public IPoint2PointConstraintImp AddPoint2PointConstraint(IRigidBodyImp rigidBodyA, IRigidBodyImp rigidBodyB, float3 pivotInA,float3 pivotInB)
@@ -311,7 +323,7 @@ namespace Fusee.Engine
             BtWorld.AddConstraint(btP2PConstraint);
             var retval = new Point2PointConstraintImp();
             retval._p2pci = btP2PConstraint;
-            btP2PConstraint.UserObject = retval;
+            btP2PConstraint.Userobject = retval;
             return retval;
         }
 
@@ -333,7 +345,7 @@ namespace Fusee.Engine
 
             var retval = new HingeConstraintImp();
             retval._hci = btHingeConstraint;
-            btHingeConstraint.UserObject = retval;
+            btHingeConstraint.Userobject = retval;
             return retval;
         }
         public IHingeConstraintImp AddHingeConstraint(IRigidBodyImp rigidBodyA, float3 pivotInA, float3 axisInA, bool useReferenceFrameA)
@@ -346,7 +358,7 @@ namespace Fusee.Engine
 
             var retval = new HingeConstraintImp();
             retval._hci = btHingeConstraint;
-            btHingeConstraint.UserObject = retval;
+            btHingeConstraint.Userobject = retval;
             return retval;
         }
         public IHingeConstraintImp AddHingeConstraint(IRigidBodyImp rigidBodyA, IRigidBodyImp rigidBodyB, float3 pivotInA, float3 pivotInB, float3 axisInA, float3 AxisInB, bool useReferenceFrameA)
@@ -362,7 +374,7 @@ namespace Fusee.Engine
 
             var retval = new HingeConstraintImp();
             retval._hci = btHingeConstraint;
-            btHingeConstraint.UserObject = retval;
+            btHingeConstraint.Userobject = retval;
             return retval;
         }
         public IHingeConstraintImp AddHingeConstraint(IRigidBodyImp rigidBodyA, IRigidBodyImp rigidBodyB, float4x4 brAFrame, float4x4 brBFrame, bool useReferenceFrameA)
@@ -381,7 +393,7 @@ namespace Fusee.Engine
 
             var retval = new HingeConstraintImp();
             retval._hci = btHingeConstraint;
-            btHingeConstraint.UserObject = retval;
+            btHingeConstraint.Userobject = retval;
             return retval;
         }
 
@@ -404,7 +416,7 @@ namespace Fusee.Engine
 
             var retval = new SliderConstraintImp();
             retval._sci = btSliderConstraint;
-            btSliderConstraint.UserObject = retval;
+            btSliderConstraint.Userobject = retval;
             return retval;
         }
         public ISliderConstraintImp AddSliderConstraint(IRigidBodyImp rigidBodyA, float4x4 frameInA, bool useLinearReferenceFrameA)
@@ -417,7 +429,7 @@ namespace Fusee.Engine
 
             var retval = new SliderConstraintImp();
             retval._sci = btSliderConstraint;
-            btSliderConstraint.UserObject = retval;
+            btSliderConstraint.Userobject = retval;
             return retval;
         }
 
@@ -433,13 +445,13 @@ namespace Fusee.Engine
             var btAxisInA = Translater.Float3ToBtVector3(axisInA);
             var btAxisInB = Translater.Float3ToBtVector3(axisInB);
 
-            var btGearConstraint = new GearConstraint(btRigidBodyA, btRigidBodyB, btAxisInA, btAxisInB, ratio);
+            var btGearConstraint = new GearConstraint(btRigidBodyA, btRigidBodyB, ref btAxisInA, ref btAxisInB, ratio);
 
             BtWorld.AddConstraint(btGearConstraint);
 
             var retval = new GearConstraintImp();
             retval._gci = btGearConstraint;
-            btGearConstraint.UserObject = retval;
+            btGearConstraint.Userobject = retval;
             return retval;
         }
 
@@ -456,7 +468,7 @@ namespace Fusee.Engine
 
             var retval = new ConeTwistConstraintImp();
             retval._cti = btCTConstraint;
-            btCTConstraint.UserObject = retval;
+            btCTConstraint.Userobject = retval;
             return retval;
         }
         public IConeTwistConstraintImp AddConeTwistConstraint(IRigidBodyImp rigidBodyA, IRigidBodyImp rigidBodyB, float4x4 rbAFrame,float4x4 rbBFrame)
@@ -476,7 +488,7 @@ namespace Fusee.Engine
 
             var retval = new ConeTwistConstraintImp();
             retval._cti = btCTConstraint;
-            btCTConstraint.UserObject = retval;
+            btCTConstraint.Userobject = retval;
             return retval;
         }
 
@@ -492,7 +504,7 @@ namespace Fusee.Engine
 
             var retval = new Generic6DofConstraintImp();
             retval._g6dofci = btGeneric6DofConstraint;
-            btGeneric6DofConstraint.UserObject = retval;
+            btGeneric6DofConstraint.Userobject = retval;
             return retval;
         }
         public IGeneric6DofConstraintImp AddGeneric6DofConstraint(IRigidBodyImp rigidBodyA, IRigidBodyImp rigidBodyB, float4x4 frameInA, float4x4 frameInB, bool useReferenceFrameA = false)
@@ -511,7 +523,7 @@ namespace Fusee.Engine
 
             var retval = new Generic6DofConstraintImp();
             retval._g6dofci = btGeneric6DofConstraint;
-            btGeneric6DofConstraint.UserObject = retval;
+            btGeneric6DofConstraint.Userobject = retval;
             return retval;
         }
         #endregion Constraints
@@ -576,16 +588,16 @@ namespace Fusee.Engine
         }
 
         //CylinderShape
-        public ICylinderShapeImp AddCylinderShape(float halfExtents)
+       /* public ICylinderShapeImp AddCylinderShape(float halfExtents)
         {
-            var btCylinderShape = new CylinderShape(halfExtents);
+            var btCylinderShape = //new CylinderShape(halfExtents);
             BtCollisionShapes.Add(btCylinderShape);
 
             var retval = new CylinderShapeImp();
             retval.BtCylinderShape = btCylinderShape;
             btCylinderShape.UserObject = retval;
             return retval;
-        }
+        }*/
         public ICylinderShapeImp AddCylinderShape(float3 halfExtents)
         {
             var btCylinderShape = new CylinderShape(Translater.Float3ToBtVector3(halfExtents));
@@ -648,7 +660,7 @@ namespace Fusee.Engine
             return retval;
         }
 
-        public IEmptyShapeImp AddEmptyShape()
+       /* public IEmptyShapeImp AddEmptyShape()
         {
             var btEmptyShape = new EmptyShape();
             BtCollisionShapes.Add(btEmptyShape);
@@ -657,7 +669,7 @@ namespace Fusee.Engine
             retval.BtEmptyShape = btEmptyShape;
             btEmptyShape.UserObject = retval;
             return retval;
-        }
+        }*/
 
         public IConvexHullShapeImp AddConvexHullShape()
         {

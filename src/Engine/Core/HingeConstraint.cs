@@ -103,11 +103,11 @@ namespace Fusee.Engine
             _iHConstraintImp.SetAxis(axisInA);
         }
 
-        public float GetHingeAngle()
+        /*public float GetHingeAngle()
         {
             var retval = _iHConstraintImp.GetHingeAngle();
             return retval;
-        }
+        }*/
 
         public float GetHingeAngle(float4x4 transA, float4x4 transB)
         {

@@ -43,7 +43,6 @@ namespace Examples.PhysicsTest
         public Physics()
         {
             Debug.WriteLine("Physic: Constructor");
-            //InitCollisionCallback();
             InitScene1();
             //InitDfo6Constraint();
             //Tester();
@@ -76,14 +75,7 @@ namespace Examples.PhysicsTest
         }
 
 
-        public void InitCollisionCallback()
-        {
-            InitWorld();
-            InitColliders();
-            GroundPlane(float3.Zero, float3.Zero);
-            CollisionTest();
-            shapes = "BoxShape, SphereShape";
-        }
+       
 
 
 
@@ -125,6 +117,15 @@ namespace Examples.PhysicsTest
             GroundPlane(float3.Zero, float3.Zero);
             FallingTeaPots();
             shapes = "ConvexHullShape";
+        }
+
+        public void InitScene5()
+        {
+            InitWorld();
+            InitColliders();
+            GroundPlane(float3.Zero, float3.Zero);
+            CollisionTest();
+            shapes = "BoxShape, SphereShape, ConvexHullShape";
         }
 
         public void GroundPlane(float3 pos, float3 rot)
@@ -227,14 +228,15 @@ namespace Examples.PhysicsTest
         {
             for (int k = 0; k < 4; k++)
             {
-                for (int h = -2; h < 3; h++)
+                for (int h = -2; h < 2; h++)
                 {
-                    for (int j = -2; j < 3; j++)
+                    for (int j = -2; j < 2; j++)
                     {
                         var pos = new float3((10*h), 20 + (k*10), 10*j);
-                        var cube = _world.AddRigidBody(1, pos, float3.Zero, TeaPotHull);
-                        cube.Friction = 1.0f;
-                        cube.SetDrag(0.0f, 0.05f);
+                        RigidBody teapot = _world.AddRigidBody(1, pos, float3.Zero, TeaPotHull);
+                        teapot.Friction = 1.0f;
+                        teapot.SetDrag(0.0f, 0.05f);
+                        teapot.IsTrigger = false;
                         _numRB++;
                     }
                 }
@@ -348,12 +350,18 @@ namespace Examples.PhysicsTest
             box1.Restitution = 0.8f;
             box1.IsTrigger = true;
            
-            RigidBody sphere1 = _world.AddRigidBody(1, new float3(10, 20, 0), float3.Zero, MySphereCollider);
+            RigidBody sphere1 = _world.AddRigidBody(1, new float3(5, 30, 0), float3.Zero, MySphereCollider);
             sphere1.Friction = 0.5f;
             sphere1.Restitution = 0.8f;
             sphere1.IsTrigger = true;
+
+            RigidBody teapot = _world.AddRigidBody(1, new float3(0, 50, 0), float3.Zero, TeaPotHull);
+            teapot.Friction = 0.5f;
+            teapot.Restitution = 0.2f;
+            teapot.IsTrigger = true;
+
             
-            shapes = "BoxShape, SphereShape";
+            shapes = "BoxShape, SphereShape, ConvexHullshape";
         }
 
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Fusee.Engine
 {
-    public interface IEmptyShapeImp : ICollisionShapeImp
+    /*public interface IEmptyShapeImp : ICollisionShapeImp
     {
-    }
+    }*/
 }

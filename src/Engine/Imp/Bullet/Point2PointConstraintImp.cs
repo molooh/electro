@@ -10,7 +10,7 @@ namespace Fusee.Engine
     public class Point2PointConstraintImp : IPoint2PointConstraintImp
     {
         internal Point2PointConstraint _p2pci;
-
+        internal Translater Translater;
         
 
         public float3 PivotInA
@@ -22,9 +22,9 @@ namespace Fusee.Engine
             }
             set
             {
-                var pivoA = new Vector3(value.x, value.y, value.z);
-                var o = (Point2PointConstraintImp)_p2pci.UserObject;
-                o._p2pci.PivotInA = pivoA;
+                var pivoA = Translater.Float3ToBtVector3(value);
+                var o = (Point2PointConstraintImp)_p2pci.Userobject;
+                o._p2pci.SetPivotA(pivoA);
             }
         }
         public float3 PivotInB
@@ -36,22 +36,22 @@ namespace Fusee.Engine
             }
             set
             {
-                var pivoB = new Vector3(value.x, value.y, value.z);
-                var o = (Point2PointConstraintImp)_p2pci.UserObject;
-                o._p2pci.PivotInB = pivoB;
+                var pivoB = Translater.Float3ToBtVector3(value);
+                var o = (Point2PointConstraintImp)_p2pci.Userobject;
+                o._p2pci.SetPivotB(pivoB);
             }
             
         }
 
         public void UpdateRhs(float timeStep)
         {
-            var o = (Point2PointConstraintImp)_p2pci.UserObject;
+            var o = (Point2PointConstraintImp)_p2pci.Userobject;
             o._p2pci.UpdateRHS(timeStep);
         }
 
         public void SetParam(PointToPointFlags param, float value, int axis = -1)
         {
-            var o = (Point2PointConstraintImp)_p2pci.UserObject;
+            var o = (Point2PointConstraintImp)_p2pci.Userobject;
             ConstraintParam constraintParam;
             switch (param)
             {
@@ -77,27 +77,31 @@ namespace Fusee.Engine
         }
         public float GetParam(PointToPointFlags param, int axis = -1)
         {
-            int constraintParam;
+
+            var typedConstraint = _p2pci.GetParam(ConstraintParam.Cfm, axis);
             switch (param)
             {
                 case PointToPointFlags.PointToPointFlagsErp:
-                    constraintParam = 1;
+                    typedConstraint = _p2pci.GetParam(ConstraintParam.Erp, axis);
+                    //constraintParam = 1;
                     break;
                 case PointToPointFlags.PointToPointFlagsStopErp:
-                    constraintParam = 2;
+                    typedConstraint = _p2pci.GetParam(ConstraintParam.StopErp, axis);
+                    //constraintParam = 2;
                     break;
                 case PointToPointFlags.PointToPointFlagsCfm:
-                    constraintParam = 3;
+                    typedConstraint = _p2pci.GetParam(ConstraintParam.Cfm, axis);    
+                    //constraintParam = 3;
                     break;
                 case PointToPointFlags.PointToPointFlagsStopCfm:
-                    constraintParam = 4;
+                    typedConstraint = _p2pci.GetParam(ConstraintParam.StopCfm, axis);  
+                    //constraintParam = 4;
                     break;
                 default:
-                    constraintParam = 3;
+                    typedConstraint = _p2pci.GetParam(ConstraintParam.Cfm, axis);
                     break; 
             }
-            var retval = _p2pci.GetParam(constraintParam, axis);
-            return retval;
+            return typedConstraint;
         }
 
         public IRigidBodyImp RigidBodyA

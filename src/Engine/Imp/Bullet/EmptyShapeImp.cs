@@ -7,7 +7,7 @@ using BulletSharp;
 
 namespace Fusee.Engine
 {
-    public class EmptyShapeImp : CollisonShapeImp, IEmptyShapeImp
+    /*public class EmptyShapeImp : CollisonShapeImp, IEmptyShapeImp
     {
         internal EmptyShape BtEmptyShape;
         //Inherited
@@ -32,5 +32,5 @@ namespace Fusee.Engine
             set { _userObject = value; }
         }
 
-    }
+    }*/
 }

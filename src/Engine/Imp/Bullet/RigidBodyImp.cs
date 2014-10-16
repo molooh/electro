@@ -70,7 +70,7 @@ namespace Fusee.Engine
             {
                 var o = (RigidBodyImp)BtRigidBody.UserObject;
                 Matrix wt = Translater.Float4X4ToBtMatrix(value);
-                o.BtRigidBody.MotionState.WorldTransform = wt;
+                o.BtRigidBody.MotionState.setWorldTransform(wt);
             }
         }
 
@@ -348,7 +348,9 @@ namespace Fusee.Engine
                         btComp.UserObject = comp;
                         return comp;
                     default:
-                        return new EmptyShapeImp();
+                        Console.WriteLine("No collision shape available");//new EmptyShapeImp());
+                        return null;
+                        break;
                 }
             }
             set
@@ -402,19 +404,21 @@ namespace Fusee.Engine
                         var compShape = (CompoundShapeImp)value;
                         btColShape = new CompoundShape();
                         break;
-                    case "Fusee.Engine.EmptyShapeImp":
+                    /*case "Fusee.Engine.EmptyShapeImp":
                         btColShape = new EmptyShape();
-                        break;
+                        break;*/
                     //Meshes
                     case "Fusee.Engine.ConvexHullShapeImp":
                         var convHull = (ConvexHullShapeImp)value;
-                        var btPoints = new Vector3[convHull.GetNumPoints()];
+                       /* var btPoints = new Vector3[convHull.GetNumPoints()];
                         for (int i = 0; i < btPoints.Length; i++)
                         {
+                            convHull.GetNumPoints();
+
                             btPoints[i] = Translater.Float3ToBtVector3(convHull.GetScaledPoint(i));
-                        }
-                        convHull.GetUnscaledPoints();
-                        btColShape = new ConvexHullShape(btPoints);
+                        }*/
+                        //convHull.GetUnscaledPoints();
+                        btColShape = convHull.BtConvexHullShape;//new ConvexHullShape(btPoints);
                         break;
                     case "Fusee.Engine.StaticPlaneShapeImp":
                         var staticPlane = (StaticPlaneShapeImp)value;
@@ -430,7 +434,8 @@ namespace Fusee.Engine
                     //Default
                     default:
                         Debug.WriteLine("defaultImp");
-                        btColShape = new EmptyShape();
+                        //btColShape = new EmptyShape();
+                        return;
                         break;
                 }
 
@@ -450,7 +455,7 @@ namespace Fusee.Engine
             set
             {
                 _isTrigger = value;
-                BtRigidBody.CollisionFlags = value == true ? CollisionFlags.CustomMaterialCallback : CollisionFlags.None;
+                BtRigidBody.CollisionFlags = value == true ? CollisionFlags.CustomMaterialCallback : CollisionFlags.DisableSpuCollisionProcessing;
             }
         }
 

@@ -30,10 +30,10 @@ namespace Fusee.Engine
         public Matrix Float4X4ToBtMatrix(float4x4 float4X4)
         {
             var retval = new Matrix();
-            retval.set_Rows(0, new Vector4(float4X4.M11, float4X4.M12, float4X4.M13, float4X4.M14));
-            retval.set_Rows(1, new Vector4(float4X4.M21, float4X4.M22, float4X4.M23, float4X4.M24));
-            retval.set_Rows(2, new Vector4(float4X4.M31, float4X4.M32, float4X4.M33, float4X4.M34));
-            retval.set_Rows(3, new Vector4(float4X4.M41, float4X4.M42, float4X4.M43, float4X4.M44));
+            retval.Row1 = new Vector4(float4X4.M11, float4X4.M12, float4X4.M13, float4X4.M14);
+            retval.Row2 = new Vector4(float4X4.M21, float4X4.M22, float4X4.M23, float4X4.M24);
+            retval.Row3 = new Vector4(float4X4.M31, float4X4.M32, float4X4.M33, float4X4.M34);
+            retval.Row4 = new Vector4(float4X4.M41, float4X4.M42, float4X4.M43, float4X4.M44);
             return retval;
         }
 

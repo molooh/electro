@@ -54,13 +54,13 @@ namespace Fusee.Engine
             BtConvexHullShape.AddPoint(btPoint, true);
         }
 
-        public float3 GetScaledPoint(int index)
+        /*public float3 GetScaledPoint(int index)
         {
             var retval = Translater.BtVector3ToFloat3(BtConvexHullShape.GetScaledPoint(index));
             return retval;
-        }
+        }*/
 
-        public float3[] GetUnscaledPoints()
+        /*public float3[] GetUnscaledPoints()
         {
             var retval = new float3[BtConvexHullShape.NumPoints];
             var btPoints = BtConvexHullShape.UnscaledPoints;
@@ -69,7 +69,7 @@ namespace Fusee.Engine
                 retval[i] = Translater.BtVector3ToFloat3(btPoints[i]);
             }
             return retval;
-        }
+        }*/
 
         public int GetNumPoints()
         {

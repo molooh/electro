@@ -54,7 +54,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (ConeTwistConstraintImp) _cti.UserObject;
+                var o = (ConeTwistConstraintImp) _cti.Userobject;
                 o._cti.FixThresh = value;
             }
         }
@@ -76,11 +76,12 @@ namespace Fusee.Engine
             }
         }
 
-        public float3 GetPointForAngle(float fAngleInRadius, float fLength)
+        
+        /*public float3 GetPointForAngle(float fAngleInRadius, float fLength)
         {
-            var retval = Translater.BtVector3ToFloat3(_cti.GetPointForAngle(fAngleInRadius, fLength));
+            var retval = Translater.BtVector3ToFloat3(_cti.GetPointForAngle((fAngleInRadius, fLength));
             return retval;
-        }
+        }*/
 
         public bool IsPastSwingLimit
         {

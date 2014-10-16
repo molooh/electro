@@ -33,7 +33,7 @@ namespace Fusee.Engine
 
         void SetAxis(float3 axisInA);
 
-        float GetHingeAngle();
+        //float GetHingeAngle();
         float GetHingeAngle(float4x4 transA, float4x4 transB);
 
         void SetLimit(float low, float high, float softness = 0.9f, float biasFactor=0.3f, float relaxationFactor=1.0f);

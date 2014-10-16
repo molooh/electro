@@ -327,13 +327,16 @@ namespace Fusee.Engine
                         comp.CompoundShapeImp = (ICompoundShapeImp)shape;
                         shape.UserObject = comp;
                         return comp;
-                    case "Fusee.Engine.EmptyShape":
+                    /*case "Fusee.Engine.EmptyShape":
                         var empty = new EmptyShape();
                         empty.EmtyShapeImp = (IEmptyShapeImp)shape;
                         shape.UserObject = empty;
-                        return empty;
+                        return empty;*/
                     default:
-                        return new EmptyShape();
+                        var boxDefault = new BoxShape();
+                        boxDefault.BoxShapeImp = (IBoxShapeImp)shape;
+                        shape.UserObject = boxDefault;
+                        return boxDefault;
                 }
 
             }
@@ -382,17 +385,15 @@ namespace Fusee.Engine
                         var compShape = (CompoundShape)value;
                         o._iRigidBodyImp.CollisionShape = compShape.CompoundShapeImp;
                         break;
-                    case "Fusee.Engine.EmptyShape":
+                    /*case "Fusee.Engine.EmptyShape":
                         var empty = (EmptyShape)value;
                         o._iRigidBodyImp.CollisionShape = empty.EmtyShapeImp;
-                        break;
+                        break;*/
                        
                     //Default
                     default:
-                        //TODO: Exeption
-                        var defaultShape = new EmptyShape();
-                        Debug.WriteLine("default");
-                        //rbi = _dwi.AddRigidBody(mass, worldTransform, defaultShape.EmtyShapeImp, inertia);
+                        var boxDefault = (BoxShape)value;
+                        o._iRigidBodyImp.CollisionShape = boxDefault.BoxShapeImp;
                         break;
                 }
             }
@@ -416,12 +417,12 @@ namespace Fusee.Engine
 
         public void OnCollisionEnter(IRigidBodyImp rigidBodyImp)
         {
-
+            //Debug.WriteLine("OnCollisionEnter");
         }
 
         public void OnCollisionExit(object o)
         {
-
+            //Debug.WriteLine("OnCollisionExit");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Fusee.Engine
         internal SliderConstraint _sci;
         internal Translater Translater = new Translater();
 
-        public float3 AnchorInA
+        /*public float3 AnchorInA
         {
             get
             {
@@ -28,7 +28,7 @@ namespace Fusee.Engine
                 var retval = Translater.BtVector3ToFloat3(_sci.AnchorInB);
                 return retval;
             }
-        }
+        }*/
 
         public float AngularDepth
         {
@@ -38,11 +38,11 @@ namespace Fusee.Engine
                 return retval;
             }
         }
-        public float AngularPos
+        public float AngularPosition
         {
             get
             {
-                var retval = _sci.AngularPos;
+                var retval = _sci.AngularPosition;
                 return retval;
             }
         }
@@ -77,21 +77,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.DampingDirAngular = value;
             }
         }
-        public float DampingDirLin
+        public float DampingDirLinear
         {
             get
             {
-                var retval = _sci.DampingDirLin;
+                var retval = _sci.DampingDirLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.DampingDirLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.DampingDirLinear = value;
             }
         }
         public float DampingLimAngular
@@ -103,21 +103,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.DampingLimAngular = value;
             }
         }
-        public float DampingLimLin
+        public float DampingLimLinear
         {
             get
             {
-                var retval = _sci.DampingLimLin;
+                var retval = _sci.DampingLimLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
-                o._sci.DampingLimLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.DampingLimLinear = value;
             }
         }
         public float DampingOrthoAngular
@@ -129,21 +129,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.DampingOrthoAngular = value;
             }
         }
-        public float DampingOrthoLin
+        public float DampingOrthoLinear
         {
             get
             {
-                var retval = _sci.DampingOrthoLin;
+                var retval = _sci.DampingOrthoLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.DampingOrthoLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.DampingOrthoLinear = value;
             }
         }
 
@@ -164,11 +164,11 @@ namespace Fusee.Engine
             }
         }
 
-        public float LinDepth
+        public float LinearDepth
         {
             get
             {
-                var retval = _sci.LinDepth;
+                var retval = _sci.LinearDepth;
                 return retval;
             }
         }
@@ -190,21 +190,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.LowerAngularLimit = value;
             }
         }
-        public float LowerLinLimit
+        public float LowerLinearLimit
         {
             get
             {
-                var retval = _sci.LowerLinLimit;
+                var retval = _sci.LowerLinearLimit;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
-                o._sci.LowerLinLimit = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.LowerLinearLimit = value;
             }
         }
 
@@ -212,26 +212,26 @@ namespace Fusee.Engine
         {
             get
             {
-                var retval = _sci.MaxAngularMotorForce;
+                var retval = _sci.MaxAngMotorForce;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
-                o._sci.MaxAngularMotorForce = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.MaxAngMotorForce = value;
             }
         }
-        public float MaxLinMotorForce
+        public float MaxLinearMotorForce
         {
             get
             {
-                var retval = _sci.MaxLinMotorForce;
+                var retval = _sci.MaxLinearMotorForce;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.MaxLinMotorForce = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.MaxLinearMotorForce = value;
             }
         }
 
@@ -244,21 +244,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.PoweredAngularMotor = value;
             }
         }
-        public bool PoweredLinMotor
+        public bool PoweredLinearMotor
         {
             get
             {
-                var retval = _sci.PoweredLinMotor;
+                var retval = _sci.PoweredLinearMotor;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.PoweredLinMotor = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.PoweredLinearMotor = value;
             }
         }
 
@@ -271,21 +271,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.RestitutionDirAngular = value;
             }
         }
-        public float RestitutionDirLin
+        public float RestitutionDirLinear
         {
             get
             {
-                var retval = _sci.RestitutionDirLin;
+                var retval = _sci.RestitutionDirLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.RestitutionDirLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.RestitutionDirLinear = value;
             }
         }
         public float RestitutionLimAngular
@@ -297,21 +297,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.RestitutionLimAngular = value;
             }
         }
-        public float RestitutionLimLin
+        public float RestitutionLimLinear
         {
             get
             {
-                var retval = _sci.RestitutionLimLin;
+                var retval = _sci.RestitutionLimLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.RestitutionLimLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.RestitutionLimLinear = value;
             }
         }
         public float RestitutionOrthoAngular
@@ -323,27 +323,27 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.RestitutionOrthoAngular = value;
             }
         }
-        public float RestitutionOrthoLin
+        public float RestitutionOrthoLinear
         {
             get
             {
-                var retval = _sci.RestitutionOrthoLin;
+                var retval = _sci.RestitutionOrthoLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.RestitutionOrthoLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.RestitutionOrthoLinear = value;
             }
         }
 
         public void SetFrames(float4x4 frameA, float4x4 frameB)
         {
-            var o = (SliderConstraintImp) _sci.UserObject;
+            var o = (SliderConstraintImp)_sci.Userobject;
             o._sci.SetFrames(Translater.Float4X4ToBtMatrix(frameA), Translater.Float4X4ToBtMatrix(frameB));
         }
 
@@ -356,21 +356,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.SoftnessDirAngular = value;
             }
         }
-        public float SoftnessDirLin
+        public float SoftnessDirLinear
         {
             get
             {
-                var retval = _sci.SoftnessDirLin;
+                var retval = _sci.SoftnessDirLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.SoftnessDirLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.SoftnessDirLinear = value;
             }
         }
         public float SoftnessLimAngular
@@ -382,21 +382,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.SoftnessLimAngular = value;
             }
         }
-        public float SoftnessLimLin
+        public float SoftnessLimLinear
         {
             get
             {
-                var retval = _sci.SoftnessLimLin;
+                var retval = _sci.SoftnessLimLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.SoftnessLimLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.SoftnessLimLinear = value;
             }
         }
         public float SoftnessOrthoAngular
@@ -408,21 +408,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.SoftnessOrthoAngular = value;
             }
         }
-        public float SoftnessOrthoLin
+        public float SoftnessOrthoLinear
         {
             get
             {
-                var retval = _sci.SoftnessOrthoLin;
+                var retval = _sci.SoftnessOrthoLinear;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.SoftnessOrthoLin = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.SoftnessOrthoLinear = value;
             }
         }
 
@@ -434,11 +434,11 @@ namespace Fusee.Engine
                 return retval;
             }  
         }
-        public bool SolveLinLimit
+        public bool SolveLinearLimit
         {
             get
             {
-                var retval = _sci.SolveLinLimit;
+                var retval = _sci.SolveLinearLimit;
                 return retval;
             }
         }
@@ -452,21 +452,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.TargetAngularMotorVelocity = value;
             }
         }
-        public float TargetLinMotorVelocity
+        public float TargetLinearMotorVelocity
         {
             get
             {
-                var retval = _sci.TargetLinMotorVelocity;
+                var retval = _sci.TargetLinearMotorVelocity;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.TargetLinMotorVelocity = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.TargetLinearMotorVelocity = value;
             }
         }
 
@@ -474,9 +474,9 @@ namespace Fusee.Engine
         {
             _sci.TestAngularLimits();
         }
-        public void TestLinLimits()
+        public void TestLinearLimits()
         {
-            _sci.TestLinLimits();
+            _sci.TestLinearLimits();
         }
 
         public float UpperAngularLimit
@@ -488,21 +488,21 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp) _sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.UpperAngularLimit = value;
             }
         }
-        public float UpperLinLimit
+        public float UpperLinearLimit
         {
             get
             {
-                var retval = _sci.UpperLinLimit;
+                var retval = _sci.UpperLinearLimit;
                 return retval;
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
-                o._sci.UpperLinLimit = value;
+                var o = (SliderConstraintImp)_sci.Userobject;
+                o._sci.UpperLinearLimit = value;
             }
         }
         
@@ -515,7 +515,7 @@ namespace Fusee.Engine
             }
             set
             {
-                var o = (SliderConstraintImp)_sci.UserObject;
+                var o = (SliderConstraintImp)_sci.Userobject;
                 o._sci.UseFrameOffset = value;
             }
         }

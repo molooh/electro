@@ -10,7 +10,7 @@ namespace Fusee.Engine
     {
         internal ISliderConstraintImp _iSliderConstraintImp;
 
-        public float3 AnchorInA
+        /*public float3 AnchorInA
         {
             get
             {
@@ -25,7 +25,7 @@ namespace Fusee.Engine
                 var retval = _iSliderConstraintImp.AnchorInB;
                 return retval;
             }
-        }
+        }*/
 
         public float AngularDepth
         {
@@ -35,11 +35,11 @@ namespace Fusee.Engine
                 return retval;
             }
         }
-        public float AngularPos
+        public float AngularPosition
         {
             get
             {
-                var retval = _iSliderConstraintImp.AngularPos;
+                var retval = _iSliderConstraintImp.AngularPosition;
                 return retval;
             }
         }
@@ -78,17 +78,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.DampingDirAngular = value;
             }
         }
-        public float DampingDirLin
+        public float DampingDirLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.DampingDirLin;
+                var retval = _iSliderConstraintImp.DampingDirLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.DampingDirLin = value;
+                o._iSliderConstraintImp.DampingDirLinear = value;
             }
         }
         public float DampingLimAngular
@@ -104,17 +104,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.DampingLimAngular = value;
             }
         }
-        public float DampingLimLin
+        public float DampingLimLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.DampingLimLin;
+                var retval = _iSliderConstraintImp.DampingLimLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.DampingLimLin = value;
+                o._iSliderConstraintImp.DampingLimLinear = value;
             }
         }
         public float DampingOrthoAngular
@@ -130,17 +130,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.DampingOrthoAngular = value;
             }
         }
-        public float DampingOrthoLin
+        public float DampingOrthoLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.DampingOrthoLin;
+                var retval = _iSliderConstraintImp.DampingOrthoLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.DampingOrthoLin = value;
+                o._iSliderConstraintImp.DampingOrthoLinear = value;
             }
         }
 
@@ -161,11 +161,11 @@ namespace Fusee.Engine
             }
         }
 
-        public float LinDepth
+        public float LinearDepth
         {
             get
             {
-                var retval = _iSliderConstraintImp.LinDepth;
+                var retval = _iSliderConstraintImp.LinearDepth;
                 return retval;
             }
         }
@@ -191,17 +191,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.LowerAngularLimit = value;
             }
         }
-        public float LowerLinLimit
+        public float LowerLinearLimit
         {
             get
             {
-                var retval = _iSliderConstraintImp.LowerLinLimit;
+                var retval = _iSliderConstraintImp.LowerLinearLimit;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.LowerLinLimit = value;
+                o._iSliderConstraintImp.LowerLinearLimit = value;
             }
         }
 
@@ -218,17 +218,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.MaxAngularMotorForce = value;
             }
         }
-        public float MaxLinMotorForce
+        public float MaxLinearMotorForce
         {
             get
             {
-                var retval = _iSliderConstraintImp.MaxLinMotorForce;
+                var retval = _iSliderConstraintImp.MaxLinearMotorForce;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.MaxLinMotorForce = value;
+                o._iSliderConstraintImp.MaxLinearMotorForce = value;
             }
         }
 
@@ -245,17 +245,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.PoweredAngularMotor = value;
             }
         }
-        public bool PoweredLinMotor
+        public bool PoweredLinearMotor
         {
             get
             {
-                var retval = _iSliderConstraintImp.PoweredLinMotor;
+                var retval = _iSliderConstraintImp.PoweredLinearMotor;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.PoweredLinMotor = value;
+                o._iSliderConstraintImp.PoweredLinearMotor = value;
             }
         }
 
@@ -272,17 +272,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.RestitutionDirAngular = value;
             }
         }
-        public float RestitutionDirLin
+        public float RestitutionDirLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.RestitutionDirLin;
+                var retval = _iSliderConstraintImp.RestitutionDirLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.RestitutionDirLin = value;
+                o._iSliderConstraintImp.RestitutionDirLinear = value;
             }
         }
         public float RestitutionLimAngular
@@ -298,17 +298,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.RestitutionLimAngular = value;
             }
         }
-        public float RestitutionLimLin
+        public float RestitutionLimLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.RestitutionLimLin;
+                var retval = _iSliderConstraintImp.RestitutionLimLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.RestitutionLimLin = value;
+                o._iSliderConstraintImp.RestitutionLimLinear = value;
             }
         }
         public float RestitutionOrthoAngular
@@ -324,17 +324,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.RestitutionOrthoAngular = value;
             }
         }
-        public float RestitutionOrthoLin
+        public float RestitutionOrthoLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.RestitutionOrthoLin;
+                var retval = _iSliderConstraintImp.RestitutionOrthoLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.RestitutionOrthoLin = value;
+                o._iSliderConstraintImp.RestitutionOrthoLinear = value;
             }
         }
 
@@ -357,17 +357,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.SoftnessDirAngular = value;
             }
         }
-        public float SoftnessDirLin
+        public float SoftnessDirLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.SoftnessDirLin;
+                var retval = _iSliderConstraintImp.SoftnessDirLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.SoftnessDirLin = value;
+                o._iSliderConstraintImp.SoftnessDirLinear = value;
             }
         }
         public float SoftnessLimAngular
@@ -383,17 +383,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.SoftnessLimAngular = value;
             }
         }
-        public float SoftnessLimLin
+        public float SoftnessLimLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.SoftnessLimLin;
+                var retval = _iSliderConstraintImp.SoftnessLimLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.SoftnessLimLin = value;
+                o._iSliderConstraintImp.SoftnessLimLinear = value;
             }
         }
         public float SoftnessOrthoAngular
@@ -409,17 +409,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.SoftnessOrthoAngular = value;
             }
         }
-        public float SoftnessOrthoLin
+        public float SoftnessOrthoLinear
         {
             get
             {
-                var retval = _iSliderConstraintImp.SoftnessOrthoLin;
+                var retval = _iSliderConstraintImp.SoftnessOrthoLinear;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.SoftnessOrthoLin = value;
+                o._iSliderConstraintImp.SoftnessOrthoLinear = value;
             }
         }
 
@@ -431,11 +431,11 @@ namespace Fusee.Engine
                 return retval;
             }
         }
-        public bool SolveLinLimit
+        public bool SolveLinearLimit
         {
             get
             {
-                var retval = _iSliderConstraintImp.SolveLinLimit;
+                var retval = _iSliderConstraintImp.SolveLinearLimit;
                 return retval;
             }
         }
@@ -454,17 +454,17 @@ namespace Fusee.Engine
             }
         }
 
-        public float TargetLinMotorVelocity
+        public float TargetLinearMotorVelocity
         {
             get
             {
-                var retval = _iSliderConstraintImp.TargetLinMotorVelocity;
+                var retval = _iSliderConstraintImp.TargetLinearMotorVelocity;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint) _iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.TargetLinMotorVelocity = value;
+                o._iSliderConstraintImp.TargetLinearMotorVelocity = value;
             }
         }
 
@@ -472,9 +472,9 @@ namespace Fusee.Engine
         {
             _iSliderConstraintImp.TestAngularLimits();
         }
-        public void TestLinLimits()
+        public void TestLinearLimits()
         {
-            _iSliderConstraintImp.TestLinLimits();
+            _iSliderConstraintImp.TestLinearLimits();
         }
 
         public float UpperAngularLimit
@@ -490,17 +490,17 @@ namespace Fusee.Engine
                 o._iSliderConstraintImp.UpperAngularLimit = value;
             }
         }
-        public float UpperLinLimit
+        public float UpperLinearLimit
         {
             get
             {
-                var retval = _iSliderConstraintImp.UpperLinLimit;
+                var retval = _iSliderConstraintImp.UpperLinearLimit;
                 return retval;
             }
             set
             {
                 var o = (SliderConstraint)_iSliderConstraintImp.UserObject;
-                o._iSliderConstraintImp.UpperLinLimit = value;
+                o._iSliderConstraintImp.UpperLinearLimit = value;
             }
         }
        

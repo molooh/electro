@@ -6,6 +6,7 @@
     <Message Importance="High" Text="### BeforeBuildEvent $(TargetName): Copying necessary files ###" />
     <MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
     <Exec Command="cp -a $(OutputPath)../../*.dll $(OutputPath)" />
+    <Exec Command="cp -a $(SolutionDir)ExternalBinaries/Bullet/*.so* $(OutputPath)" />
     <Exec Command="cp -a $(SolutionDir)ExternalBinaries/SFML/*.so* $(OutputPath)" />
   </Target> 
   

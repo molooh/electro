@@ -71,11 +71,11 @@ namespace Fusee.Engine
             }
         }
 
-        public float3 GetPointForAngle(float fAngleInRadius, float fLength)
+        /*public float3 GetPointForAngle(float fAngleInRadius, float fLength)
         {
             var retval = _iCTConstraintImp.GetPointForAngle(fAngleInRadius, fLength);
             return retval;
-        }
+        }*/
 
         public bool IsPastSwingLimit
         {

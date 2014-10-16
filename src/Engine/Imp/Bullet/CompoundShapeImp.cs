@@ -84,18 +84,18 @@ namespace Fusee.Engine
             var btLocalTransform = Translater.Float4X4ToBtMatrix(localTransform);
             BtCompoundShape.AddChildShape(btLocalTransform, btChildShape);
         }
-        public void AddChildShape(float4x4 localTransform, IEmptyShapeImp shape)
+        /*public void AddChildShape(float4x4 localTransform, IEmptyShapeImp shape)
         {
             var btChildShape = new EmptyShape();
             var btLocalTransform = Translater.Float4X4ToBtMatrix(localTransform);
             BtCompoundShape.AddChildShape(btLocalTransform, btChildShape);
-        }
+        }*/
 
-        public void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia)
+        /*public void CalculatePrincipalAxisTransform(float[] masses, float4x4 principal, float3 inertia)
         {
             var btPrincipal = Translater.Float4X4ToBtMatrix(principal);
             var btInertia = Translater.Float3ToBtVector3(inertia);
             BtCompoundShape.CalculatePrincipalAxisTransform(masses, ref btPrincipal, out btInertia);
-        }
+        }*/
     }
 }

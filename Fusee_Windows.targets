@@ -4,6 +4,7 @@
   <Target Name="BeforeBuild" Condition=" '$(OS)' == 'Windows_NT' ">
     <ItemGroup>
       <DLLFiles Include="$(TargetDir)..\..\*.dll" />
+      <DLLFiles Include="$(SolutionDir)ExternalBinaries\Bullet\*.dll" />
       <SFMLFiles Include="$(SolutionDir)ExternalBinaries\SFML\*.dll" />
       <FONTFiles Include="$(SolutionDir)ExternalBinaries\SharpFont\*.dll" />
       <SCRIPTFiles Include="$(SolutionDir)ExternalBinaries\JSIL\Scripts\*.js" />
