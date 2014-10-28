@@ -4,7 +4,7 @@
   <Target Name="BeforeBuild" Condition=" '$(OS)' == 'Windows_NT' ">
     <ItemGroup>
       <DLLFiles Include="$(TargetDir)..\..\*.dll" />
-      <DLLFiles Include="$(SolutionDir)ExternalBinaries\Bullet\*.dll" />
+      <BULLETFiles Include="$(SolutionDir)ExternalBinaries\Bullet\*.dll" />
       <SFMLFiles Include="$(SolutionDir)ExternalBinaries\SFML\*.dll" />
       <FONTFiles Include="$(SolutionDir)ExternalBinaries\SharpFont\*.dll" />
       <SCRIPTFiles Include="$(SolutionDir)ExternalBinaries\JSIL\Scripts\*.js" />
@@ -12,6 +12,7 @@
 
     <Message Importance="High" Text="### BeforeBuildEvent $(TargetName): Copying necessary files ###" />
     <Copy SourceFiles="@(DLLFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BULLETFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(SFMLFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(FONTFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(SCRIPTFiles)" DestinationFolder="$(TargetDir)..\..\WebGL\Scripts" SkipUnchangedFiles="true" />
