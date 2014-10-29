@@ -204,7 +204,7 @@ namespace Examples.CubeAndTiles
             var aspectRatio = _exampleLevel.UseStereo3D ? _stereo3D.CalculateAspectRatio() : (Width / (float)Height);
 
             RC.Viewport(0, 0, Width, Height);
-            RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
+            RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 20, 10000);
 
             // Set Width and Height and do resize.
             _stereo3D.ScreenWidth = Width;
