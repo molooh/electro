@@ -24,6 +24,7 @@
     <Exec Command="cp -a -u $(OutputPath)../../WebGL/Scripts/*.* $(OutputPath)Web/Assets/Scripts" />
     <Exec Command="cp -a -u $(OutputPath)../../WebGL/Styles/*.* $(OutputPath)Web/Assets/Styles" />
     <Exec Command="cp -a -u $(OutputPath)../../WebAudio/*.* $(OutputPath)Web/Assets/Scripts" />
+	<Exec Command="cp -a -u $(OutputPath)../../WebPhysics/*.* $(OutputPath)Web/Assets/Scripts" />
     <Exec Command="rsync -a $(OutputPath)../../WebNet/*.* $(OutputPath)Web/Assets/Scripts" />
 
     <Message Importance="High" Text="### PostBuildEvent $(TargetName): Creating default HTML file ###" />

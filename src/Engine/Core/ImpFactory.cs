@@ -137,17 +137,6 @@ namespace Fusee.Engine
             return (IRenderCanvasImp) CreateIImp(RenderingImplementor, "CreateRenderCanvasImp").Invoke(null, null);
         }
 
-        /// <summary>
-        ///     Creates an instance of <see cref="IDynamicWorldImp" /> by reflection of PhysicsImplementor.
-        /// </summary>
-        /// <returns>
-        ///     An instance of <see cref="IDynamicWorldImp" />.
-        /// </returns>
-        [JSExternal]
-        public static IDynamicWorldImp CreateIDynamicWorldImp()
-        {
-            return (IDynamicWorldImp) CreateIImp(PhysicsImplementor, "CreateDynamicWorldImp").Invoke(null, null);
-        }
 
         /// <summary>
         ///     Creates an instance of <see cref="IRenderContextImp" /> by reflection of RenderingImplementor.
@@ -188,6 +177,18 @@ namespace Fusee.Engine
         public static IAudioImp CreateIAudioImp()
         {
             return (IAudioImp) CreateIImp(AudioImplementor, "CreateAudioImp").Invoke(null, null);
+        }
+
+        /// <summary>
+        ///     Creates an instance of <see cref="IDynamicWorldImp" /> by reflection of PhysicsImplementor.
+        /// </summary>
+        /// <returns>
+        ///     An instance of <see cref="IDynamicWorldImp" />.
+        /// </returns>
+        [JSExternal]
+        public static IDynamicWorldImp CreateIDynamicWorldImp()
+        {
+            return (IDynamicWorldImp)CreateIImp(PhysicsImplementor, "CreateDynamicWorldImp").Invoke(null, null);
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ var $WebGLImp = JSIL.DeclareAssembly("Fusee.Engine.Imp.WebGL");
 var $WebAudioImp = JSIL.GetAssembly("Fusee.Engine.Imp.WebAudio");
 var $WebNetImp = JSIL.GetAssembly("Fusee.Engine.Imp.WebNet");
 var $WebInputImp = JSIL.GetAssembly("Fusee.Engine.Imp.WebInput");
+var $WebPhysicsImp = JSIL.GetAssembly("Fusee.Engine.Imp.WebPhysics");
 
 var $fuseeCore = JSIL.GetAssembly("Fusee.Engine.Core");
 var $fuseeCommon = JSIL.GetAssembly("Fusee.Engine.Common");
@@ -2153,6 +2154,14 @@ JSIL.ImplementExternals("Fusee.Engine.ImpFactory", function($) {
         new JSIL.MethodSignature($fuseeCommon.TypeRef("Fusee.Engine.INetworkImp"), []),
         function ImpFactory_CreateINetworkImp() {
             return new $WebNetImp.Fusee.Engine.WebNetImp();
+        }
+    );
+
+    $.Method({ Static: true, Public: true }, "CreateIDynamicWorldImp",
+        new JSIL.MethodSignature($fuseeCommon.TypeRef("Fusee.Engine.IDynamicWorldImp"), []),
+        function ImpFactory_CreateIDynamicWorldImp() {
+            console.log("CreateIDynamicWorldImp  - from WebGL");
+            return new $WebPhysicsImp.Fusee.Engine.WebPhysicsImp();
         }
     );
 

@@ -27,6 +27,7 @@
       <WebGLScripts Include="$(TargetDir)..\..\WebGL\Scripts\*.*" />
       <WebGLStyles Include="$(TargetDir)..\..\WebGL\Styles\*.*" />
       <WebAudioScript Include="$(TargetDir)..\..\WebAudio\*.*" />
+	  <WebPhysicsScript Include="$(TargetDir)..\..\WebPhysics\*.*" />
       <WebNetScript Include="$(TargetDir)..\..\WebNet\*.*" />
       <WebInputScript Include="$(TargetDir)..\..\WebInput\*.*" />
       <WebXirkitScript Include="$(TargetDir)..\..\WebXirkit\*.*" />
@@ -44,6 +45,7 @@
     <Copy SourceFiles="@(WebGLScripts)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebGLStyles)" DestinationFolder="$(WebOutputDir)Assets\Styles" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebAudioScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
+	<Copy SourceFiles="@(WebPhysicsScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebNetScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebInputScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebXirkitScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
