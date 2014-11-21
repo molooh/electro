@@ -16,18 +16,40 @@ JSIL.DeclareNamespace("Fusee");
 JSIL.DeclareNamespace("Fusee.Engine");
 
 
+
 JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp", true, [], function ($interfaceBuilder) {
     $ = $interfaceBuilder;
 
-    // $.Field({ Static: false, Public: false }, "Gravity", $fuseeMath.Fusee.Math.float3.___Type___);
+    $.Field({ Static: false, Public: true}, "World", $.Object, null);
     $.Field({ Static: false, Public: true }, "Gravity", $fuseeMath.TypeRef("Fusee.Math.float3"), null);
+    
+
 
     $.Method({ Static: false, Public: true }, ".ctor",
         new JSIL.MethodSignature(null, []),
         function _ctor() {
-            console.log("WebPhysicsImp  - .ctor");
+            var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+            var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+            var overlappingPairCache = new Ammo.btDbvtBroadphase();
+            var solver = new Ammo.btSequentialImpulseConstraintSolver();
+            this.$WebPhysicsImp$World = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+            this.$WebPhysicsImp$World.setGravity(new Ammo.btVector3(0, -10, 0));
+        }
+    );
 
 
+
+    $.Method({ Static: false, Public: true }, "StepSimulation",
+        new JSIL.MethodSignature(null, [$.Single, $.Single, $.Single]),
+        function WebPhysicsImp_StepSimulation(timeSteps, maxSubSteps, fixedTimeSteps) {
+            this.$WebPhysicsImp$World.stepSimulation(timeSteps, maxSubSteps);
+        }
+    );
+
+    $.Method({ Static: false, Public: true }, "get_DynamicWorld",
+        new JSIL.MethodSignature($.Object, []),
+        function get_DynamicWorld() {
+            return this.$WebPhysicsImp$World$value;
         }
     );
     
@@ -48,7 +70,7 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp",
     $.Method({ Static: false, Public: true }, "Dispose",
         new JSIL.MethodSignature(null, []),
         function WebPhysicsImp_Dispose() {
-           // this.$WebPhysicsImp$Dispose();
+           //Not implemented
         }
     );
 
@@ -58,3 +80,4 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp",
 
     return function (newThisType) { $thisType = newThisType; };
 });
+
