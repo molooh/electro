@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="C4d, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\MAXON\CINEMA 4D R16\plugins\ManagedPlugIn\x64\C4d.dll</HintPath>
+      <HintPath>$(C4D_DIR)\plugins\ManagedPlugIn\x64\C4d.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Fusee.Math.Core">
@@ -56,7 +56,7 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
