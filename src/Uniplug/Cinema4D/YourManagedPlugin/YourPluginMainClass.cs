@@ -6,7 +6,7 @@ using C4d;
 using Fusee.Math;
 
 
-namespace YourManagedPlugin
+namespace GameAuthoring
 {
     /* Data describing your plugin
      *  1) Your plugin ID -  Remember do NOT EVER use the same ID in 2 different plugins, even for testing
