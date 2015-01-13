@@ -32,9 +32,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conversion", "..\..\Math\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuExport", "FuExport\FuExport.csproj", "{40A75274-D7A7-4DC6-AA77-BB45893EDDDF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{15FB4435-91C9-4CE5-84BF-0AD04DAE7A75}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example Plugins", "Example Plugins", "{15FB4435-91C9-4CE5-84BF-0AD04DAE7A75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAuthoring", "GameAuthoring\GameAuthoring.csproj", "{9E08676D-A35C-40F1-9F72-883B864D225E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{704C2980-2108-4BE8-9290-D659FD25E353} = {704C2980-2108-4BE8-9290-D659FD25E353}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{6EC14B97-C793-4EBB-9130-5163187A60B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAuthoringTools", "GameAuthoringTools\GameAuthoringTools.csproj", "{704C2980-2108-4BE8-9290-D659FD25E353}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +160,16 @@ Global
 		{9E08676D-A35C-40F1-9F72-883B864D225E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9E08676D-A35C-40F1-9F72-883B864D225E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9E08676D-A35C-40F1-9F72-883B864D225E}.Release|x64.ActiveCfg = Release|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Release|Any CPU.Build.0 = Release|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{704C2980-2108-4BE8-9290-D659FD25E353}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,5 +182,6 @@ Global
 		{9E08676D-A35C-40F1-9F72-883B864D225E} = {15FB4435-91C9-4CE5-84BF-0AD04DAE7A75}
 		{E95FA1C8-6491-4B4B-BBE1-EDA6B16B2C6A} = {D497D280-E234-45E5-BAB2-A0FA1D1A47BE}
 		{23BE5303-B821-4A19-9A9C-C498B3D1F0AD} = {D497D280-E234-45E5-BAB2-A0FA1D1A47BE}
+		{704C2980-2108-4BE8-9290-D659FD25E353} = {6EC14B97-C793-4EBB-9130-5163187A60B0}
 	EndGlobalSection
 EndGlobal
