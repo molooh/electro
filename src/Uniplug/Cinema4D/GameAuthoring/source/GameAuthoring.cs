@@ -9,29 +9,14 @@ using GameAuthoringTools;
 namespace GameAuthoring
 {
     // Plugin ID is final from maxon.
-    [C4d.ObjectPlugin(
+    [ObjectPlugin(
         1034424,
         Name = "GameAuthoringPlugin",
         IconFile = "YourLogoPattern.tif"
         )]
-
-    class FuseeGameAuthoring : ObjectDataM
+        
+    class FuseeGameAuthoring : TagData
     {
-        FuseeAuthoringTools tools;
-
-        public FuseeGameAuthoring() : base(false)
-        {
-            tools = new FuseeAuthoringTools();
-        }
-
-        public override bool Execute(BaseDocument doc)
-        {
-            // Add some functionality here.
-            Logger.Debug("GameAuthoring plugin is running.");
-
-            Logger.Debug(tools.RetrieveInformation());
-
-            return true;
-        }
+        
     }
 }

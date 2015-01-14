@@ -61,9 +61,10 @@
 #include "c4d_filterplugin.h"
 #include "operatingsystem.h"
 #include "c4d_basetag.h"
-#include "c4d_baseselect.h" //NEU
+#include "c4d_baseselect.h" // New
 #include "c4d_basebitmap.h"
 #include "c4d_nodedata.h"
+#include "c4d_tagdata.h" // New by Dominik
 #include "gvdynamic.h"
 #include "gvobject.h"
 #include "gvmath.h"
@@ -1156,6 +1157,9 @@ BaseMaterial *
 // "c4d_filterplugin.h"
 %include "c4d_filterplugin.h";
 
+//////////////////////////////////////////////////////////////////
+// "c4d_tagdata.h""
+%include "c4d_tagdata.h"
 
 //////////////////////////////////////////////////////////////////
 //added 23062011 by DS

@@ -36,7 +36,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C4d">
+    <Reference Include="C4d, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\C4d.dll</HintPath>
     </Reference>
     <Reference Include="GameAuthoringTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
