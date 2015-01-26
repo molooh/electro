@@ -65,6 +65,7 @@
 #include "c4d_basebitmap.h"
 #include "c4d_nodedata.h"
 #include "c4d_tagdata.h" // New by Dominik
+#include "c4d_tagplugin.h" // New by Dominik
 #include "gvdynamic.h"
 #include "gvobject.h"
 #include "gvmath.h"
@@ -1162,7 +1163,10 @@ BaseMaterial *
 %include "c4d_tagdata.h"
 
 //////////////////////////////////////////////////////////////////
-//added 23062011 by DS
+// "c4d_tagplugin.h"
+%include "c4d_tagplugin.h"
+
+//////////////////////////////////////////////////////////////////
 //%include "c4d_customdatatype.h";
 //%include "ge_prepass.h";
 

@@ -40,6 +40,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\C4d.dll</HintPath>
     </Reference>
+    <Reference Include="Fusee.Math.Conversion, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
+    </Reference>
+    <Reference Include="Fusee.Math.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Core.dll</HintPath>
+    </Reference>
     <Reference Include="GameAuthoringTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeGameAuthoring\GameAuthoringTools.dll</HintPath>

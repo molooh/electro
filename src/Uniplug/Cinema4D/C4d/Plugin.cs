@@ -79,8 +79,7 @@ namespace C4d
                 // Is it a "generic" plugin?
                 if (t.IsDefined(typeof(PluginAttribute), true))
                 {
-                    PluginAttribute attr =
-                        (PluginAttribute) Attribute.GetCustomAttribute(t, typeof (PluginAttribute), true);
+                    PluginAttribute attr = (PluginAttribute) Attribute.GetCustomAttribute(t, typeof (PluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [Plugin]");
 
                     MethodInfo miStart = t.GetMethod("Start", BindingFlags.Instance | BindingFlags.Public);
@@ -112,10 +111,8 @@ namespace C4d
                 // Or is it an attributed CommandPlugin ?
                 else if (t.IsDefined(typeof(CommandPluginAttribute), true))
                 {
-                    CommandPluginAttribute attr =
-                        (CommandPluginAttribute) Attribute.GetCustomAttribute(t, typeof (CommandPluginAttribute), true);
-                    Logger.Debug("  Class " + t.Name + " is attributed with [CommandPlugin(ID=" + attr.ID + ", Name=\"" +
-                                 attr.Name + "\")]");
+                    CommandPluginAttribute attr = (CommandPluginAttribute) Attribute.GetCustomAttribute(t, typeof (CommandPluginAttribute), true);
+                    Logger.Debug("  Class " + t.Name + " is attributed with [CommandPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
                     if (InheritsFrom(t, typeof(CommandData)))
                     {
@@ -151,8 +148,7 @@ namespace C4d
                 else if (t.IsDefined(typeof(ObjectPluginAttribute), true))
                 {
                     ObjectPluginAttribute attr = (ObjectPluginAttribute)Attribute.GetCustomAttribute(t, typeof(ObjectPluginAttribute), true);
-                    Logger.Debug("  Class " + t.Name + " is attributed with [ObjectPlugin(ID=" + attr.ID + ", Name=\"" +
-                                 attr.Name + "\")]");
+                    Logger.Debug("  Class " + t.Name + " is attributed with [ObjectPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
                     if (InheritsFrom(t, typeof(ObjectDataM)))
                     {
@@ -184,12 +180,8 @@ namespace C4d
                 // Or is it an attributed SceneSaverPlugin?
                 else if (t.IsDefined(typeof (SceneSaverPluginAttribute), true))
                 {
-                    SceneSaverPluginAttribute attr =
-                        (SceneSaverPluginAttribute)
-                            Attribute.GetCustomAttribute(t, typeof (SceneSaverPluginAttribute), true);
-                    Logger.Debug("  Class " + t.Name + " is attributed with [SceneSaverPlugin(ID=" + attr.ID +
-                                 ", Name=\"" +
-                                 attr.Name + "\")]");
+                    SceneSaverPluginAttribute attr = (SceneSaverPluginAttribute) Attribute.GetCustomAttribute(t, typeof (SceneSaverPluginAttribute), true);
+                    Logger.Debug("  Class " + t.Name + " is attributed with [SceneSaverPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
                     if (InheritsFrom(t, typeof (SceneSaverData)))
                     {
@@ -216,6 +208,39 @@ namespace C4d
                         Logger.Warn("  Class " + t.Name + " in " + fi.Name +
                                     " is attributed with [ObjectPlugin] but does not inherit from ObjectData");
                     }
+                }
+                else if (t.IsDefined(typeof(TagPluginAttribute), true))
+                {
+                    TagPluginAttribute attr = (TagPluginAttribute)Attribute.GetCustomAttribute(t, typeof(TagPluginAttribute), true);
+                    Logger.Debug("  Class " + t.Name + " is attributed with [TagPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
+
+                    if (InheritsFrom(t, typeof(TagData)))
+                    {
+                        // Register the object plugin
+                        string name;
+                        BaseBitmap bmp;
+                        GetPluginDescription(t, attr, out name, out bmp);
+
+                        ConstructorInfo ctor = t.GetConstructor(Type.EmptyTypes);
+                        if (ctor != null)
+                        {
+                            PluginAllocator pa = new PluginAllocator(ctor);
+                            NodeDataAllocator nda = pa.Allocate;
+                            _nodeAllocatorList.Add(nda);
+                            //C4dApi.RegisterTagPlugin(attr.ID, name, attr.Info, nda, "obase", bmp, 0);
+                            C4dApi.RegisterTagPlugin(attr.ID, name, C4dApi.TAG_VISIBLE, nda, "obase", bmp, 0);
+                        }
+                        else
+                        {
+                            Logger.Warn("Class " + t.Name + " in " + fi.Name + " is missing a parameterless constructor");
+                        }
+                    }
+                    else
+                    {
+                        Logger.Warn("  Class " + t.Name + " in " + fi.Name +
+                                    " is attributed with [TagPlugin] but does not inherit from TagData");
+                    }
+
                 }
 
             }
