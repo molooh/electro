@@ -10,7 +10,7 @@ using Fusee.Math;
 
 namespace GameAuthoring
 {
-    // Plugin ID is final from maxon.
+    // Plugin ID is final.
     [ TagPlugin(1034424,
         Name = "Fusee Asset Tag",
         IconFile = "icon.tif",
