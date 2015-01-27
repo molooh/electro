@@ -31,9 +31,14 @@ namespace GameAuthoring
 
         public override bool Init(GeListNode node)
         {
-            BaseTag tag = (BaseTag)node;
-
             Logger.Debug("From Init.");
+
+            // Call some info.
+            BaseTag tag = (BaseTag)node;
+            BaseObject bo = tag.GetObject();
+            string name = bo.GetName();
+
+            Logger.Debug("My name is: " + name);
 
             return true;
         }
