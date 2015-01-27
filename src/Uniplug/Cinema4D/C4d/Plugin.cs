@@ -216,7 +216,7 @@ namespace C4d
 
                     if (InheritsFrom(t, typeof(TagData)))
                     {
-                        // Register the object plugin
+                        // Register the tag plugin
                         string name;
                         BaseBitmap bmp;
                         GetPluginDescription(t, attr, out name, out bmp);
@@ -227,8 +227,20 @@ namespace C4d
                             PluginAllocator pa = new PluginAllocator(ctor);
                             NodeDataAllocator nda = pa.Allocate;
                             _nodeAllocatorList.Add(nda);
-                            //C4dApi.RegisterTagPlugin(attr.ID, name, attr.Info, nda, "obase", bmp, 0);
-                            C4dApi.RegisterTagPlugin(attr.ID, name, C4dApi.TAG_VISIBLE, nda, "obase", bmp, 0);
+
+                            int infoP;
+                            switch (attr.Info)
+                            {
+                                case TagInfoFlag.TAG_VISIBLE:
+                                    infoP = C4dApi.TAG_VISIBLE;
+                                    break;
+                                default:
+                                    infoP = C4dApi.TAG_VISIBLE;
+                                    break;
+                            }
+
+                            // Call to c4d api. This call hands over all the attributes from the plugin class.
+                            C4dApi.RegisterTagPlugin(attr.ID, attr.Name, infoP, nda, attr.Description, bmp, attr.Disklevel);
                         }
                         else
                         {
@@ -237,8 +249,7 @@ namespace C4d
                     }
                     else
                     {
-                        Logger.Warn("  Class " + t.Name + " in " + fi.Name +
-                                    " is attributed with [TagPlugin] but does not inherit from TagData");
+                        Logger.Warn("  Class " + t.Name + " in " + fi.Name + " is attributed with [TagPlugin] but does not inherit from TagData");
                     }
 
                 }
