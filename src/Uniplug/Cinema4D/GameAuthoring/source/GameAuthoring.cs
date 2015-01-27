@@ -24,6 +24,9 @@ namespace GameAuthoring
         FuseeAuthoringTools fat;
 
         public FuseeGameAuthoring() : base() {
+            fat = new FuseeAuthoringTools();
+            string s = fat.RetrieveInformation();
+            Logger.Debug(s);
         }
 
         public override bool Init(GeListNode node)

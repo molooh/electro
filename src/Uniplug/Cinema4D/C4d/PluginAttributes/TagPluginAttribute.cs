@@ -28,11 +28,29 @@ namespace C4d
         public string Description;
         public int Disklevel;
 
-        public TagPluginAttribute(int id) : base (id) { }
+        public TagPluginAttribute(int id) : base (id)
+        {
+            Name = "Plugin";
+            IconFile = "icon.tif";
+            Info = TagInfoFlag.TAG_VISIBLE;
+            Description = "tagplugin";
+            Disklevel = 0;
+        }
 
-        public TagPluginAttribute(int id, string name) : base(id, name) { }
+        public TagPluginAttribute(int id, string name) : base(id, name)
+        {
+            IconFile = "icon.tif";
+            Info = TagInfoFlag.TAG_VISIBLE;
+            Description = "tagplugin";
+            Disklevel = 0;
+        }
 
-        public TagPluginAttribute(int id, string name, string iconFile) : base(id, name, iconFile) { }
+        public TagPluginAttribute(int id, string name, string iconFile) : base(id, name, iconFile)
+        {
+            Info = TagInfoFlag.TAG_VISIBLE;
+            Description = "tagplugin";
+            Disklevel = 0;
+        }
 
         /// <summary>
         /// This is the constructor for the attribute.
