@@ -234,6 +234,18 @@ namespace C4d
                                 case TagInfoFlag.TAG_VISIBLE:
                                     infoP = C4dApi.TAG_VISIBLE;
                                     break;
+                                case TagInfoFlag.TAG_TEMPORARY:
+                                    infoP = C4dApi.TAG_TEMPORARY;
+                                    break;
+                                case TagInfoFlag.TAG_MODIFYOBJECT:
+                                    infoP = C4dApi.TAG_MODIFYOBJECT;
+                                    break;
+                                case TagInfoFlag.TAG_HIERARCHICAL:
+                                    infoP = C4dApi.TAG_HIERARCHICAL;
+                                    break;
+                                case TagInfoFlag.TAG_EXPRESSION:
+                                    infoP = C4dApi.TAG_EXPRESSION;
+                                    break;
                                 default:
                                     infoP = C4dApi.TAG_VISIBLE;
                                     break;

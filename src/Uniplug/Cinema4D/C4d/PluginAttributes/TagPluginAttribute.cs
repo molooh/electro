@@ -7,27 +7,24 @@ namespace C4d
 {
     public enum TagInfoFlag
     {
-        TAG_VISIBLE
+        TAG_VISIBLE,
+        TAG_TEMPORARY,
+        TAG_MODIFYOBJECT,
+        TAG_HIERARCHICAL,
+        TAG_EXPRESSION
     }
 
     [AttributeUsage(System.AttributeTargets.Class)]
     public class TagPluginAttribute : PluginBaseAttribute
     {
-        /*
-         * Parameters from C4D SDK for a tag plugin:
-            Int32 	id,
-            const String & 	str,
-            Int32 	info,
-            DataAllocator * 	g,
-            const String & 	description,
-            BaseBitmap * 	icon,
-            Int32 	disklevel 
-        */
-
         public TagInfoFlag Info;
         public string Description;
         public int Disklevel;
 
+        /// <summary>
+        /// This is the constructor for the attribute.
+        /// </summary>
+        /// <param name="id">Plugin ID</param>
         public TagPluginAttribute(int id) : base (id)
         {
             Name = "Plugin";
@@ -37,6 +34,11 @@ namespace C4d
             Disklevel = 0;
         }
 
+        /// <summary>
+        /// This is the constructor for the attribute.
+        /// </summary>
+        /// <param name="id">Plugin ID</param>
+        /// <param name="name">Plugin Name</param>
         public TagPluginAttribute(int id, string name) : base(id, name)
         {
             IconFile = "icon.tif";
@@ -45,6 +47,12 @@ namespace C4d
             Disklevel = 0;
         }
 
+        /// <summary>
+        /// This is the constructor for the attribute.
+        /// </summary>
+        /// <param name="id">Plugin ID</param>
+        /// <param name="name">Plugin Name</param>
+        /// <param name="iconFile">Plugin icon file</param>
         public TagPluginAttribute(int id, string name, string iconFile) : base(id, name, iconFile)
         {
             Info = TagInfoFlag.TAG_VISIBLE;
