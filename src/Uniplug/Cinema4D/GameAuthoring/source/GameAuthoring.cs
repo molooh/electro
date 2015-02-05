@@ -24,9 +24,11 @@ namespace GameAuthoring
         FuseeAuthoringTools fat;
 
         public FuseeGameAuthoring() : base() {
+            // Creating a connection to the logic behind.
             fat = new FuseeAuthoringTools();
-            string s = fat.RetrieveInformation();
-            Logger.Debug(s);
+            string fromLogic = fat.RetrieveInformation();
+            
+            Logger.Debug(fromLogic);
         }
 
         public override bool Init(GeListNode node)
@@ -59,10 +61,21 @@ namespace GameAuthoring
             return true;
         }
 
+        public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
+        {
+            int i = 0;
+            return base.Message(node, type, data);
+        }
+
         public override bool GetModifiedObjects(BaseTag tag, BaseDocument doc, SWIGTYPE_p_p_BaseObject op, SWIGTYPE_p_Bool pluginownedop, ref double4x4 op_mg, double lod, int flags, BaseThread thread) {
             Logger.Debug("From GetModifiedObjects()");
             return true;
         }
 
+        public override bool GetDDescription(GeListNode node, Description description, SWIGTYPE_p_DESCFLAGS_DESC flags)
+        {
+            int i = 1;
+            return base.GetDDescription(node, description, flags);
+        }
     }
 }

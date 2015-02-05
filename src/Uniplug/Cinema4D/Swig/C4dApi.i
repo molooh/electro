@@ -70,8 +70,8 @@
 #include "gvobject.h"
 #include "gvmath.h"
 #include "ObjectDataM.h"
-#include "c4d_customdatatype.h"//neu
-#include "customgui_inexclude.h"//neu
+#include "c4d_customdatatype.h" // New
+#include "customgui_inexclude.h" // New
 
 // POD (plain old datatype = no construcors or methods) version of C4D's Vector.
 // We need this type as return values for swig-generated C++ stubs. If we use
@@ -1160,11 +1160,11 @@ BaseMaterial *
 
 //////////////////////////////////////////////////////////////////
 // "c4d_tagdata.h""
-%include "c4d_tagdata.h"
+%include "c4d_tagdata.h";
 
 //////////////////////////////////////////////////////////////////
 // "c4d_tagplugin.h"
-%include "c4d_tagplugin.h"
+%include "c4d_tagplugin.h";
 
 //////////////////////////////////////////////////////////////////
 //%include "c4d_customdatatype.h";
