@@ -17,7 +17,6 @@ namespace GameAuthoring
         Info = C4d.TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
-
            
     class FuseeGameAuthoring : TagData
     {
@@ -33,21 +32,15 @@ namespace GameAuthoring
 
         public override bool Init(GeListNode node)
         {
-            Logger.Debug("From Init.");
-
-            // Call some info.
-            BaseTag tag = (BaseTag)node;
-            BaseObject bo = tag.GetObject();
-            string name = bo.GetName();
-
-            Logger.Debug("My name is: " + name);
+            Logger.Debug("From Init." + GetObjectName(node));
 
             return true;
         }
 
         public override EXECUTIONRESULT Execute(BaseTag tag, BaseDocument doc, BaseObject op, BaseThread bt, int priority, EXECUTIONFLAGS flags)
         {
-            Logger.Debug("From Execute()");
+            tag.GetData().GetBool((int)TGameAuthoring.POWER_SWITCH);
+
             return EXECUTIONRESULT.EXECUTIONRESULT_OK;
         }
 
@@ -76,6 +69,16 @@ namespace GameAuthoring
         {
             int i = 1;
             return base.GetDDescription(node, description, flags);
+        }
+
+
+        private String GetObjectName(GeListNode node)
+        {
+            // Call some info.
+            BaseTag tag = (BaseTag)node;
+            BaseObject bo = tag.GetObject();
+
+            return bo.GetName();;
         }
     }
 }

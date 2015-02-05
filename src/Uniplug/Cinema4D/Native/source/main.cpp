@@ -338,6 +338,16 @@ Bool PluginMessage(Int32 id, void *data)		// allows you to receive plugin messag
 {
 	switch (id)
 	{
+	case C4DPL_INIT_SYS:
+		if (!resource.Init())
+			return false;	// do not start plugin without resource.
+
+		return true;
+
+	case C4DMSG_PRIORITY:
+		SetPluginPriority(data, C4DPL_INIT_PRIORITY_PLUGINS)
+		return true;
+
 	case C4DPL_COMMANDLINEARGS:
 		{
 			C4DPL_CommandLineArgs *args = (C4DPL_CommandLineArgs*)data;

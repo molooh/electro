@@ -252,7 +252,7 @@ namespace C4d
                             }
 
                             // Call to c4d api. This call hands over all the attributes from the plugin class.
-                            C4dApi.RegisterTagPlugin(attr.ID, attr.Name, infoP, nda, attr.Description, bmp, attr.Disklevel);
+                            C4dApi.RegisterTagPlugin(attr.ID, name, infoP, nda, attr.Description, bmp, attr.Disklevel);
                         }
                         else
                         {
