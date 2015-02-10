@@ -17,35 +17,30 @@ namespace GameAuthoring
         Info = C4d.TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
-
            
     class FuseeGameAuthoring : TagData
     {
         FuseeAuthoringTools fat;
 
         public FuseeGameAuthoring() : base() {
+            // Creating a connection to the logic behind.
             fat = new FuseeAuthoringTools();
-            string s = fat.RetrieveInformation();
-            Logger.Debug(s);
+            string fromLogic = fat.RetrieveInformation();
+            
+            Logger.Debug(fromLogic);
         }
 
         public override bool Init(GeListNode node)
         {
-            Logger.Debug("From Init.");
-
-            // Call some info.
-            BaseTag tag = (BaseTag)node;
-            BaseObject bo = tag.GetObject();
-            string name = bo.GetName();
-
-            Logger.Debug("My name is: " + name);
+            Logger.Debug("From Init." + GetObjectName(node));
 
             return true;
         }
 
         public override EXECUTIONRESULT Execute(BaseTag tag, BaseDocument doc, BaseObject op, BaseThread bt, int priority, EXECUTIONFLAGS flags)
         {
-            Logger.Debug("From Execute()");
+            tag.GetData().GetBool((int)TGameAuthoring.POWER_SWITCH);
+
             return EXECUTIONRESULT.EXECUTIONRESULT_OK;
         }
 
@@ -59,10 +54,31 @@ namespace GameAuthoring
             return true;
         }
 
+        public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
+        {
+            int i = 0;
+            return base.Message(node, type, data);
+        }
+
         public override bool GetModifiedObjects(BaseTag tag, BaseDocument doc, SWIGTYPE_p_p_BaseObject op, SWIGTYPE_p_Bool pluginownedop, ref double4x4 op_mg, double lod, int flags, BaseThread thread) {
             Logger.Debug("From GetModifiedObjects()");
             return true;
         }
 
+        public override bool GetDDescription(GeListNode node, Description description, SWIGTYPE_p_DESCFLAGS_DESC flags)
+        {
+            int i = 1;
+            return base.GetDDescription(node, description, flags);
+        }
+
+
+        private String GetObjectName(GeListNode node)
+        {
+            // Call some info.
+            BaseTag tag = (BaseTag)node;
+            BaseObject bo = tag.GetObject();
+
+            return bo.GetName();;
+        }
     }
 }

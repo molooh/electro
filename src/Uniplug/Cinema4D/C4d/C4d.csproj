@@ -360,7 +360,6 @@
     <Compile Include="C4dApi\MarkMaterials.cs" />
     <Compile Include="C4dApi\Material.cs" />
     <Compile Include="C4dApi\MaterialDragAndDrop.cs" />
-    <Compile Include="C4dApi\MAXONCONVERTMODE.cs" />
     <Compile Include="C4dApi\MemoryFileStruct.cs" />
     <Compile Include="C4dApi\MessageFilter.cs" />
     <Compile Include="C4dApi\MESSAGERESULT.cs" />
