@@ -25,9 +25,15 @@ namespace GameAuthoring
         public FuseeGameAuthoring() : base() {
             // Creating a connection to the logic behind.
             fat = new FuseeAuthoringTools();
-            string fromLogic = fat.RetrieveInformation();
+            if (fat.CreateProject("Proj1", "C:/Users/dominik/Development/Proj1") != ToolState.ERROR)
+            {
+                Logger.Debug("Created new Project.");
+            }
+            else
+            {
+                Logger.Debug("ERROR creating new project!");
+            }
             
-            Logger.Debug(fromLogic);
         }
 
         public override bool Init(GeListNode node)

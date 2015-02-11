@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="fuProjectGen">
+      <HintPath>..\fuProjectGen\bin\Debug\fuProjectGen.dll</HintPath>
+    </Reference>
     <Reference Include="Fusee.Math.Conversion">
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
     </Reference>

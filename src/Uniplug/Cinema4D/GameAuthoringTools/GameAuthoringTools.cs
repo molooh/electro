@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using fuProjectGen;
 
 namespace GameAuthoringTools
 {
     /// <summary>
-    /// This enum is for returning better values in functions.
+    /// This enum is for returning more readable values in functions than just boolean.
     /// </summary>
     public enum ToolState {
         OK = 0,
@@ -22,9 +24,9 @@ namespace GameAuthoringTools
         Corrupt = 2
     }
 
+    // TODO: Can give out references to other tool classes?
     /// <summary>
-    /// The main part for the authoring tools. Registers modules and functionality.
-    /// Can give out references to other tool classes.
+    /// The main part for the authoring tools. Registers modules and functionality.    
     /// </summary>
     public class FuseeAuthoringTools
     {
@@ -38,17 +40,21 @@ namespace GameAuthoringTools
                 
         public FuseeAuthoringTools()
         {
-            fpManager = new FuseeProjectManager();
             ffManager = new FuseeFileManager();
             fcManager = new FuseeClassManager();
             fbManager = new FuseeBuildManager();
 
-            s = "This is a test from the fusee authoring tools set.";
+            s = "This is a test from the fusee authoring tool set.";
         }
-
-        public String RetrieveInformation()
+        
+        public ToolState CreateProject(String pName, String pPath)
         {
-            return this.s;
+            fpManager = new FuseeProjectManager(pName, pPath);
+
+            if(fpManager != null)
+                return ToolState.OK;
+
+            return ToolState.ERROR;
         }
 
         #region Getter and Setter
@@ -96,14 +102,18 @@ namespace GameAuthoringTools
     {
         String pathToProject;   // the root dir.
         ProjectState pstate;    // write state of the project.
+        ProjectGenerator pg;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FuseeProjectManager()
+        public FuseeProjectManager(String pName, String pPath)
         {
-            pathToProject = "";
+            pathToProject = pPath;
             pstate = ProjectState.Clean;
+
+            if (!Directory.Exists(pathToProject + "/" + pName))
+            pg = new ProjectGenerator(pName, pathToProject);
         }
 
         /// <summary>
@@ -116,6 +126,7 @@ namespace GameAuthoringTools
             // TODO: Check for allowed characters etc.
 
             // TODO: Create actual project. Duplicate engine.dlls etc.
+
 
             return ToolState.OK;
         }
