@@ -23,8 +23,9 @@ namespace fuProjectGen
 
         private static bool DuplicateName(string name)
         {
+            String pName = name;
             return (_engineSolution.FindAll(s => s.ToLower().Contains(name.ToLower() + ".csproj")).Count > 0) ||
-                   Directory.Exists("../src/Engine/Examples/" + name);
+                   Directory.Exists("projects/" + pName + "/" + name);
         }
 
         private static string GetValidGUID()
@@ -60,8 +61,10 @@ namespace fuProjectGen
         {
             var line = _engineSolution.IndexOf(search, start);
 
+            /*
             if (line == -1)
                 Error("Error while parsing Engine.sln!");
+            */
 
             return line;
         }
@@ -72,10 +75,10 @@ namespace fuProjectGen
 
             try
             {
-                if (File.Exists(@"../Engine.orig"))
+                if (File.Exists(@"Engine.orig"))
                 {
-                    File.Copy(@"../Engine.orig", @"../Engine.sln", true);
-                    File.Delete(@"../Engine.orig");
+                    File.Copy(@"Engine.orig", @"Engine.sln", true);
+                    File.Delete(@"Engine.orig");
 
                     action = "Engine.sln restored. " + action;
                 }
@@ -85,7 +88,7 @@ namespace fuProjectGen
                 msg += "\n\n" + e.Message;
             }
 
-            Environment.Exit(1);
+            //Environment.Exit(1);
         }
 
         public ProjectGenerator(String pName, String pPath)
@@ -115,10 +118,14 @@ namespace fuProjectGen
                 var projectName = (validName) ? GetProjectName() : pName;
 
                 if (!ValidChars(projectName))
-                    Error("No valid project name!");
+                    Error("No valid project name!");              
 
                 // get GUID for new project
                 var guid = GetValidGUID();
+
+                // check if project already exists
+                if (Directory.Exists(pPath + "/projects/" + projectName))
+                    return;                
 
                 // create project directories
                 Directory.CreateDirectory(pPath + "/projects/" + projectName);
