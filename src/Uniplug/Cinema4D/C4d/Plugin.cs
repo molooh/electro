@@ -79,7 +79,7 @@ namespace C4d
                 // Is it a "generic" plugin?
                 if (t.IsDefined(typeof(PluginAttribute), true))
                 {
-                    PluginAttribute attr = (PluginAttribute) Attribute.GetCustomAttribute(t, typeof (PluginAttribute), true);
+                    PluginAttribute attr = (PluginAttribute)Attribute.GetCustomAttribute(t, typeof(PluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [Plugin]");
 
                     MethodInfo miStart = t.GetMethod("Start", BindingFlags.Instance | BindingFlags.Public);
@@ -88,7 +88,7 @@ namespace C4d
                     MethodInfo miEnd = t.GetMethod("End", BindingFlags.Instance | BindingFlags.Public);
                     if (miStart == null)
                         Logger.Warn("Class " + t.Name + " in " + fi.Name + " seems suitable as a plugin but is missing the End() method");
-                        
+
                     if (miStart != null && miEnd != null)
                     {
                         // We have a class
@@ -111,7 +111,7 @@ namespace C4d
                 // Or is it an attributed CommandPlugin ?
                 else if (t.IsDefined(typeof(CommandPluginAttribute), true))
                 {
-                    CommandPluginAttribute attr = (CommandPluginAttribute) Attribute.GetCustomAttribute(t, typeof (CommandPluginAttribute), true);
+                    CommandPluginAttribute attr = (CommandPluginAttribute)Attribute.GetCustomAttribute(t, typeof(CommandPluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [CommandPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
                     if (InheritsFrom(t, typeof(CommandData)))
@@ -130,7 +130,7 @@ namespace C4d
                         ConstructorInfo ctor = t.GetConstructor(Type.EmptyTypes);
                         if (ctor != null)
                         {
-                            CommandData commandData = (CommandData) ctor.Invoke(null);
+                            CommandData commandData = (CommandData)ctor.Invoke(null);
                             C4dApi.RegisterCommandPlugin(attr.ID, name, 0, bmp, helpText, commandData);
                         }
                         else
@@ -143,7 +143,7 @@ namespace C4d
                         Logger.Warn("  Class " + t.Name + " in " + fi.Name +
                                     " is attributed with [CommandPlugin] but does not inherit from CommandData");
                     }
-                } 
+                }
                 // Or is it an attributed ObjectPlugin ?
                 else if (t.IsDefined(typeof(ObjectPluginAttribute), true))
                 {
@@ -178,12 +178,12 @@ namespace C4d
 
                 }
                 // Or is it an attributed SceneSaverPlugin?
-                else if (t.IsDefined(typeof (SceneSaverPluginAttribute), true))
+                else if (t.IsDefined(typeof(SceneSaverPluginAttribute), true))
                 {
-                    SceneSaverPluginAttribute attr = (SceneSaverPluginAttribute) Attribute.GetCustomAttribute(t, typeof (SceneSaverPluginAttribute), true);
+                    SceneSaverPluginAttribute attr = (SceneSaverPluginAttribute)Attribute.GetCustomAttribute(t, typeof(SceneSaverPluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [SceneSaverPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
-                    if (InheritsFrom(t, typeof (SceneSaverData)))
+                    if (InheritsFrom(t, typeof(SceneSaverData)))
                     {
                         // Register the object plugin
                         string name;
@@ -265,7 +265,8 @@ namespace C4d
                     }
 
                 }
-
+                else
+                    Logger.Info("Could not recognize dll type: " + t.ToString() + ".");
             }
         }
 

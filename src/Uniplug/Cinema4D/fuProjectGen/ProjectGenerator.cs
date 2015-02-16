@@ -95,6 +95,14 @@ namespace fuProjectGen
         {            
             try
             {
+                // get a valid project name
+                var validName = (pName.Length == 0) || (!ValidChars(pName));
+                var projectName = (validName) ? GetProjectName() : pName;
+
+                // check if project already exists
+                if (Directory.Exists(pPath + "/projects/" + projectName))
+                    return;  
+
                 String pathToSln = pPath + "/Engine.sln";
 
                 // pre-checks
@@ -113,19 +121,11 @@ namespace fuProjectGen
                 // open Engine.sln
                 _engineSolution = File.ReadAllLines(pathToSln).ToList();
 
-                // get a valid project name
-                var validName = (pName.Length == 0) || (!ValidChars(pName));
-                var projectName = (validName) ? GetProjectName() : pName;
-
                 if (!ValidChars(projectName))
                     Error("No valid project name!");              
 
                 // get GUID for new project
-                var guid = GetValidGUID();
-
-                // check if project already exists
-                if (Directory.Exists(pPath + "/projects/" + projectName))
-                    return;                
+                var guid = GetValidGUID();              
 
                 // create project directories
                 Directory.CreateDirectory(pPath + "/projects/" + projectName);

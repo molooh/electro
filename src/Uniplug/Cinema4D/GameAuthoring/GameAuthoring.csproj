@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>%24%28C4D_DIR%29\plugins\FuseeGameAuthoring\</OutputPath>
+    <OutputPath>..\..\..\..\..\Cinema 4D\plugins\FuseeGameAuthoring\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
