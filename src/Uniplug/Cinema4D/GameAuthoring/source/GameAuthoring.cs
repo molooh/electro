@@ -20,7 +20,9 @@ namespace GameAuthoring
            
     class FuseeGameAuthoring : TagData
     {
-        FuseeAuthoringTools fat;
+        // private
+        private FuseeAuthoringTools fat;
+        private EngineProject project;
 
         public FuseeGameAuthoring() : base() {
             // Creating a connection to the logic behind.
@@ -28,6 +30,10 @@ namespace GameAuthoring
             if (fat.CreateProject("Proj1", "C:/Users/dominik/Development/Proj1") != ToolState.ERROR)
             {
                 Logger.Debug("Created new Project.");
+
+                // "Caching" the project infos. Project is now opened. Can now work on it.
+                project = fat.ProjectManager.GetProject;
+
             }
             else
             {

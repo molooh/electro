@@ -8,6 +8,11 @@ using fuProjectGen;
 
 namespace GameAuthoringTools
 {
+    public static class GlobalValues
+    {
+        public static const String PROJECTFOLDER = "/projects/";
+    }
+
     /// <summary>
     /// This enum is for returning more readable values in functions than just boolean.
     /// </summary>
@@ -19,9 +24,19 @@ namespace GameAuthoringTools
 
     public enum ProjectState
     {
-        Clean = 0,
+        Clean = 0, // means open, too
         Dirty = 1,
-        Corrupt = 2
+        Corrupt = 2,
+        Closed = 3
+    }
+
+    public struct EngineProject
+    {
+        public String sysPath;
+        public String projPath;
+        public String csproj;
+        public String csprojPath;
+        public ProjectState projectState;
     }
 
     // TODO: Can give out references to other tool classes?
@@ -30,30 +45,33 @@ namespace GameAuthoringTools
     /// </summary>
     public class FuseeAuthoringTools
     {
-        private String s;
-
         // Tool Classes for communication
         private FuseeProjectManager fpManager;
         private FuseeFileManager ffManager;
         private FuseeClassManager fcManager;
         private FuseeBuildManager fbManager;
-                
+        
+        // public
+        public EngineProject project;
+
         public FuseeAuthoringTools()
         {
             ffManager = new FuseeFileManager();
-            fcManager = new FuseeClassManager();
-            fbManager = new FuseeBuildManager();
-
-            s = "This is a test from the fusee authoring tool set.";
         }
         
+        /// <summary>
+        /// Creates a project from a name and a path in a fusee binary engine "clone".
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="pPath"></param>
+        /// <returns></returns>
         public ToolState CreateProject(String pName, String pPath)
         {
             fpManager = new FuseeProjectManager(pName, pPath);
 
-            if(fpManager != null)
+            if (fpManager.State == ProjectState.Clean)
                 return ToolState.OK;
-
+                        
             return ToolState.ERROR;
         }
 
@@ -100,9 +118,11 @@ namespace GameAuthoringTools
     /// </summary>
     public class FuseeProjectManager
     {
-        String pathToProject;   // the root dir.
-        ProjectState pstate;    // write state of the project.
-        ProjectGenerator pg;
+        private String pathToProject;   // the root dir.
+        private ProjectState pstate;    // write state of the project.
+        private ProjectGenerator pg;
+        private String projectName;
+        private EngineProject project;
 
         /// <summary>
         /// Constructor.
@@ -112,8 +132,25 @@ namespace GameAuthoringTools
             pathToProject = pPath;
             pstate = ProjectState.Clean;
 
-            if (!Directory.Exists(pathToProject + "/" + pName))
-            pg = new ProjectGenerator(pName, pathToProject);
+            if (!(CreateProject(pName) == ToolState.OK))
+            {
+                pstate = ProjectState.Corrupt;
+            }
+                            
+
+            if (State == ProjectState.Clean)
+            {
+                projectName = pName;
+                project = new EngineProject
+                {
+                    sysPath = PathToProject,
+                    projPath = GlobalValues.PROJECTFOLDER + GenerateCsProjName(ProjectName),
+                    csproj = ProjectName,
+                    csprojPath = PathToProject + GlobalValues.PROJECTFOLDER + GenerateCsProjName(ProjectName),
+                    projectState = ProjectState.Clean
+                };
+            }
+
         }
 
         /// <summary>
@@ -121,12 +158,15 @@ namespace GameAuthoringTools
         /// </summary>
         /// <param name="pname"></param>
         /// <returns>ToolState enum state value</returns>
-        public ToolState CreateProject(String pname)
+        public ToolState CreateProject(String pName)
         {
-            // TODO: Check for allowed characters etc.
+            pstate = ProjectState.Dirty;
+            pg = new ProjectGenerator(pName, pathToProject);
 
-            // TODO: Create actual project. Duplicate engine.dlls etc.
+            if(pg == null)
+                return ToolState.ERROR;
 
+            pstate = ProjectState.Clean;
 
             return ToolState.OK;
         }
@@ -141,7 +181,7 @@ namespace GameAuthoringTools
         {
             pathToProject = "";
 
-            // TODO: Assign path value etc. Do some useful stuff. Can keep a pointer to the open project so it's faster to save etc?
+            // TODO: Assign a new EngineProject Struct with all the paths so it is opened. Rebuild other paths etc.
 
             return ToolState.OK;
         }
@@ -163,6 +203,53 @@ namespace GameAuthoringTools
             return ToolState.OK;
         }
 
+        private String GenerateCsProjName(String pName)
+        {
+            return pName + ".csproj";
+        }
+
+        #region GetterAndSetter
+
+        public String PathToProject
+        {
+            get { return pathToProject; }
+        }
+
+        public String ProjectName
+        {
+            get { return projectName; }
+        }
+
+        public ProjectState State
+        {
+            get { return pstate; }
+        }
+
+        public EngineProject GetProject
+        {
+            get { return project; }
+        }
+        #endregion
+
+    }
+
+    /// <summary>
+    /// Will be used to create various files if needed.
+    /// </summary>
+    public class FuseeFileManager
+    {
+        FuseeClassManager fcManager;
+
+        public FuseeFileManager()
+        {
+            fcManager = new FuseeClassManager();
+        }
+
+        public ToolState CreateCSharpClass(String fname, String fpath)
+        {
+            return ToolState.OK;
+        }
+
     }
 
     /// <summary>
@@ -170,6 +257,10 @@ namespace GameAuthoringTools
     /// </summary>
     public class FuseeClassManager
     {
+        public FuseeClassManager()
+        {
+            
+        }
 
         public ToolState CreateNewClass(String cname)
         {
@@ -191,23 +282,11 @@ namespace GameAuthoringTools
     }
 
     /// <summary>
-    /// Will be used to create various files if needed.
-    /// </summary>
-    public class FuseeFileManager
-    {
-        public ToolState CreateCSharpClass(String fname, String fpath)
-        {
-            return ToolState.OK;
-        }
-
-    }
-
-    /// <summary>
     /// Will be used to call the compiler etc. from IDE software. Mostly 3D modeling software - to run a project.
     /// </summary>
     public class FuseeBuildManager
     {
-
+        // This is for the builds.
     }
 
 }
