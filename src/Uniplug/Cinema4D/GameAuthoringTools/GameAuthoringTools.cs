@@ -10,7 +10,7 @@ namespace GameAuthoringTools
 {
     public static class GlobalValues
     {
-        public static const String PROJECTFOLDER = "/projects/";
+        public const String PROJECTFOLDER = "/projects/";
     }
 
     /// <summary>
@@ -48,8 +48,6 @@ namespace GameAuthoringTools
         // Tool Classes for communication
         private FuseeProjectManager fpManager;
         private FuseeFileManager ffManager;
-        private FuseeClassManager fcManager;
-        private FuseeBuildManager fbManager;
         
         // public
         public EngineProject project;
@@ -76,7 +74,6 @@ namespace GameAuthoringTools
         }
 
         #region Getter and Setter
-
         public FuseeProjectManager ProjectManager
         {
             get
@@ -92,23 +89,6 @@ namespace GameAuthoringTools
                 return ffManager;
             }
         }
-
-        public FuseeClassManager ClassManager
-        {
-            get
-            {
-                return fcManager;
-            }
-        }
-
-        public FuseeBuildManager BuildManager
-        {
-            get
-            {
-                return fbManager;
-            }
-        }
-
         #endregion
 
     }
