@@ -27,12 +27,20 @@ namespace GameAuthoring
         public FuseeGameAuthoring() : base() {
             // Creating a connection to the logic behind.
             fat = new FuseeAuthoringTools();
-            if (fat.CreateProject("Proj1", "C:/Users/dominik/Development/Proj1") != ToolState.ERROR)
+
+            String projectName = "Proj2";
+            String fuseeBinProjPath = "C:/Users/dominik/Development/Proj1";
+
+            if (fat.CreateProject(projectName, fuseeBinProjPath) != ToolState.ERROR)
             {
                 Logger.Debug("Created new Project.");
 
-                // "Caching" the project infos. Project is now opened. Can now work on it.
-                project = fat.ProjectManager.GetProject;
+                fat.FileManager.CreateCSharpClass("testclass", fat.ProjectManager.GetProject.nameofCSPROJ, fat.ProjectManager.GetProject.pathToCSPROJ);
+                if (fat.ProjectManager.GetProject.projectState != ProjectState.Clean)
+                {
+                    Logger.Debug("Error creating new file for fat. - Aborting.");
+                    return;
+                }
 
             }
             else

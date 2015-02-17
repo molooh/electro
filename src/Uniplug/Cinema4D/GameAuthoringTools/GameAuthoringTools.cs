@@ -10,7 +10,8 @@ namespace GameAuthoringTools
 {
     public static class GlobalValues
     {
-        public const String PROJECTFOLDER = "/projects/";
+        public const String PROJECTFOLDER = "/projects";
+        public const String COMPILEINCLUDESTART = "     <Compile Include=\"Main.cs\" />";
     }
 
     /// <summary>
@@ -30,12 +31,16 @@ namespace GameAuthoringTools
         Closed = 3
     }
 
+    /// <summary>
+    /// A container for some information about a project.
+    /// Keeps the project state and also the paths.
+    /// </summary>
     public struct EngineProject
     {
-        public String sysPath;
-        public String projPath;
-        public String csproj;
-        public String csprojPath;
+        public String sysPath; // path to solution dir
+        public String projPath; // sysPath + /projects/pName/
+        public String nameofCSPROJ; // name.csproj
+        public String pathToCSPROJ; // path to csproj.
         public ProjectState projectState;
     }
 
@@ -54,7 +59,7 @@ namespace GameAuthoringTools
 
         public FuseeAuthoringTools()
         {
-            ffManager = new FuseeFileManager();
+            ffManager = new FuseeFileManager(this);
         }
         
         /// <summary>
@@ -68,9 +73,18 @@ namespace GameAuthoringTools
             fpManager = new FuseeProjectManager(pName, pPath);
 
             if (fpManager.State == ProjectState.Clean)
+            {
+                project = fpManager.GetProject;
                 return ToolState.OK;
+            }
+                
                         
             return ToolState.ERROR;
+        }
+
+        public void UpdateProject()
+        {
+            project = fpManager.GetProject;
         }
 
         #region Getter and Setter
@@ -124,9 +138,9 @@ namespace GameAuthoringTools
                 project = new EngineProject
                 {
                     sysPath = PathToProject,
-                    projPath = GlobalValues.PROJECTFOLDER + GenerateCsProjName(ProjectName),
-                    csproj = ProjectName,
-                    csprojPath = PathToProject + GlobalValues.PROJECTFOLDER + GenerateCsProjName(ProjectName),
+                    projPath = GlobalValues.PROJECTFOLDER + "/" + pName,
+                    nameofCSPROJ = ProjectName,
+                    pathToCSPROJ = PathToProject + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + GenerateCsProjName(ProjectName),
                     projectState = ProjectState.Clean
                 };
             }
@@ -218,15 +232,105 @@ namespace GameAuthoringTools
     /// </summary>
     public class FuseeFileManager
     {
-        FuseeClassManager fcManager;
+        private FuseeAuthoringTools fat;
+        private FuseeClassManager fcManager;
+        private List<String> csprojfile = null;
+        private String csProjPath = "";
 
-        public FuseeFileManager()
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public FuseeFileManager(FuseeAuthoringTools f)
         {
+            fat = f;
             fcManager = new FuseeClassManager();
         }
 
-        public ToolState CreateCSharpClass(String fname, String fpath)
+        /// <summary>
+        /// Creates a c# Class and inserts it to the project csproj file.
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="pName"></param>
+        /// <param name="projectPath"></param>
+        /// <returns></returns>
+        public ToolState CreateCSharpClass(String className, String pName, String projectPath)
         {
+            fat.project.projectState = ProjectState.Dirty;
+            csProjPath = fat.project.pathToCSPROJ;
+
+            // TODO: Call class Manager here to create a real c# class file and THEN insert it to the project.
+            pName = pName + ".cs"; // TODO!!!! change ending dependend on filetype.
+            if (!true)
+                return ToolState.ERROR;
+
+            if (LoadCSProj(pName, projectPath) == ToolState.ERROR)
+                return ToolState.ERROR;
+
+            if (InsertFileToProject(className) == ToolState.ERROR)
+                return ToolState.ERROR;
+
+            if (WriteCSProj() == ToolState.ERROR)
+                return ToolState.ERROR;
+
+            fat.project.projectState = ProjectState.Clean;
+
+            return ToolState.OK;
+        }
+
+        /// <summary>
+        /// Loads a csproj file.
+        /// </summary>
+        /// <param name="fName"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private ToolState LoadCSProj(String fName, String path)
+        {
+            if (!File.Exists(path))
+                return ToolState.ERROR;
+
+            File.Copy(path, fat.project.sysPath + fat.project.projPath + "/" + fName + ".orig", true);
+
+            if (!File.Exists(fat.project.sysPath + fat.project.projPath + "/" + fName + ".orig"))
+                return ToolState.ERROR;
+
+            csprojfile = File.ReadAllLines(csProjPath).ToList();
+
+            // is now loaded in the memory. Can handle it now.
+
+            return ToolState.OK;
+        }
+
+        /// <summary>
+        /// Writes changes to a csproj file.
+        /// </summary>
+        /// <returns></returns>
+        private ToolState WriteCSProj()
+        {
+            File.WriteAllLines(csProjPath, csprojfile);
+
+            return ToolState.OK;
+        }
+
+        /// <summary>
+        /// Inserts a class to a csproj file.
+        /// </summary>
+        /// <param name="fName"></param>
+        /// <returns></returns>
+        private ToolState InsertFileToProject(String fName)
+        {
+            // TODO: Have to really insert it. This is handling only.
+
+            // Search correct line etc.
+            int line = csprojfile.IndexOf("    <Compile Include=\"Main.cs\" />");
+
+            if (line == -1)
+                return ToolState.ERROR;
+
+            string content = "    <Compile Include=\"" + fName + "\"/>"; // <Compile Include="file.cs"/>
+            csprojfile.Insert(++line, content);
+
+            // Now call WriteCSProj().
+
             return ToolState.OK;
         }
 
