@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using C4d;
-using GameAuthoringTools;
 
 using Fusee.Math;
+using FuseeAuthoringTools;
+using FuseeAuthoringTools.source;
 
 
 namespace GameAuthoring
@@ -21,12 +22,11 @@ namespace GameAuthoring
     class FuseeGameAuthoring : TagData
     {
         // private
-        private FuseeAuthoringTools fat;
-        private EngineProject project;
+        private FuseeAuthoringToolsC4D fat;
 
         public FuseeGameAuthoring() : base() {
             // Creating a connection to the logic behind.
-            fat = new FuseeAuthoringTools();
+            fat = new FuseeAuthoringToolsC4D();
 
             String projectName = "Proj2";
             String fuseeBinProjPath = "C:/Users/dominik/Development/Proj1";

@@ -7,8 +7,8 @@
     <ProjectGuid>{704C2980-2108-4BE8-9290-D659FD25E353}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameAuthoringTools</RootNamespace>
-    <AssemblyName>GameAuthoringTools</AssemblyName>
+    <RootNamespace>FuseeAuthoringTools</RootNamespace>
+    <AssemblyName>FuseeAuthoringTools</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(C4D_DIR)\plugins\FuseeGameAuthoring\</OutputPath>
+    <OutputPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,7 +51,16 @@
   <ItemGroup>
     <Compile Include="GameAuthoringTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="source\FuseeAuthoringToolsC4D.cs" />
+    <Compile Include="source\FuseeBuildManager.cs" />
+    <Compile Include="source\FuseeClassManager.cs" />
+    <Compile Include="source\FuseeFileManager.cs" />
+    <Compile Include="source\FuseeProjectManager.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

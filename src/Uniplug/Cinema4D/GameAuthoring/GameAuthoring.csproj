@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Cinema 4D\plugins\FuseeGameAuthoring\</OutputPath>
+    <OutputPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,9 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Core.dll</HintPath>
     </Reference>
-    <Reference Include="GameAuthoringTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FuseeAuthoringTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeGameAuthoring\GameAuthoringTools.dll</HintPath>
+      <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\FuseeAuthoringTools.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -82,6 +82,12 @@
   <ItemGroup>
     <Folder Include="res\dialogs\" />
     <Folder Include="res\strings_us\dialogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameAuthoringTools\GameAuthoringTools.csproj">
+      <Project>{704C2980-2108-4BE8-9290-D659FD25E353}</Project>
+      <Name>GameAuthoringTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
