@@ -7,6 +7,7 @@
       <BULLETFiles Include="$(SolutionDir)ExternalBinaries\Bullet\*.dll" />
       <SFMLFiles Include="$(SolutionDir)ExternalBinaries\SFML\*.dll" />
       <FONTFiles Include="$(SolutionDir)ExternalBinaries\SharpFont\*.dll" />
+      <AForgeFiles Include="$(SolutionDir)ExternalBinaries\AForge\*.dll"/>
       <SCRIPTFiles Include="$(SolutionDir)ExternalBinaries\JSIL\Scripts\*.js" />
     </ItemGroup>
 
@@ -15,6 +16,7 @@
     <Copy SourceFiles="@(BULLETFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(SFMLFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(FONTFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(AForgeFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(SCRIPTFiles)" DestinationFolder="$(TargetDir)..\..\WebGL\Scripts" SkipUnchangedFiles="true" />
   </Target>
   
@@ -31,6 +33,7 @@
       <WebNetScript Include="$(TargetDir)..\..\WebNet\*.*" />
       <WebInputScript Include="$(TargetDir)..\..\WebInput\*.*" />
       <WebXirkitScript Include="$(TargetDir)..\..\WebXirkit\*.*" />
+      <WebSimpleSceneScript Include="$(TargetDir)..\..\WebSimpleScene\*.*" />
     </ItemGroup>
 
     <MakeDir Directories="$(WebOutputDir)" Condition="!Exists('$(WebOutputDir)')" />
@@ -49,6 +52,7 @@
     <Copy SourceFiles="@(WebNetScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebInputScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(WebXirkitScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(WebSimpleSceneScript)" DestinationFolder="$(WebOutputDir)Assets\Scripts" SkipUnchangedFiles="true" />
     
     <!-- Escaping necessary because of quotation marks! -->
     <Message Importance="High" Text="### PostBuildEvent $(TargetName): Creating default HTML file ###" />

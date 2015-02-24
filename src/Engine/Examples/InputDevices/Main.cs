@@ -1,5 +1,5 @@
+using System.Diagnostics;
 using Fusee.Engine;
-using Fusee.SceneManagement;
 using Fusee.Math;
 
 namespace Examples.InputDevices
@@ -30,6 +30,7 @@ namespace Examples.InputDevices
             if (Input.Instance.CountDevices() != 0)
             {
                 y = 50*Input.Instance.GetDevice(0).GetAxis(InputDevice.Axis.Vertical);
+                System.Diagnostics.Debug.WriteLine(Input.Instance.GetDevice(0).GetAxis(InputDevice.Axis.Horizontal));
                 z = 50*Input.Instance.GetDevice(0).GetAxis(InputDevice.Axis.Z);
                 x = 50*Input.Instance.GetDevice(0).GetAxis(InputDevice.Axis.Horizontal);
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Fusee.Math;
 using JSIL.Meta;
 
@@ -172,7 +173,7 @@ namespace Fusee.Engine
         /// a given uniform parameter name used in a shader program.
         /// </remarks>
         /// <seealso cref="GetShaderParamList"/>
-        [JSChangeName("SetShaderParamMtx4f")]
+        [JSChangeName("SetShaderParamfloat4x4")]
         void SetShaderParam(IShaderParam param, float4x4 val);
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Fusee.Engine
         /// a given uniform parameter name used in a shader program.
         /// </remarks>
         /// <seealso cref="GetShaderParamList"/>
-        [JSChangeName("SetShaderParamInt")]
+        [JSChangeName("SetShaderParamI")]
         void SetShaderParam(IShaderParam param, int val);
 
         /// <summary>
@@ -194,6 +195,10 @@ namespace Fusee.Engine
         /// <param name="param">Shader Parameter used for texture binding.</param>
         /// <param name="texId">An ITexture probably returned from CreateTexture() method.</param>
         void SetShaderParamTexture(IShaderParam param, ITexture texId);
+
+        void UpdateTextureFromVideoStream(IVideoStreamImp stream, ITexture tex);
+
+        void UpdateTextureRegion(ITexture tex, ImageData img, int startX, int startY, int width, int height);
 
         /// <summary>
         /// Creates a new texture and binds it to the shader.
@@ -409,5 +414,9 @@ namespace Fusee.Engine
         /// <param name="normals">The normals</param>
         void SetVertexData(IMeshImp meshImp, float3[] vertices, float2[] uVs, float3[] normals);
          * */
+
+        ImageData GetPixelColor(int x, int y, int w, int h);
+
+        float GetPixelDepth(int x, int y);
     }
 }

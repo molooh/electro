@@ -33,6 +33,9 @@ namespace Fusee.Engine
         private readonly IShaderParam _debugColor;
         private bool _debugLinesEnabled = true;
 
+        private PickingContext _pc;
+        public bool HasPickingContext { get; private set; }
+
         // Settable matrices
         private float4x4 _modelView;
         private float4x4 _projection;
@@ -879,6 +882,16 @@ namespace Fusee.Engine
 
         #region Image Data related Members
 
+        public void UpdateTextureFromVideoStream(IVideoStreamImp stream, ITexture tex)
+        {
+            _rci.UpdateTextureFromVideoStream(stream, tex);
+        }
+
+        public void UpdateTextureRegion(ITexture tex, ImageData img, int startX, int startY, int width, int height)
+        {
+            _rci.UpdateTextureRegion(tex,img, startX,startY, width, height);
+        }
+
         /// <summary>
         /// Creates a new Image with a specified size and color.
         /// </summary>
@@ -1396,7 +1409,7 @@ namespace Fusee.Engine
         /// a given uniform parameter name used in a shader program.
         /// </remarks>
         /// <seealso cref="GetShaderParamList"/>
-        [JSChangeName("SetShaderParamMtx4f")]
+        [JSChangeName("SetShaderParamfloat4x4")]
         public void SetShaderParam(IShaderParam param, float4x4 val)
         {
             _rci.SetShaderParam(param, val);
@@ -1421,7 +1434,6 @@ namespace Fusee.Engine
         #endregion
 
         #region Render releated Members
-        bool NeedTangents { get { return true; } }
 
         /// <summary>
         /// Apply a single render state to the render context. All subsequent rendering will be
@@ -1505,6 +1517,52 @@ namespace Fusee.Engine
                 _rci.SetTriangles(m._meshImp, m.Triangles);
 
             _rci.Render(m._meshImp);
+        }
+
+        #endregion
+
+        #region Picking related Members
+
+        /// <summary>
+        /// Attaches a PickingContext to the RenderContext to use the autoTick() feature. This method is automatically called while initializing a PickingContext.
+        /// </summary>
+        /// <param name="pc">The PickingContext.</param>
+        public void AttachPickingContext(PickingContext pc)
+        {
+            _pc = pc;
+            HasPickingContext = true;
+        }
+
+        /// <summary>
+        /// This method traverses the autoTick() feature to an attached PickingContext.
+        /// </summary>
+        public void PickingContextTick()
+        {
+            _pc.Tick();
+        }
+
+        /// <summary>
+        /// This method returns the color of one or more pixels from the backbuffer.
+        /// </summary>
+        /// <param name="x">X-Coordinate</param>
+        /// <param name="y">Y-Coordinate</param>
+        /// <param name="w">Width</param>
+        /// <param name="h">Height</param>
+        /// <returns>The requested rectangular area</returns>
+        public ImageData GetPixelColor(int x, int y, int w, int h)
+        {
+            return _rci.GetPixelColor(x, y, w, h);
+        }
+
+        /// <summary>
+        /// This method returns depth value from the depthbuffer at a given coordinate.
+        /// </summary>
+        /// <param name="x">X-Coordinate</param>
+        /// <param name="y">Y-Coordinate</param>
+        /// <returns></returns>
+        public float GetPixelDepth(int x, int y)
+        {
+            return _rci.GetPixelDepth(x, y);
         }
 
         #endregion
