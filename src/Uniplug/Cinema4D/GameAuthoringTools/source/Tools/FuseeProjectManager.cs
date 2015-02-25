@@ -86,7 +86,6 @@ namespace FuseeAuthoringTools.source
         /// <returns>ToolState enum state value.</returns>
         public ToolState OpenProject(String pName, String pPath)
         {
-            // TODO: Assign a new EngineProject Struct with all the paths so it is opened. Rebuild other paths etc.
             _engineProject = DeserializeFromXML(pName, pPath);
 
             return ToolState.OK;
@@ -114,7 +113,7 @@ namespace FuseeAuthoringTools.source
 
         private Boolean DoesProjectExist(String pName, String pPath)
         {
-            if (File.Exists(pPath + GlobalValues.PROJECTFOLDER + "/" + pName + ".xml"))
+            if (File.Exists(pPath + GlobalValues.PROJECTFOLDER + "/" + GenerateCsProjName(pName)))
                 return true;
 
             return false;
