@@ -1,0 +1,135 @@
+﻿using System;
+using System.IO;
+using System.Xml.Serialization;
+using fuProjectGen;
+
+namespace FuseeAuthoringTools.source
+{
+    /// <summary>
+    /// Handles all the different work with the project. Saving, opening, creating. All this.
+    /// </summary>
+    public class FuseeProjectManager
+    {
+        private ProjectGenerator _projectGenerator;
+        private EngineProject _engineProject;
+        private FuseeFileManager _fileManager;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public FuseeProjectManager()
+        {
+           
+        }
+
+        /// <summary>
+        /// Creates a new fusee project, names it, inits the basics etc.
+        /// </summary>
+        /// <param name="pname"></param>
+        /// <returns>ToolState enum state value</returns>
+        public ToolState CreateProject(String pName, String pPath)
+        {
+            // Check if project already exists?
+            if (DoesProjectExist(pName, pPath))
+            {
+                // If yes open it.
+                OpenProject(pName, pPath);
+            }
+            else
+            {
+                // If not create it.
+                _fileManager = new FuseeFileManager(this);
+
+                _engineProject.projectState = ProjectState.Dirty;
+                _projectGenerator = new ProjectGenerator(pName, pPath);
+
+                if (_projectGenerator == null)
+                    return ToolState.ERROR;
+
+                _engineProject.projectState = ProjectState.Clean;
+                
+                _engineProject = new EngineProject
+                {
+                    sysPath = pPath,
+                    projPath = GlobalValues.PROJECTFOLDER + "/" + pName,
+                    nameofCSPROJ = pName,
+                    pathToCSPROJ = pPath + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + GenerateCsProjName(pName),
+                    projectState = ProjectState.Clean
+                };
+
+                // Save it to XML.    
+                SaveProject();
+            }
+            return ToolState.OK;
+        }
+
+        /// <summary>
+        /// Saves a project to an XML file. So it can be loaded again if needed.
+        /// </summary>
+        /// <returns>ToolState enum state value</returns>
+        public ToolState SaveProject()
+        {
+            _engineProject.projectState = ProjectState.Dirty;
+
+            SerializeToXML(_engineProject);
+
+            _engineProject.projectState = ProjectState.Clean;
+
+            return ToolState.OK;
+        }
+
+        /// <summary>
+        /// Opens a project and returns some handle? So the user can use it.
+        /// </summary>
+        /// <param name="pname"></param>
+        /// /// <param name="pathToProject"></param>
+        /// <returns>ToolState enum state value.</returns>
+        public ToolState OpenProject(String pName, String pPath)
+        {
+            // TODO: Assign a new EngineProject Struct with all the paths so it is opened. Rebuild other paths etc.
+            _engineProject = DeserializeFromXML(pName, pPath);
+
+            return ToolState.OK;
+        }
+
+        public ToolState SerializeToXML(EngineProject p)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(EngineProject));
+            TextWriter tw = new StreamWriter(p.sysPath + p.projPath + "/" + p.nameofCSPROJ + ".xml");
+            ser.Serialize(tw, p);
+            tw.Close();
+
+            return ToolState.OK;
+        }
+
+        public EngineProject DeserializeFromXML(String pName, String pathToXML)
+        {
+            XmlSerializer des = new XmlSerializer(typeof(EngineProject));
+            TextReader tr = new StreamReader(pathToXML + "/" + pName + ".xml"); // path to xml.
+            var ep = (EngineProject)des.Deserialize(tr);
+            tr.Close();
+
+            return ep;
+        }
+
+        private Boolean DoesProjectExist(String pName, String pPath)
+        {
+            if (File.Exists(pPath + GlobalValues.PROJECTFOLDER + "/" + pName + ".xml"))
+                return true;
+
+            return false;
+        }
+
+        private String GenerateCsProjName(String pName)
+        {
+            return pName + ".csproj";
+        }
+
+        public EngineProject FuseeEngineProject
+        {
+            get { return _engineProject; }
+            set { _engineProject = value; }
+        }
+
+    }
+}

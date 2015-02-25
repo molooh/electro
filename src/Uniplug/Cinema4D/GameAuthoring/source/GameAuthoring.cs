@@ -31,16 +31,18 @@ namespace GameAuthoring
             String projectName = "Proj2";
             String fuseeBinProjPath = "C:/Users/dominik/Development/Proj1";
 
-            if (fat.CreateProject(projectName, fuseeBinProjPath) != ToolState.ERROR)
+            if (fat.CreateProject(projectName, fuseeBinProjPath))
             {
                 Logger.Debug("Created new Project.");
 
+                /*
                 fat.FileManager.CreateCSharpClass("testclass", fat.ProjectManager.GetProject.nameofCSPROJ, fat.ProjectManager.GetProject.pathToCSPROJ);
                 if (fat.ProjectManager.GetProject.projectState != ProjectState.Clean)
                 {
                     Logger.Debug("Error creating new file for fat. - Aborting.");
                     return;
                 }
+                */
 
             }
             else

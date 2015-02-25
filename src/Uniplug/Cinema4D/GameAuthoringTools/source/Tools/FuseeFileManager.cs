@@ -11,18 +11,45 @@ namespace FuseeAuthoringTools.source
     /// </summary>
     public class FuseeFileManager
     {
-        private FuseeAuthoringToolsC4D fat;
-        private FuseeClassManager fcManager;
+        /// <summary>
+        /// Used to take care of the partial classes distributed in the system. Quite important manager to take care of the code. Creates classes and partials etc.
+        /// </summary>
+        internal static class FuseeClassHelper
+        {
+            public static ToolState CreateNewClass(String cname)
+            {
+                // TODO: Create a new class for the ide and the coder.
+                // 1) Create it as partial
+                // 2) Create the file in the correct place. /project/src
+                // 3) Add it to the *.csproj and or *.sln
+                // 4) Save a ref to a file so we know what it's attached to.
+                // create files from template
+
+                //var classFile = new CSharpClass(cname, );
+                //var classContent = classFile.
+                //File.WriteAllText(classContent, mainFileContent);
+
+                return ToolState.OK;
+            }
+
+            public static ToolState UpdatePartialClass()
+            {
+                // TODO: Perhaps we need to sync the partial class sometimes?
+                return ToolState.OK;
+            }
+
+        }
+
+        private readonly FuseeProjectManager _projectManager;
         private List<String> csprojfile = null;
         private String csProjPath = "";
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FuseeFileManager(FuseeAuthoringToolsC4D f)
+        public FuseeFileManager(FuseeProjectManager fpm)
         {
-            fat = f;
-            fcManager = new FuseeClassManager();
+            _projectManager = fpm;
         }
 
         /// <summary>
@@ -34,14 +61,14 @@ namespace FuseeAuthoringTools.source
         /// <returns></returns>
         public ToolState CreateCSharpClass(String className, String pName, String projectPath)
         {
-            EngineProject ep = fat.EngineProject;
+            EngineProject ep = _projectManager.FuseeEngineProject;
             ep.projectState = ProjectState.Dirty;
-            fat.EngineProject = ep;
+            _projectManager.FuseeEngineProject = ep;
 
             csProjPath = ep.pathToCSPROJ;
 
             // TODO: Call class Manager here to create a real c# class file and THEN insert it to the project.
-            fcManager.CreateNewClass(className);
+            FuseeClassHelper.CreateNewClass(className);
 
             pName = pName + ".cs"; // TODO!!!! change ending dependend on filetype.
             if (!true)
@@ -56,9 +83,9 @@ namespace FuseeAuthoringTools.source
             if (WriteCSProj() == ToolState.ERROR)
                 return ToolState.ERROR;
 
-            ep = fat.EngineProject;
+            ep = _projectManager.FuseeEngineProject;
             ep.projectState = ProjectState.Clean;
-            fat.EngineProject = ep;
+            _projectManager.FuseeEngineProject = ep;
 
             return ToolState.OK;
         }
@@ -74,9 +101,9 @@ namespace FuseeAuthoringTools.source
             if (!File.Exists(path))
                 return ToolState.ERROR;
 
-            File.Copy(path, fat.EngineProject.sysPath + fat.EngineProject.projPath + "/" + fName + ".orig", true);
+            File.Copy(path, _projectManager.FuseeEngineProject.sysPath + _projectManager.FuseeEngineProject.projPath + "/" + fName + ".orig", true);
 
-            if (!File.Exists(fat.EngineProject.sysPath + fat.EngineProject.projPath + "/" + fName + ".orig"))
+            if (!File.Exists(_projectManager.FuseeEngineProject.sysPath + _projectManager.FuseeEngineProject.projPath + "/" + fName + ".orig"))
                 return ToolState.ERROR;
 
             csprojfile = File.ReadAllLines(csProjPath).ToList();

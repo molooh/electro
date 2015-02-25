@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
-using fuProjectGen;
 
 namespace FuseeAuthoringTools
 {
@@ -22,7 +15,7 @@ namespace FuseeAuthoringTools
     public enum ToolState {
         OK = 0,
         ERROR = 1,
-        WARNING = 2
+        WARNING = 2,
     }
 
     public enum ProjectState
@@ -57,17 +50,17 @@ namespace FuseeAuthoringTools
 
     interface IFuseeAuthoringTools
     {
-        ToolState CreateProject();
-        ToolState SaveProject();
-        ToolState OpenProject();
-        ToolState UpdateProject();
+        Boolean CreateProject(String pName, String pPath);
+        Boolean SaveProject();
+        Boolean OpenProject(String pName, String pPath);
+        Boolean UpdateProject();
 
-        ToolState CreateNewClass();
-        ToolState CreateNewFile();
+        Boolean CreateNewClass(String pName, String pPath);
+        Boolean CreateNewFile();
 
-        ToolState BuildProject();
+        Boolean BuildProject();
 
         EngineProject GetEngineProject();
-        ProjectState GetEngineProjectState();
+        int GetEngineProjectState();
     }
 }

@@ -49,13 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameAuthoringTools.cs" />
+    <Compile Include="source\Base\FuseeAuthoringToolsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="source\FuseeAuthoringToolsC4D.cs" />
-    <Compile Include="source\FuseeBuildManager.cs" />
-    <Compile Include="source\FuseeClassManager.cs" />
-    <Compile Include="source\FuseeFileManager.cs" />
-    <Compile Include="source\FuseeProjectManager.cs" />
+    <Compile Include="source\C4D\FuseeAuthoringToolsC4D.cs" />
+    <Compile Include="source\Tools\FuseeBuildManager.cs" />
+    <Compile Include="source\Tools\FuseeFileManager.cs" />
+    <Compile Include="source\Tools\FuseeProjectManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
