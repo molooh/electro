@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using fuProjectGen;
 
-namespace FuseeAuthoringTools.source
+namespace FuseeAuthoringTools.tools
 {
     /// <summary>
     /// Handles all the different work with the project. Saving, opening, creating. All this.
@@ -27,7 +27,7 @@ namespace FuseeAuthoringTools.source
         /// </summary>
         /// <param name="pname"></param>
         /// <returns>ToolState enum state value</returns>
-        public ToolState CreateProject(String pName, String pPath)
+        public ToolState CreateProject(String slnName, String pName, String pPath)
         {
             // Check if project already exists?
             if (DoesProjectExist(pName, pPath))
@@ -54,7 +54,8 @@ namespace FuseeAuthoringTools.source
                     projPath = GlobalValues.PROJECTFOLDER + "/" + pName,
                     nameofCSPROJ = pName,
                     pathToCSPROJ = pPath + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + GenerateCsProjName(pName),
-                    projectState = ProjectState.Clean
+                    projectState = ProjectState.Clean,
+                    solutionName = slnName
                 };
 
                 // Save it to XML.    
@@ -91,7 +92,14 @@ namespace FuseeAuthoringTools.source
             return ToolState.OK;
         }
 
-        public ToolState SerializeToXML(EngineProject p)
+        public ToolState BuildProject(EngineProject ep)
+        {
+            ToolState res = FuseeBuildManager.BuildSolution(ep);
+
+            return ToolState.OK;
+        }
+
+        private ToolState SerializeToXML(EngineProject p)
         {
             XmlSerializer ser = new XmlSerializer(typeof(EngineProject));
             TextWriter tw = new StreamWriter(p.sysPath + p.projPath + "/" + p.nameofCSPROJ + ".xml");
@@ -101,7 +109,7 @@ namespace FuseeAuthoringTools.source
             return ToolState.OK;
         }
 
-        public EngineProject DeserializeFromXML(String pName, String pathToXML)
+        private EngineProject DeserializeFromXML(String pName, String pathToXML)
         {
             XmlSerializer des = new XmlSerializer(typeof(EngineProject));
             TextReader tr = new StreamReader(pathToXML + "/" + pName + ".xml"); // path to xml.

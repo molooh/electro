@@ -44,13 +44,40 @@ namespace FuseeAuthoringTools
         [XmlElement("PathToCSProj")]
         public String pathToCSPROJ; // path to csproj.
 
+        [XmlElement("SolutionName")]
+        public String solutionName;
+
         [XmlElement("CurrentProjectState")]
         public ProjectState projectState;
     }
 
+    /// <summary>
+    /// This is instanciated for every object that has an asset tag applied and code added
+    /// to it. It represents the connection between modeling editor objects and code so
+    /// the connections can be re-established when loading a project.
+    /// </summary>
+    public struct AssetObject
+    {
+        [XmlElement("ModelEditorName")]
+        public String objectName;
+
+        [XmlElement("ModelEditorID")]
+        public String objectID;
+
+        [XmlElement("ClassName")]
+        public String className;
+
+        [XmlElement("NameSpace")]
+        public String nameSpace;
+    }
+
+    /// <summary>
+    /// This should be implemented by all classes that represent a connection to a plugin
+    /// for a modeling software that should be used as en editor.
+    /// </summary>
     interface IFuseeAuthoringTools
     {
-        Boolean CreateProject(String pName, String pPath);
+        Boolean CreateProject(String slnName, String pName, String pPath);
         Boolean SaveProject();
         Boolean OpenProject(String pName, String pPath);
         Boolean UpdateProject();

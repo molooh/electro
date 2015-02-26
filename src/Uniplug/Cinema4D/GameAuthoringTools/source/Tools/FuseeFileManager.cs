@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace FuseeAuthoringTools.source
+namespace FuseeAuthoringTools.tools
 {
     /// <summary>
     /// Will be used to create various files if needed.

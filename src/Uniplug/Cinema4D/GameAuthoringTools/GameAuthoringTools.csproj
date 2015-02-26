@@ -40,6 +40,8 @@
     <Reference Include="Fusee.Math.Core">
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

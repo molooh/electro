@@ -1,6 +1,7 @@
 ﻿using System;
+using FuseeAuthoringTools.tools;
 
-namespace FuseeAuthoringTools.source
+namespace FuseeAuthoringTools.c4d
 {
     /// <summary>
     /// The main part for the authoring tools. Registers modules and functionality.    
@@ -15,9 +16,9 @@ namespace FuseeAuthoringTools.source
             _projectManager = new FuseeProjectManager();
         }
 
-        public bool CreateProject(String pName, String pPath)
+        public bool CreateProject(String slnName, String pName, String pPath)
         {
-            _projectManager.CreateProject(pName, pPath);
+            _projectManager.CreateProject(slnName, pName, pPath);
 
             return _projectManager.FuseeEngineProject.projectState == ProjectState.Clean;
         }
@@ -45,9 +46,10 @@ namespace FuseeAuthoringTools.source
 
         public bool CreateNewClass(String pName, String pPath)
         {
+            /*
             if (_projectManager.CreateProject(pName, pPath) == ToolState.OK)
                 return true;
-
+            */
             return false;
         }
 
@@ -58,7 +60,9 @@ namespace FuseeAuthoringTools.source
 
         public bool BuildProject()
         {
-            throw new NotImplementedException();
+            _projectManager.BuildProject(_projectManager.FuseeEngineProject);
+
+            return true;
         }
 
         /// <summary>

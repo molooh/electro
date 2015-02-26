@@ -6,7 +6,7 @@ using C4d;
 
 using Fusee.Math;
 using FuseeAuthoringTools;
-using FuseeAuthoringTools.source;
+using FuseeAuthoringTools.c4d;
 
 
 namespace GameAuthoring
@@ -28,10 +28,11 @@ namespace GameAuthoring
             // Creating a connection to the logic behind.
             fat = new FuseeAuthoringToolsC4D();
 
+            String slnName = "Engine";
             String projectName = "Proj2";
             String fuseeBinProjPath = "C:/Users/dominik/Development/Proj1";
 
-            if (fat.CreateProject(projectName, fuseeBinProjPath))
+            if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
             {
                 Logger.Debug("Created new Project.");
 
@@ -43,6 +44,8 @@ namespace GameAuthoring
                     return;
                 }
                 */
+
+                fat.BuildProject();
 
             }
             else
