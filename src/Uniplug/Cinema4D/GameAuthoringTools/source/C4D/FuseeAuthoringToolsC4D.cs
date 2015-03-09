@@ -18,9 +18,10 @@ namespace FuseeAuthoringTools.c4d
 
         public bool CreateProject(String slnName, String pName, String pPath)
         {
-            _projectManager.CreateProject(slnName, pName, pPath);
+            if (_projectManager.CreateProject(slnName, pName, pPath) == ToolState.OK)
+                return true;
 
-            return _projectManager.FuseeEngineProject.projectState == ProjectState.Clean;
+            return false;
         }
 
         public bool SaveProject()
@@ -46,10 +47,10 @@ namespace FuseeAuthoringTools.c4d
 
         public bool CreateNewClass(String pName, String pPath)
         {
-            /*
-            if (_projectManager.CreateProject(pName, pPath) == ToolState.OK)
+            
+            if (_projectManager.CreateClass(pName) == ToolState.OK)
                 return true;
-            */
+            
             return false;
         }
 

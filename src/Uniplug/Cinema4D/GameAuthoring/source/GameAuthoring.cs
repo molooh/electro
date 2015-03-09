@@ -36,23 +36,13 @@ namespace GameAuthoring
             {
                 Logger.Debug("Created new Project.");
 
-                /*
-                fat.FileManager.CreateCSharpClass("testclass", fat.ProjectManager.GetProject.nameofCSPROJ, fat.ProjectManager.GetProject.pathToCSPROJ);
-                if (fat.ProjectManager.GetProject.projectState != ProjectState.Clean)
-                {
-                    Logger.Debug("Error creating new file for fat. - Aborting.");
-                    return;
-                }
-                */
-
-                // fat.BuildProject();
+                Logger.Debug("A project is ready: " + fat.GetEngineProject().nameofCSPROJ);
 
             }
             else
             {
                 Logger.Debug("ERROR creating new project!");
             }
-            
         }
 
         public override bool Init(GeListNode node)

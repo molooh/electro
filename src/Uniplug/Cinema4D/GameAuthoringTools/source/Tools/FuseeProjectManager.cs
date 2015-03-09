@@ -94,6 +94,13 @@ namespace FuseeAuthoringTools.tools
             return ToolState.OK;
         }
 
+        public ToolState CreateClass(String className)
+        {
+            _fileManager.CreateCSharpClass(className, _engineProject.nameofCSPROJ, _engineProject.pathToCSPROJ);
+            return ToolState.OK;
+        }
+
+
         private ToolState SerializeToXML(EngineProject p)
         {
             XmlSerializer ser = new XmlSerializer(typeof(EngineProject));
@@ -106,8 +113,11 @@ namespace FuseeAuthoringTools.tools
 
         private EngineProject DeserializeFromXML(String pName, String pathToXML)
         {
+            if (_engineProject.nameofCSPROJ !=  null)
+                return _engineProject;
+
             XmlSerializer des = new XmlSerializer(typeof(EngineProject));
-            TextReader tr = new StreamReader(pathToXML + "/" + pName + ".xml"); // path to xml.
+            TextReader tr = new StreamReader(pathToXML + "/projects/" + pName + "/" + pName + ".xml"); // path to xml.
             var ep = (EngineProject)des.Deserialize(tr);
             tr.Close();
 
@@ -116,7 +126,7 @@ namespace FuseeAuthoringTools.tools
 
         private Boolean DoesProjectExist(String pName, String pPath)
         {
-            if (File.Exists(pPath + GlobalValues.PROJECTFOLDER + "/" + GenerateCsProjName(pName)))
+            if (File.Exists(pPath + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + pName + ".csproj"))
                 return true;
 
             return false;
