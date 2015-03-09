@@ -143,5 +143,15 @@ namespace FuseeAuthoringTools.tools
             set { _engineProject = value; }
         }
 
+        public void SetProjectDirty()
+        {
+            _engineProject.projectState = ProjectState.Dirty;
+        }
+
+        public void SetProjectClean()
+        {
+            _engineProject.projectState = ProjectState.Clean;
+        }
+
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using FuseeAuthoringTools.Templates;
 
 namespace FuseeAuthoringTools.tools
 {
@@ -21,13 +23,9 @@ namespace FuseeAuthoringTools.tools
                 // TODO: Create a new class for the ide and the coder.
                 // 1) Create it as partial
                 // 2) Create the file in the correct place. /project/src
-                // 3) Add it to the *.csproj and or *.sln
-                // 4) Save a ref to a file so we know what it's attached to.
-                // create files from template
 
-                //var classFile = new CSharpClass(cname, );
-                //var classContent = classFile.
-                //File.WriteAllText(classContent, mainFileContent);
+                var classFile = new StandardClass(cname);
+                //var mainFileContent = classFile
 
                 return ToolState.OK;
             }
@@ -61,18 +59,14 @@ namespace FuseeAuthoringTools.tools
         /// <returns></returns>
         public ToolState CreateCSharpClass(String className, String pName, String projectPath)
         {
-            EngineProject ep = _projectManager.FuseeEngineProject;
-            ep.projectState = ProjectState.Dirty;
-            _projectManager.FuseeEngineProject = ep;
+            _projectManager.SetProjectDirty();
 
-            csProjPath = ep.pathToCSPROJ;
+            csProjPath = _projectManager.FuseeEngineProject.pathToCSPROJ;
 
             // TODO: Call class Manager here to create a real c# class file and THEN insert it to the project.
             FuseeClassHelper.CreateNewClass(className);
 
-            pName = pName + ".cs"; // TODO!!!! change ending dependend on filetype.
-            if (!true)
-                return ToolState.ERROR;
+            pName = pName + ".cs"; // Add the ending here
 
             if (LoadCSProj(pName, projectPath) == ToolState.ERROR)
                 return ToolState.ERROR;
@@ -83,9 +77,7 @@ namespace FuseeAuthoringTools.tools
             if (WriteCSProj() == ToolState.ERROR)
                 return ToolState.ERROR;
 
-            ep = _projectManager.FuseeEngineProject;
-            ep.projectState = ProjectState.Clean;
-            _projectManager.FuseeEngineProject = ep;
+            _projectManager.SetProjectClean();
 
             return ToolState.OK;
         }

@@ -38,6 +38,9 @@ namespace GameAuthoring
 
                 Logger.Debug("A project is ready: " + fat.GetEngineProject().nameofCSPROJ);
 
+                Logger.Debug("Creating Class ... ");
+
+                fat.CreateNewClass("TestClass.cs", @"C:\Users\dominik\Development\TestFusee\projects\TestProjekt\Source");
             }
             else
             {

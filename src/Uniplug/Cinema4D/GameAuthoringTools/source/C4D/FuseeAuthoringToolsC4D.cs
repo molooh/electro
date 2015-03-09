@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FuseeAuthoringTools.tools;
 
 namespace FuseeAuthoringTools.c4d
@@ -54,9 +55,11 @@ namespace FuseeAuthoringTools.c4d
             return false;
         }
 
-        public bool CreateNewFile()
+        public bool CreateNewFile(String fname, String fpath)
         {
-            throw new NotImplementedException();
+            // TODO: Check if the file is existing in the correct location.
+
+            return false;
         }
 
         public bool BuildProject()
