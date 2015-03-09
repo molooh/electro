@@ -28,14 +28,19 @@ namespace FuseeAuthoringTools.tools
             
             // Some properties for the build.
             GlobalProperty.Add("Configuration", "Debug");
-            GlobalProperty.Add("Platform", "x86");
+            GlobalProperty.Add("Platform", "Any CPU");
  
-            BuildRequestData BuidlRequest = new BuildRequestData(slnFile, GlobalProperty, null, new string[] { "Build" }, null);
+            BuildRequestData buildRequest = new BuildRequestData(slnFile, GlobalProperty, null, new string[] { "Build" }, null);
  
             // Do the actual build.
-            BuildResult buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), BuidlRequest);
+            BuildResult buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequest);
 
-            return ToolState.OK;
+            if (buildResult.OverallResult == BuildResultCode.Success)
+            {
+                return ToolState.OK;
+            }
+
+            return ToolState.ERROR;
         }
 
         /// <summary>

@@ -96,8 +96,9 @@ namespace fuProjectGen
             try
             {
                 // get a valid project name
-                var validName = (pName.Length == 0) || (!ValidChars(pName));
-                var projectName = (validName) ? GetProjectName() : pName;
+                //var validName = (pName.Length == 0) || (!ValidChars(pName));
+                //var projectName = (validName) ? GetProjectName() : pName;
+                var projectName = pName;
 
                 // check if project already exists
                 if (Directory.Exists(pPath + "/projects/" + projectName))

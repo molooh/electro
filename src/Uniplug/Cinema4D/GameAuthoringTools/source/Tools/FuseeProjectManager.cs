@@ -70,12 +70,7 @@ namespace FuseeAuthoringTools.tools
         /// <returns>ToolState enum state value</returns>
         public ToolState SaveProject()
         {
-            _engineProject.projectState = ProjectState.Dirty;
-
             SerializeToXML(_engineProject);
-
-            _engineProject.projectState = ProjectState.Clean;
-
             return ToolState.OK;
         }
 

@@ -59,16 +59,16 @@ namespace FuseeAuthoringTools
     public struct AssetObject
     {
         [XmlElement("ModelEditorName")]
-        public String objectName;
+        public String objectName; // The name of the cinema 4d object.
 
         [XmlElement("ModelEditorID")]
-        public String objectID;
+        public String objectID; // Should be a generated hash code.
 
         [XmlElement("ClassName")]
-        public String className;
+        public String className; // The name of the attached class file? maybe just the file name and a hash?
 
         [XmlElement("NameSpace")]
-        public String nameSpace;
+        public String nameSpace; // Do not need this for now
     }
 
     /// <summary>

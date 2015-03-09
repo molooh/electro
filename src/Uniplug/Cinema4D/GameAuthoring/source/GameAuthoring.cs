@@ -29,8 +29,8 @@ namespace GameAuthoring
             fat = new FuseeAuthoringToolsC4D();
 
             String slnName = "Engine";
-            String projectName = "Proj2";
-            String fuseeBinProjPath = "C:/Users/dominik/Development/Proj1";
+            String projectName = "TestProjekt";
+            String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
             if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
             {
@@ -45,7 +45,7 @@ namespace GameAuthoring
                 }
                 */
 
-                fat.BuildProject();
+                // fat.BuildProject();
 
             }
             else
