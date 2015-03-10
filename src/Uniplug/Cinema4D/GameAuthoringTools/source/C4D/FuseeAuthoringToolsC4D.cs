@@ -46,7 +46,7 @@ namespace FuseeAuthoringTools.c4d
             throw new NotImplementedException();
         }
 
-        public bool CreateNewClass(String pName, String pPath)
+        public bool CreateNewClass(String pName)
         {
             
             if (_projectManager.CreateClass(pName) == ToolState.OK)

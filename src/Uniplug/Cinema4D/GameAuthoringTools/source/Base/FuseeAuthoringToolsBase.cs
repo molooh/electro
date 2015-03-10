@@ -82,8 +82,8 @@ namespace FuseeAuthoringTools
         Boolean OpenProject(String pName, String pPath);
         Boolean UpdateProject();
 
-        Boolean CreateNewClass(String pName, String pPath);
-        Boolean CreateNewFile();
+        Boolean CreateNewClass(String pName);
+        Boolean CreateNewFile(String fname, String fpath);
 
         Boolean BuildProject();
 

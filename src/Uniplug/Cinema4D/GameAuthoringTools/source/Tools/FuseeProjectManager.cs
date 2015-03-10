@@ -38,8 +38,6 @@ namespace FuseeAuthoringTools.tools
             else
             {
                 // If not create it.
-                _fileManager = new FuseeFileManager(this);
-
                 _engineProject.projectState = ProjectState.Dirty;
                 _projectGenerator = new ProjectGenerator(pName, pPath);
 
@@ -57,10 +55,13 @@ namespace FuseeAuthoringTools.tools
                     projectState = ProjectState.Clean,
                     solutionName = slnName
                 };
-
+                
                 // Save it to XML.    
                 SaveProject();
             }
+            // Create a file manager so we can actually work with files ;)
+            _fileManager = new FuseeFileManager(this);
+
             return ToolState.OK;
         }
 
@@ -96,7 +97,7 @@ namespace FuseeAuthoringTools.tools
 
         public ToolState CreateClass(String className)
         {
-            _fileManager.CreateCSharpClass(className, _engineProject.nameofCSPROJ, _engineProject.pathToCSPROJ);
+            _fileManager.CreateCSharpClass(className, _engineProject.sysPath + _engineProject.projPath, _engineProject.nameofCSPROJ);
             return ToolState.OK;
         }
 

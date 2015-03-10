@@ -58,11 +58,22 @@
     <Compile Include="source\Tools\FuseeBuildManager.cs" />
     <Compile Include="source\Tools\FuseeFileManager.cs" />
     <Compile Include="source\Tools\FuseeProjectManager.cs" />
+    <Compile Include="Templates\SimpleClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SimpleClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\_SimpleClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Templates\SimpleClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SimpleClass.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

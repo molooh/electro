@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using FuseeAuthoringTools.Templates;
 
 namespace FuseeAuthoringTools.tools
@@ -18,14 +16,15 @@ namespace FuseeAuthoringTools.tools
         /// </summary>
         internal static class FuseeClassHelper
         {
-            public static ToolState CreateNewClass(String cname)
+            public static ToolState CreateNewClass(String cName, String pPath, String pName)
             {
                 // TODO: Create a new class for the ide and the coder.
-                // 1) Create it as partial
-                // 2) Create the file in the correct place. /project/src
+                // Create an instance from the template class
+                var sc = new SimpleClass(cName, pName);
+                var scContent = sc.TransformText();
 
-                var classFile = new StandardClass(cname);
-                //var mainFileContent = classFile
+                // Write the file to disk from generated template code
+                File.WriteAllText( pPath + @"/Source/" + cName + ".cs", scContent);
 
                 return ToolState.OK;
             }
@@ -57,14 +56,14 @@ namespace FuseeAuthoringTools.tools
         /// <param name="pName"></param>
         /// <param name="projectPath"></param>
         /// <returns></returns>
-        public ToolState CreateCSharpClass(String className, String pName, String projectPath)
+        public ToolState CreateCSharpClass(String className, String projectPath, String pName)
         {
             _projectManager.SetProjectDirty();
 
             csProjPath = _projectManager.FuseeEngineProject.pathToCSPROJ;
 
             // TODO: Call class Manager here to create a real c# class file and THEN insert it to the project.
-            FuseeClassHelper.CreateNewClass(className);
+            FuseeClassHelper.CreateNewClass(className, projectPath, pName);
 
             pName = pName + ".cs"; // Add the ending here
 

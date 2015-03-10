@@ -40,7 +40,7 @@ namespace GameAuthoring
 
                 Logger.Debug("Creating Class ... ");
 
-                fat.CreateNewClass("TestClass.cs", @"C:\Users\dominik\Development\TestFusee\projects\TestProjekt\Source");
+                fat.CreateNewClass("TestClassDominik");
             }
             else
             {
