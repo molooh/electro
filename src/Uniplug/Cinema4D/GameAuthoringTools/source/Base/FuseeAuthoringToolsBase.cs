@@ -6,7 +6,7 @@ namespace FuseeAuthoringTools
     public static class GlobalValues
     {
         public const String PROJECTFOLDER = "/projects";
-        public const String COMPILEINCLUDESTART = "     <Compile Include=\"Main.cs\" />";
+        public const String COMPILEINCLUDESTART = "    <Compile Include=\"Main.cs\" />";
     }
 
     /// <summary>
@@ -32,23 +32,56 @@ namespace FuseeAuthoringTools
     /// </summary>
     public struct EngineProject
     {
+        /// <summary>
+        /// Full System Path to Solution
+        /// </summary>
         [XmlElement("PathToSolutionFolder")]
-        public String sysPath; // path to solution dir
+        public String PathToSolutionFolder;
 
+        /// <summary>
+        /// /projects/ProjectName
+        /// </summary>
         [XmlElement("PathToProjectFolder")]
-        public String projPath; // sysPath + /projects/pName/
+        public String PathToProjectFolder;
 
+        /// <summary>
+        /// ProjectName
+        /// </summary>
         [XmlElement("ProjectName")]
-        public String nameofCSPROJ; // name.csproj
+        public String NameofCsProject; // FileName
 
-        [XmlElement("PathToCSProj")]
-        public String pathToCSPROJ; // path to csproj.
+        /// <summary>
+        /// Full path to ProjectName.csproj
+        /// </summary>
+        [XmlElement("PathToCSProjectFile")]
+        public String PathToCsProjectFile;
 
+        /// <summary>
+        /// Solution name without .sln
+        /// </summary>
         [XmlElement("SolutionName")]
-        public String solutionName;
+        public String SolutionName;
 
+        /// <summary>
+        /// Current state of the project.
+        /// </summary>
         [XmlElement("CurrentProjectState")]
-        public ProjectState projectState;
+        public ProjectState ProjectState;
+
+        public String GetPathToProjectFolder()
+        {
+            return this.PathToSolutionFolder + this.PathToProjectFolder;
+        }
+
+        public String GetPathToProjectSource()
+        {
+            return this.PathToSolutionFolder + this.PathToProjectFolder + "/Source/";
+        }
+
+        public String GetProjectFileName()
+        {
+            return this.NameofCsProject + ".csproj";
+        }
     }
 
     /// <summary>

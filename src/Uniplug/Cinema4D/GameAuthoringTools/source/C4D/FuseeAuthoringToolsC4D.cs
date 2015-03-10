@@ -84,7 +84,7 @@ namespace FuseeAuthoringTools.c4d
         /// <returns></returns>
         public int GetEngineProjectState()
         {
-            return (int)_projectManager.FuseeEngineProject.projectState;
+            return (int)_projectManager.FuseeEngineProject.ProjectState;
         }
     }
 }

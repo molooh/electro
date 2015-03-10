@@ -38,22 +38,22 @@ namespace FuseeAuthoringTools.tools
             else
             {
                 // If not create it.
-                _engineProject.projectState = ProjectState.Dirty;
+                _engineProject.ProjectState = ProjectState.Dirty;
                 _projectGenerator = new ProjectGenerator(pName, pPath);
 
                 if (_projectGenerator == null)
                     return ToolState.ERROR;
 
-                _engineProject.projectState = ProjectState.Clean;
+                _engineProject.ProjectState = ProjectState.Clean;
                 
                 _engineProject = new EngineProject
                 {
-                    sysPath = pPath,
-                    projPath = GlobalValues.PROJECTFOLDER + "/" + pName,
-                    nameofCSPROJ = pName,
-                    pathToCSPROJ = pPath + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + GenerateCsProjName(pName),
-                    projectState = ProjectState.Clean,
-                    solutionName = slnName
+                    PathToSolutionFolder = pPath,
+                    PathToProjectFolder = GlobalValues.PROJECTFOLDER + "/" + pName,
+                    NameofCsProject = pName,
+                    PathToCsProjectFile = pPath + GlobalValues.PROJECTFOLDER + "/" + pName + "/" + GenerateCsProjName(pName),
+                    ProjectState = ProjectState.Clean,
+                    SolutionName = slnName
                 };
                 
                 // Save it to XML.    
@@ -71,7 +71,7 @@ namespace FuseeAuthoringTools.tools
         /// <returns>ToolState enum state value</returns>
         public ToolState SaveProject()
         {
-            if (_engineProject.projectState != ProjectState.Dirty || _engineProject.projectState != ProjectState.Corrupt)
+            if (_engineProject.ProjectState != ProjectState.Dirty || _engineProject.ProjectState != ProjectState.Corrupt)
             {
                 SerializeToXML(_engineProject);
                 return ToolState.OK;
@@ -102,7 +102,7 @@ namespace FuseeAuthoringTools.tools
 
         public ToolState CreateClass(String className)
         {
-            _fileManager.CreateCSharpClass(className, _engineProject.nameofCSPROJ);
+            _fileManager.CreateCSharpClass(className, _engineProject.NameofCsProject);
             return ToolState.OK;
         }
 
@@ -110,7 +110,7 @@ namespace FuseeAuthoringTools.tools
         private ToolState SerializeToXML(EngineProject p)
         {
             XmlSerializer ser = new XmlSerializer(typeof(EngineProject));
-            TextWriter tw = new StreamWriter(p.sysPath + p.projPath + "/" + p.nameofCSPROJ + ".xml");
+            TextWriter tw = new StreamWriter(p.PathToSolutionFolder + p.PathToProjectFolder + "/" + p.NameofCsProject + ".xml");
             ser.Serialize(tw, p);
             tw.Close();
 
@@ -119,7 +119,7 @@ namespace FuseeAuthoringTools.tools
 
         private EngineProject DeserializeFromXML(String pName, String pathToXML)
         {
-            if (_engineProject.nameofCSPROJ !=  null)
+            if (_engineProject.NameofCsProject !=  null)
                 return _engineProject;
 
             XmlSerializer des = new XmlSerializer(typeof(EngineProject));
@@ -151,12 +151,12 @@ namespace FuseeAuthoringTools.tools
 
         public void SetProjectDirty()
         {
-            _engineProject.projectState = ProjectState.Dirty;
+            _engineProject.ProjectState = ProjectState.Dirty;
         }
 
         public void SetProjectClean()
         {
-            _engineProject.projectState = ProjectState.Clean;
+            _engineProject.ProjectState = ProjectState.Clean;
         }
 
     }

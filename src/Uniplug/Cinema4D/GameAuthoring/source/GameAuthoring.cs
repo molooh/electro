@@ -36,7 +36,7 @@ namespace GameAuthoring
             {
                 Logger.Debug("Created new Project.");
 
-                Logger.Debug("A project is ready: " + fat.GetEngineProject().nameofCSPROJ);
+                Logger.Debug("A project is ready: " + fat.GetEngineProject().NameofCsProject);
 
                 Logger.Debug("Creating Class ... ");
 

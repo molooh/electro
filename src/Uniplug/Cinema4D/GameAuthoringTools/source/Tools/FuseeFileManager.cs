@@ -58,14 +58,14 @@ namespace FuseeAuthoringTools.tools
         {
             _projectManager.SetProjectDirty();
 
-            csProjPath = _projectManager.FuseeEngineProject.pathToCSPROJ;
+            csProjPath = _projectManager.FuseeEngineProject.PathToCsProjectFile;
 
-            // TODO: Call class Manager here to create a real c# class file and THEN insert it to the project.
-            FuseeClassHelper.CreateNewCSharpClass(className, _projectManager.FuseeEngineProject.sysPath + _projectManager.FuseeEngineProject.projPath, pName);
+            // Really create the class now.
+            FuseeClassHelper.CreateNewCSharpClass(className, _projectManager.FuseeEngineProject.GetPathToProjectFolder(), pName);
 
             className += ".cs"; // Add the ending here
 
-            if (LoadCSProj(pName, _projectManager.FuseeEngineProject.pathToCSPROJ) == ToolState.ERROR)
+            if (LoadCSProj(pName, _projectManager.FuseeEngineProject.PathToCsProjectFile) == ToolState.ERROR)
                 return ToolState.ERROR;
 
             if (InsertClassToProject(className) == ToolState.ERROR)
@@ -90,9 +90,9 @@ namespace FuseeAuthoringTools.tools
             if (!File.Exists(path))
                 return ToolState.ERROR;
 
-            File.Copy(path, _projectManager.FuseeEngineProject.sysPath + _projectManager.FuseeEngineProject.projPath + "/" + pName + ".orig", true);
+            File.Copy(path, _projectManager.FuseeEngineProject.GetPathToProjectFolder() + "/" + _projectManager.FuseeEngineProject.NameofCsProject + ".orig", true);
 
-            if (!File.Exists(_projectManager.FuseeEngineProject.sysPath + _projectManager.FuseeEngineProject.projPath + "/" + pName + ".orig"))
+            if (!File.Exists(_projectManager.FuseeEngineProject.GetPathToProjectFolder() + "/" + _projectManager.FuseeEngineProject.NameofCsProject + ".orig"))
                 return ToolState.ERROR;
 
             csprojfile = File.ReadAllLines(csProjPath).ToList();
@@ -121,15 +121,14 @@ namespace FuseeAuthoringTools.tools
         private ToolState InsertClassToProject(String fName)
         {
             // Search correct line etc.
-            int line = csprojfile.IndexOf("    <Compile Include=\"Main.cs\" />");
+            //int line = csprojfile.IndexOf("    <Compile Include=\"Main.cs\" />");
+            int line = csprojfile.IndexOf(GlobalValues.COMPILEINCLUDESTART);
 
             if (line == -1)
                 return ToolState.ERROR;
 
             string content = "    <Compile Include=\"Source\\" + fName + "\"/>"; // <Compile Include="file.cs"/>
             csprojfile.Insert(++line, content);
-
-            // Now call WriteCSProj().
 
             return ToolState.OK;
         }

@@ -22,7 +22,7 @@ namespace FuseeAuthoringTools.tools
         /// <returns></returns>
         public static ToolState BuildSolution(EngineProject ep)
         {
-            String slnFile = ep.sysPath + "/" + ep.solutionName + ".sln";
+            String slnFile = ep.PathToSolutionFolder + "/" + ep.SolutionName + ".sln";
             ProjectCollection pc = new ProjectCollection();
             Dictionary<string, string> GlobalProperty = new Dictionary<string, string>();
             
