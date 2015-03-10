@@ -71,8 +71,13 @@ namespace FuseeAuthoringTools.tools
         /// <returns>ToolState enum state value</returns>
         public ToolState SaveProject()
         {
-            SerializeToXML(_engineProject);
-            return ToolState.OK;
+            if (_engineProject.projectState != ProjectState.Dirty || _engineProject.projectState != ProjectState.Corrupt)
+            {
+                SerializeToXML(_engineProject);
+                return ToolState.OK;
+            }
+            // Cannot save because project is not clean.
+            return ToolState.ERROR;
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace FuseeAuthoringTools.tools
 
         public ToolState CreateClass(String className)
         {
-            _fileManager.CreateCSharpClass(className, _engineProject.sysPath + _engineProject.projPath, _engineProject.nameofCSPROJ);
+            _fileManager.CreateCSharpClass(className, _engineProject.nameofCSPROJ);
             return ToolState.OK;
         }
 
