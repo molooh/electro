@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 
+
+
 public class ThreadPoolTcpSrvr
 {
-    private TcpListener client;
+    private TcpListener listener;
 
+    public List<TcpConnection> Connections;
     public static string IpList()
     {
-        IPHostEntry Host = Dns.GetHostEntry(Dns.GetHostName());
+        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
-        foreach (IPAddress ip in Host.AddressList)
+        foreach (IPAddress ip in host.AddressList)
         {
             if (ip.AddressFamily == AddressFamily.InterNetwork)
             {
@@ -26,79 +29,83 @@ public class ThreadPoolTcpSrvr
 
     public ThreadPoolTcpSrvr()
     {
+        Connections = new List<TcpConnection>();
+    }
 
-        IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(IpList()), 9050);
-        client = new TcpListener(endpoint);
-        client.Start();
+    public void StartListening()
+    {
+        var endpoint = new IPEndPoint(IPAddress.Parse(IpList()), 9050);
+        listener = new TcpListener(endpoint);
+        listener.Start();
 
         Console.WriteLine("The local End point is  :" +
-                              client.LocalEndpoint);
+                              listener.LocalEndpoint);
 
         Console.WriteLine("Waiting for clients...");
         while (true)
         {
-            while (!client.Pending())
-            {
-                Thread.Sleep(1000);
-            }
-            TcpConnection newconnection = new TcpConnection();
-            newconnection.threadListener = this.client;
-            ThreadPool.QueueUserWorkItem(new
-                       WaitCallback(newconnection.HandleConnection));
+            TcpClient client = listener.AcceptTcpClient();
+            var newconnection = new TcpConnection();
+            newconnection.ThreadListener = this.listener;
+            Connections.Add(newconnection);
+            ThreadPool.QueueUserWorkItem(newconnection.HandleConnection, client);
+
+            //while (!listener.Pending())
+            //{
+            //    Thread.Sleep(1000);
+            //}
+            //var newconnection = new TcpConnection();
+            //newconnection.ThreadListener = this.listener;
+            //Connections.Add(newconnection);
+            //ThreadPool.QueueUserWorkItem(new
+            //           WaitCallback(newconnection.HandleConnection));
         }
     }
     
 }
 
-class TcpConnection
+public class TcpConnection
 {
-    public StringBuilder recvMessage;
-    public TcpListener threadListener;
-    private static int connections = 0;
-    public bool MsgOut;
+    public TcpListener ThreadListener;
+    public string Message = "";
 
-    public string teststring = "";
-
-    public void HandleConnection(object state)
+    public void HandleConnection(object clientOb)
     {
+        StringBuilder RecvMessage;
+        TcpClient client = (TcpClient) clientOb;
         int recv;
         byte[] data = new byte[1024];
 
-        TcpClient client = threadListener.AcceptTcpClient();
         NetworkStream ns = client.GetStream();
-        connections++;
-        Console.WriteLine("New client accepted: {0} active connections",
-                           connections);
+
+        Console.WriteLine("New client accepted"); //": {0} active connections");
 
         string welcome = "Welcome to my test server";
         data = Encoding.ASCII.GetBytes(welcome);
         ns.Write(data, 0, data.Length);
+        RecvMessage = new StringBuilder();
+        int iMsgEnd = 0;
 
-        while (true)
+        while (ns.CanRead)
         {
-            data = new byte[1024];
-
             recv = ns.Read(data, 0, data.Length);
-            recvMessage = new StringBuilder();
-            recvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
-            Console.WriteLine("You received the following message : " + recvMessage);
-            
-            if (recv == 0 || !ns.CanRead)
-                break;
             ns.Write(data, 0, recv);
-            teststring = recvMessage.ToString();
+            iMsgEnd = RecvMessage.Length;
+            RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
+            for (; iMsgEnd < RecvMessage.Length; iMsgEnd++)
+            {
+                if (RecvMessage[iMsgEnd] == ';')
+                {
+                    Message = RecvMessage.ToString(0, iMsgEnd);
+                    RecvMessage.Remove(0, iMsgEnd+1);
+                }
+            }
         }
+
         ns.Close();
         client.Close();
-        connections--;
-        Console.WriteLine("Client disconnected: {0} active connections",
-                           connections);
-    }
-
-    public string NewCoord()
-    {
-        return teststring;
-     
+        // TODO remove this connection from the list: _connections;
+        Console.WriteLine("Client disconnected"); // {0} active connections",_connections);
     }
 }
 

@@ -1,21 +1,16 @@
 using System;
-using System.Runtime.Remoting.Channels;
-
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Examples.PhysicsTest;
 using Fusee.Engine;
 using Fusee.SceneManagement;
 using Fusee.Math;
 
-namespace Examples.TCP_ServerTest
+namespace Examples.TCPServerTest
 {
 
     internal class TCP_ServerTest : RenderCanvas
     {
+        private ThreadPoolTcpSrvr _tpts;
         private GUIText _guiSubText;
         private GUIText _serverText;
         private IFont _guiLatoBlack;
@@ -27,6 +22,10 @@ namespace Examples.TCP_ServerTest
         // is called on startup
         public override void Init()
         {
+            Thread tcpServer = new Thread(StartTCPServer);
+            tcpServer.IsBackground = true;
+            tcpServer.Start(this);
+
             RC.ClearColor = new float4(1, 1, 1, 1);
             _gui = new GUI(RC);
            
@@ -42,9 +41,13 @@ namespace Examples.TCP_ServerTest
 
             try
             {
-                var connect = new TcpConnection();
-                //string msg = connect.recvMessage.ToString();
-                _gui.RenderMsg(connect.teststring);
+                StringBuilder sb = new StringBuilder();
+                foreach (TcpConnection connection in _tpts.Connections)
+                {
+                    sb.Append(connection.Message);
+                    sb.Append("// ");
+                }
+                _gui.RenderMsg(sb.ToString());
             }
             catch(NullReferenceException)
             {
@@ -65,26 +68,17 @@ namespace Examples.TCP_ServerTest
         }
 
 
-        public static void StartFusee()
+        public static void StartTCPServer(object self)
         {
-            var app = new TCP_ServerTest();
-            app.Run();
-        }
-
-        public static void StartTCPServer()
-        {
-            ThreadPoolTcpSrvr tpts = new ThreadPoolTcpSrvr();
+            ((TCP_ServerTest)self)._tpts = new ThreadPoolTcpSrvr();
+            ((TCP_ServerTest)self)._tpts.StartListening();
         }
         
         
         public static void Main()
         {
-            Thread fusee = new Thread(StartFusee);
-            Thread tcpServer = new Thread(StartTCPServer);
-            tcpServer.IsBackground = true;
-
-            tcpServer.Start();
-            fusee.Start();
+            var app = new TCP_ServerTest();
+            app.Run();
         }
 
         public void Render(string cont)

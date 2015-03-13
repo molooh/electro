@@ -1,7 +1,7 @@
 ﻿using Fusee.Engine;
 using Fusee.Math;
 
-namespace Examples.PhysicsTest
+namespace Examples.TCPServerTest
 {
     // ReSharper disable once InconsistentNaming
     class GUI
