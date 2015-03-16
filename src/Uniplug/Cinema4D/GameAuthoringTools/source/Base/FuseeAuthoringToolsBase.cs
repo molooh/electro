@@ -120,6 +120,8 @@ namespace FuseeAuthoringTools
 
         Boolean BuildProject();
 
+        Boolean ExportToFus();
+
         EngineProject GetEngineProject();
         int GetEngineProjectState();
     }

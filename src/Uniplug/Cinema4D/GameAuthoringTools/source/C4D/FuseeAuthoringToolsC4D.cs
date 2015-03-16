@@ -70,6 +70,17 @@ namespace FuseeAuthoringTools.c4d
         }
 
         /// <summary>
+        /// Export the current scene to .fus format and save it in the project directory.
+        /// </summary>
+        /// <returns></returns>
+        public bool ExportToFus()
+        {
+            // This method should use the exporter from christoph or so to somehow export the scene to .fus and save it in the projects directory.
+
+            return true;
+        }
+
+        /// <summary>
         /// Returns the project struct with paths etc.
         /// </summary>
         /// <returns></returns>
