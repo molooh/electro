@@ -209,7 +209,7 @@ namespace C4d
                                     " is attributed with [ObjectPlugin] but does not inherit from ObjectData");
                     }
                 }
-                else if (t.IsDefined(typeof(TagPluginAttribute), true))
+                else if (t.IsDefined(typeof(TagPluginAttribute), true)) // TODO: Fix some problems here.
                 {
                     TagPluginAttribute attr = (TagPluginAttribute)Attribute.GetCustomAttribute(t, typeof(TagPluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [TagPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");

@@ -6,7 +6,7 @@ using C4d;
 
 using Fusee.Math;
 using FuseeAuthoringTools;
-using FuseeAuthoringTools.c4d;
+using FuseeAuthoringTools.c4dSet;
 
 
 namespace GameAuthoring
@@ -32,27 +32,30 @@ namespace GameAuthoring
             String projectName = "TestProjekt";
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
+            /*
             if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
             {
                 Logger.Debug("Created new Project.");
-
                 Logger.Debug("A project is ready: " + fat.GetEngineProject().NameofCsProject);
+                Logger.Debug("Project created!");
 
                 Logger.Debug("Creating Class ... ");
-
                 fat.CreateNewClass("TestClassDominik");
+                Logger.Debug("Class created!");
             }
             else
             {
                 Logger.Debug("ERROR creating new project!");
             }
+            */
         }
 
+        
         public override bool Init(GeListNode node)
         {
             Logger.Debug("From Init." + GetObjectName(node));
 
-            return true;
+            return base.Init(node);
         }
 
         public override EXECUTIONRESULT Execute(BaseTag tag, BaseDocument doc, BaseObject op, BaseThread bt, int priority, EXECUTIONFLAGS flags)

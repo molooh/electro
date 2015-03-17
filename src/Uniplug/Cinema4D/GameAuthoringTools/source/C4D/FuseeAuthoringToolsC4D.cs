@@ -2,7 +2,7 @@
 using System.IO;
 using FuseeAuthoringTools.tools;
 
-namespace FuseeAuthoringTools.c4d
+namespace FuseeAuthoringTools.c4dSet
 {
     /// <summary>
     /// The main part for the authoring tools. Registers modules and functionality.    
@@ -75,7 +75,8 @@ namespace FuseeAuthoringTools.c4d
         /// <returns></returns>
         public bool ExportToFus()
         {
-            // This method should use the exporter from christoph or so to somehow export the scene to .fus and save it in the projects directory.
+            // TODO: This method should use the exporter from christoph or so to somehow export the scene to .fus and save it in the projects directory.
+            // Perhaps it's possible to just use the same functionality that is used in the exporter.
 
             return true;
         }
