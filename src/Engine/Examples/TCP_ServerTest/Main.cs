@@ -1,6 +1,9 @@
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Examples.TCP_ServerTest;
 using Fusee.Engine;
 using Fusee.SceneManagement;
 using Fusee.Math;
@@ -22,7 +25,7 @@ namespace Examples.TCPServerTest
         // is called on startup
         public override void Init()
         {
-            Thread tcpServer = new Thread(StartTCPServer);
+            var tcpServer = new Thread(StartTcpServer);
             tcpServer.IsBackground = true;
             tcpServer.Start(this);
 
@@ -38,11 +41,10 @@ namespace Examples.TCPServerTest
             float fps = Time.Instance.FramePerSecond;
             _gui.RenderFps(fps);
 
-
             try
             {
                 StringBuilder sb = new StringBuilder();
-                foreach (TcpConnection connection in _tpts.Connections)
+                foreach (TcpConnection connection in _tpts.GetConnections())
                 {
                     sb.Append(connection.Message);
                     sb.Append("// ");
@@ -51,7 +53,7 @@ namespace Examples.TCPServerTest
             }
             catch(NullReferenceException)
             {
-                _gui.RenderMsg("Nix da!");
+                _gui.RenderMsg("Nichts empfangen!");
             }
             
            Present();
@@ -68,12 +70,11 @@ namespace Examples.TCPServerTest
         }
 
 
-        public static void StartTCPServer(object self)
+        public static void StartTcpServer(object self)
         {
             ((TCP_ServerTest)self)._tpts = new ThreadPoolTcpSrvr();
             ((TCP_ServerTest)self)._tpts.StartListening();
         }
-        
         
         public static void Main()
         {
