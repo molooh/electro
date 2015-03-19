@@ -13,6 +13,7 @@ namespace Examples.TCP_ServerTest
 
         private List<TcpConnection> Connections;
         
+
         //Make List accessable in other class
         public List<TcpConnection> GetConnections()
         {
@@ -60,6 +61,7 @@ namespace Examples.TCP_ServerTest
                 Connections.Add(newconnection);
                 ThreadPool.QueueUserWorkItem(newconnection.HandleConnection, client);
             }
+            
         }
     
     }
@@ -68,6 +70,7 @@ namespace Examples.TCP_ServerTest
     {
         public TcpListener ThreadListener;
         public string Message = "";
+        public IPAddress Address;
         private ThreadPoolTcpSrvr _tpts;
 
         public void HandleConnection(object clientOb)
@@ -77,7 +80,10 @@ namespace Examples.TCP_ServerTest
             int recv;
             byte[] data = new byte[1024];
 
+            //Get Clients IP to identify him, Address is now in List "Connections"
             NetworkStream ns = client.GetStream();
+            Address = ((IPEndPoint) client.Client.RemoteEndPoint).Address;
+            
 
             Console.WriteLine("New client accepted"); //": {0} active connections");
 
@@ -89,20 +95,28 @@ namespace Examples.TCP_ServerTest
 
             while (ns.CanRead)
             {
-                recv = ns.Read(data, 0, data.Length); //TODO: if client disconnects --> IOExeption, fix it (client.Close() in the Android App!
-                ns.Write(data, 0, recv);
-                iMsgEnd = RecvMessage.Length;
-                RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
-                for (; iMsgEnd < RecvMessage.Length; iMsgEnd++)
+                try //TODO: other way to prevent from IOExcaption?
                 {
-                    if (RecvMessage[iMsgEnd] == ';') //Protocol; in case server receives incomplete data
+                    recv = ns.Read(data, 0, data.Length);
+                    //TODO: if client disconnects --> IOExeption, fix it (maybe client.Close() in the Android App!
+                    ns.Write(data, 0, recv);
+                    iMsgEnd = RecvMessage.Length;
+                    RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
+                    for (; iMsgEnd < RecvMessage.Length; iMsgEnd++)
                     {
-                        Message = RecvMessage.ToString(0, iMsgEnd);
-                        RecvMessage.Remove(0, iMsgEnd + 1);
+                        if (RecvMessage[iMsgEnd] == ';') //Protocol; in case server receives incomplete data
+                        {
+                            Message = RecvMessage.ToString(0, iMsgEnd); //Message is now in List "Connections"
+                            RecvMessage.Remove(0, iMsgEnd + 1);
+                        }
                     }
                 }
+                catch (System.IO.IOException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    break;
+                }
             }
-
             ns.Close();
             
             // TODO remove this connection from the list: Connections
