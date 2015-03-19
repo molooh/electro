@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,13 +13,12 @@ namespace Examples.TCP_ServerTest
         private TcpListener _listener;
 
         private List<TcpConnection> Connections;
-        
 
+        
         //Make List accessable in other class
         public List<TcpConnection> GetConnections()
         {
             return Connections;
-            
         }
 
         //Get IP Address
@@ -41,10 +41,11 @@ namespace Examples.TCP_ServerTest
         {
             Connections = new List<TcpConnection>();
         }
-
+        
         public void StartListening()
         {
             var endpoint = new IPEndPoint(IPAddress.Parse(IpList()), 9050);
+            
             _listener = new TcpListener(endpoint);
             _listener.Start();
 
@@ -55,7 +56,7 @@ namespace Examples.TCP_ServerTest
             while (true)
             {
                 TcpClient client = _listener.AcceptTcpClient();
-
+                
                 var newconnection = new TcpConnection();
                 newconnection.ThreadListener = _listener;
                 Connections.Add(newconnection);
@@ -70,8 +71,15 @@ namespace Examples.TCP_ServerTest
     {
         public TcpListener ThreadListener;
         public string Message = "";
-        public IPAddress Address;
+        private IPAddress _clientDisco;
         private ThreadPoolTcpSrvr _tpts;
+
+        private IPAddress _address;
+
+        public IPAddress Address
+        {
+            get { return _address; }
+        }
 
         public void HandleConnection(object clientOb)
         {
@@ -80,11 +88,7 @@ namespace Examples.TCP_ServerTest
             int recv;
             byte[] data = new byte[1024];
 
-            //Get Clients IP to identify him, Address is now in List "Connections"
             NetworkStream ns = client.GetStream();
-            Address = ((IPEndPoint) client.Client.RemoteEndPoint).Address;
-            
-
             Console.WriteLine("New client accepted"); //": {0} active connections");
 
             const string welcome = "Welcome to my test server";
@@ -102,6 +106,9 @@ namespace Examples.TCP_ServerTest
                     ns.Write(data, 0, recv);
                     iMsgEnd = RecvMessage.Length;
                     RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
+
+                    _address = ((IPEndPoint)client.Client.RemoteEndPoint).Address; //IP Address 1 //TODO: _address is checked as long as ns.CanRead...
+
                     for (; iMsgEnd < RecvMessage.Length; iMsgEnd++)
                     {
                         if (RecvMessage[iMsgEnd] == ';') //Protocol; in case server receives incomplete data
@@ -117,18 +124,22 @@ namespace Examples.TCP_ServerTest
                     break;
                 }
             }
+            _clientDisco = ((IPEndPoint)client.Client.RemoteEndPoint).Address; //IP Address 2 (diconnected Client)
+            //_tpts.GetConnections().Remove(_tpts.GetConnections().Single(x => Equals(x._address, _clientDisco))); //remove this connection from the list: Connections //TODO: throws Exception, fix it!
             ns.Close();
-            
-            // TODO remove this connection from the list: Connections
-            
-            //_tpts.GetConnections().Remove(RemoveFromList());
             client.Close();
             Console.WriteLine("Client disconnected"); // {0} active connections",_connections);
         }
 
+        ~TcpConnection()
+        {
+            //Delete
+        }
+
         //public TcpConnection RemoveFromList()
         //{
-        //    return _tpts.GetConnections().Single(x => x.ThreadListener;)
+        //    var connection = _tpts.GetConnections().Single(x => Equals(x._address, _clientDisco));
+        //    return connection;
         //}
     }
 }
