@@ -57,12 +57,14 @@ namespace Examples.TCP_ServerTest
             {
                 TcpClient client = _listener.AcceptTcpClient();
                 
-                var newconnection = new TcpConnection();
+                var newconnection = new TcpConnection(this);
                 newconnection.ThreadListener = _listener;
-                Connections.Add(newconnection);
+                lock (Connections)
+                {
+                    Connections.Add(newconnection);
+                }
                 ThreadPool.QueueUserWorkItem(newconnection.HandleConnection, client);
-            }
-            
+            }            
         }
     
     }
@@ -75,6 +77,11 @@ namespace Examples.TCP_ServerTest
         private ThreadPoolTcpSrvr _tpts;
 
         private IPAddress _address;
+
+        public TcpConnection(ThreadPoolTcpSrvr tcpSrvr)
+        {
+            _tpts = tcpSrvr;
+        }
 
         public IPAddress Address
         {
@@ -97,13 +104,13 @@ namespace Examples.TCP_ServerTest
             RecvMessage = new StringBuilder();
             int iMsgEnd = 0;
 
-            while (ns.CanRead)
+            while (ns.CanRead && client.Connected)
             {
                 try //TODO: other way to prevent from IOExcaption?
                 {
                     recv = ns.Read(data, 0, data.Length);
                     //TODO: if client disconnects --> IOExeption, fix it (maybe client.Close() in the Android App!
-                    ns.Write(data, 0, recv);
+                    //ns.Write(data, 0, recv);
                     iMsgEnd = RecvMessage.Length;
                     RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
 
@@ -126,16 +133,15 @@ namespace Examples.TCP_ServerTest
             }
             _clientDisco = ((IPEndPoint)client.Client.RemoteEndPoint).Address; //IP Address 2 (diconnected Client)
             //_tpts.GetConnections().Remove(_tpts.GetConnections().Single(x => Equals(x._address, _clientDisco))); //remove this connection from the list: Connections //TODO: throws Exception, fix it!
+            lock (_tpts.GetConnections())
+            {
+                _tpts.GetConnections().Remove(this);
+            }
             ns.Close();
             client.Close();
             Console.WriteLine("Client disconnected"); // {0} active connections",_connections);
         }
-
-        ~TcpConnection()
-        {
-            //Delete
-        }
-
+       
         //public TcpConnection RemoveFromList()
         //{
         //    var connection = _tpts.GetConnections().Single(x => Equals(x._address, _clientDisco));
