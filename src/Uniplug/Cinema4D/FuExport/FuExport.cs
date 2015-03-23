@@ -11,6 +11,7 @@ using System.Threading;
 using C4d;
 using Fusee.Math;
 using Fusee.Serialization;
+using FuseeExport;
 
 namespace FuExport
 {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FuExport;
 
-namespace FuExport
+namespace FuseeExport
 {
     partial class ManifestFile
     {

@@ -43,7 +43,7 @@ namespace FuExport
         }
     }
 
-    class FusConverter
+    public class FusConverter
     {
         private BaseDocument _polyDoc;
         private List<string> _textureFiles = new List<string>();
