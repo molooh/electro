@@ -64,6 +64,6 @@ namespace FuExport
             imgPhoto.Dispose();
             return bmPhoto;
         }
-    
+
     }
 }

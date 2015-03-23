@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAuthoringTools", "GameA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fuProjectGen", "fuProjectGen\fuProjectGen.csproj", "{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseeExport", "FuseeExport\FuseeExport.csproj", "{412A0C56-93B0-45AF-91CC-DA7B58B09B92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -221,6 +223,18 @@ Global
 		{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}.Release|x64.ActiveCfg = Release|x86
 		{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}.Release|x86.ActiveCfg = Release|x86
 		{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}.Release|x86.Build.0 = Release|x86
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|x64.ActiveCfg = Release|Any CPU
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -235,5 +249,6 @@ Global
 		{23BE5303-B821-4A19-9A9C-C498B3D1F0AD} = {D497D280-E234-45E5-BAB2-A0FA1D1A47BE}
 		{704C2980-2108-4BE8-9290-D659FD25E353} = {6EC14B97-C793-4EBB-9130-5163187A60B0}
 		{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4} = {6EC14B97-C793-4EBB-9130-5163187A60B0}
+		{412A0C56-93B0-45AF-91CC-DA7B58B09B92} = {6EC14B97-C793-4EBB-9130-5163187A60B0}
 	EndGlobalSection
 EndGlobal

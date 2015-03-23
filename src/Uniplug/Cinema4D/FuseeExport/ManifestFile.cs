@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace FuExport
+namespace FuseeExport
 {
     using System;
     
@@ -15,7 +15,7 @@ namespace FuExport
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+    #line 1 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class ManifestFile : ManifestFileBase
     {
@@ -37,50 +37,49 @@ var $customSysSec = JSIL.GetAssembly(""System.Security"");
 if (typeof (contentManifest) !== ""object"") { contentManifest = {}; };
 contentManifest[""");
             
-            #line 12 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 12 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_projName));
             
             #line default
             #line hidden
             this.Write(".contentproj\"] = [\r\n    ");
             
-            #line 13 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
- for (int i = 0; i < _fileCount; i++)
-       { 
+            #line 13 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
+ for (int i = 0; i < _fileCount; i++) { 
             
             #line default
             #line hidden
-            this.Write("[\"");
+            this.Write("\t\t\t[\"");
             
-            #line 15 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 14 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_fileTypes[i]));
             
             #line default
             #line hidden
             this.Write("\",\t\"");
             
-            #line 15 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 14 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_fileNames[i]));
             
             #line default
             #line hidden
             this.Write("\",\t{");
             
-            #line 15 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 14 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_fileFormats[i]));
             
             #line default
             #line hidden
             this.Write(" \"sizeBytes\": ");
             
-            #line 15 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 14 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_fileSize[i]));
             
             #line default
             #line hidden
             this.Write(" }],\r\n    ");
             
-            #line 16 "C:\Users\mch\Documents\_DEV\Fusee\src\Uniplug\Cinema4D\FuExport\ManifestFile.tt"
+            #line 15 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\FuseeExport\ManifestFile.tt"
  } 
             
             #line default

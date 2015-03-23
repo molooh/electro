@@ -10,8 +10,7 @@ var $customSysSec = JSIL.GetAssembly("System.Security");
 
 if (typeof (contentManifest) !== "object") { contentManifest = {}; };
 contentManifest["<#= _projName #>.contentproj"] = [
-    <# for (int i = 0; i < _fileCount; i++)
-       { #>
-["<#= _fileTypes[i] #>",	"<#= _fileNames[i] #>",	{<#= _fileFormats[i] #> "sizeBytes": <#= _fileSize[i] #> }],
+    <# for (int i = 0; i < _fileCount; i++) { #>
+			["<#= _fileTypes[i] #>",	"<#= _fileNames[i] #>",	{<#= _fileFormats[i] #> "sizeBytes": <#= _fileSize[i] #> }],
     <# } #>
 ];
