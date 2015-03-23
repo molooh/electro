@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using fuProjectGen;
@@ -106,6 +107,10 @@ namespace FuseeAuthoringTools.tools
             return ToolState.OK;
         }
 
+        public ToolState ExportSceneToFus()
+        {
+            // TODO: Export the scene to fus somehow.
+        }
 
         private ToolState SerializeToXML(EngineProject p)
         {
