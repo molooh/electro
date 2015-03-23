@@ -11,6 +11,84 @@ using FuseeAuthoringTools.c4dSet;
 
 namespace GameAuthoring
 {
+    struct PluginReferenceHelper
+    {
+        private EngineProject _ep;
+
+        public EngineProject EngineProject
+        {
+            get { return _ep; }
+            set { _ep = value; }
+        }
+
+    }
+    
+    /// <summary>
+    /// This communicates between the plugins.
+    /// </summary>
+    class PluginCommunicator
+    {
+        private PluginReferenceHelper _pluginReferenceHelper;
+        private FuseeProjectLoader _fuseeProjectLoader;
+        private FuseeGameAuthoring _fuseeGameAuthoring;
+
+        public PluginReferenceHelper PluginReferenceHelper
+        {
+            get { return _pluginReferenceHelper;}
+            set { _pluginReferenceHelper = value; }
+        }
+
+        public FuseeProjectLoader FuseeProjectLoader
+        {
+            get { return _fuseeProjectLoader;}
+            set { _fuseeProjectLoader = value; }
+        }
+
+        public FuseeGameAuthoring FuseeGameAuthoring
+        {
+            get { return _fuseeGameAuthoring;}
+            set { _fuseeGameAuthoring = value; }
+        }
+    }
+
+    [CommandPlugin(1035056,
+       Name = "Fusee Game Authoring Project Helper",
+       HelpText = "Opens a Fusee Project and keeps it in memory.'",
+       IconFile = "icon.tif")
+    ]
+    class FuseeProjectLoader : CommandData
+    {
+        private FuseeAuthoringToolsC4D fat;
+
+        public FuseeProjectLoader() : base(false) { }
+
+        public override bool Execute(BaseDocument doc)
+        {
+            fat = new FuseeAuthoringToolsC4D();
+
+            String slnName = "Engine";
+            String projectName = "TestProjekt";
+            String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
+
+            if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
+            {
+                Logger.Debug("Project opened or created.");
+                Logger.Debug("A project is ready: " + fat.GetEngineProject().NameofCsProject);
+
+                /*
+                fat.CreateNewClass("TestClassDominik");
+                Logger.Debug("Class created!");
+                 */
+            }
+            else
+            {
+                Logger.Debug("ERROR creating new project!");
+            }
+
+            return true;
+        }
+    }
+
     // Plugin ID is final.
     [ TagPlugin(1034424,
         Name = "Fusee Asset Tag",
@@ -18,7 +96,6 @@ namespace GameAuthoring
         Info = C4d.TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
-           
     class FuseeGameAuthoring : TagData
     {
         // private
@@ -32,22 +109,8 @@ namespace GameAuthoring
             String projectName = "TestProjekt";
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
-            /*
-            if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
-            {
-                Logger.Debug("Created new Project.");
-                Logger.Debug("A project is ready: " + fat.GetEngineProject().NameofCsProject);
-                Logger.Debug("Project created!");
-
-                Logger.Debug("Creating Class ... ");
-                fat.CreateNewClass("TestClassDominik");
-                Logger.Debug("Class created!");
-            }
-            else
-            {
-                Logger.Debug("ERROR creating new project!");
-            }
-            */
+            // TODO: Work with tag stuff here.
+            
         }
 
         
