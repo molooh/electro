@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Examples.TCP_ServerTest
+namespace Examples.TcpServerTest
 {
     public class ThreadPoolTcpSrvr
     {
         private TcpListener _listener;
-
         private List<TcpConnection> Connections;
 
         
-        //Make List accessable in other class
+        //Make List accessable in other classes
         public List<TcpConnection> GetConnections()
         {
             return Connections;
@@ -33,7 +31,6 @@ namespace Examples.TCP_ServerTest
                     return ip.ToString();
                 }
             }
-
             return string.Empty;
         }
 
@@ -73,11 +70,11 @@ namespace Examples.TCP_ServerTest
     {
         public TcpListener ThreadListener;
         public string Message = "";
-        private IPAddress _clientDisco;
         private ThreadPoolTcpSrvr _tpts;
 
         private IPAddress _address;
 
+        //constructor _tpts
         public TcpConnection(ThreadPoolTcpSrvr tcpSrvr)
         {
             _tpts = tcpSrvr;
@@ -110,7 +107,6 @@ namespace Examples.TCP_ServerTest
                 {
                     recv = ns.Read(data, 0, data.Length);
                     //TODO: if client disconnects --> IOExeption, fix it (maybe client.Close() in the Android App!
-                    //ns.Write(data, 0, recv);
                     iMsgEnd = RecvMessage.Length;
                     RecvMessage.AppendFormat("{0}", Encoding.ASCII.GetString(data, 0, recv));
 
@@ -131,21 +127,14 @@ namespace Examples.TCP_ServerTest
                     break;
                 }
             }
-            _clientDisco = ((IPEndPoint)client.Client.RemoteEndPoint).Address; //IP Address 2 (diconnected Client)
-            //_tpts.GetConnections().Remove(_tpts.GetConnections().Single(x => Equals(x._address, _clientDisco))); //remove this connection from the list: Connections //TODO: throws Exception, fix it!
+            //locks other threads
             lock (_tpts.GetConnections())
             {
                 _tpts.GetConnections().Remove(this);
             }
             ns.Close();
             client.Close();
-            Console.WriteLine("Client disconnected"); // {0} active connections",_connections);
+            Console.WriteLine("Client disconnected");
         }
-       
-        //public TcpConnection RemoveFromList()
-        //{
-        //    var connection = _tpts.GetConnections().Single(x => Equals(x._address, _clientDisco));
-        //    return connection;
-        //}
     }
 }

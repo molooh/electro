@@ -390,7 +390,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleScene", "src\Engine\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSimpleScene", "src\Engine\Components\SimpleScene\WebSimpleScene\WebSimpleScene.csproj", "{F48EE0D8-9AB9-4CA2-AF17-762D0DF5725B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPServerTest", "src\Engine\Examples\TCP_ServerTest\TCPServerTest.csproj", "{A99100EA-EA7C-4FEE-B3E4-E25C778B1075}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpServerTest", "src\Engine\Examples\TcpServerTest\TcpServerTest.csproj", "{A99100EA-EA7C-4FEE-B3E4-E25C778B1075}"
 	ProjectSection(ProjectDependencies) = postProject
 		{32D5C521-6CC4-4DCF-BFA1-199043E938DC} = {32D5C521-6CC4-4DCF-BFA1-199043E938DC}
 		{4A183140-3153-4F7E-A692-F4E3EF2CFA0A} = {4A183140-3153-4F7E-A692-F4E3EF2CFA0A}

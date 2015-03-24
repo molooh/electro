@@ -1,7 +1,7 @@
 ﻿using Fusee.Engine;
 using Fusee.Math;
 
-namespace Examples.TCPServerTest
+namespace Examples.TcpServerTest
 {
     // ReSharper disable once InconsistentNaming
     class GUI

@@ -1,17 +1,14 @@
 using System;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Examples.TCP_ServerTest;
 using Fusee.Engine;
 using Fusee.SceneManagement;
 using Fusee.Math;
 
-namespace Examples.TCPServerTest
+namespace Examples.TcpServerTest
 {
 
-    internal class TCP_ServerTest : RenderCanvas
+    internal class TcpServerTest : RenderCanvas
     {
         private ThreadPoolTcpSrvr _tpts;
         private GUIText _guiSubText;
@@ -25,6 +22,7 @@ namespace Examples.TCPServerTest
         // is called on startup
         public override void Init()
         {
+            //creates thread for TcpServer, sets it as backgroundthread, starts the thread
             var tcpServer = new Thread(StartTcpServer);
             tcpServer.IsBackground = true;
             tcpServer.Start(this);
@@ -72,13 +70,13 @@ namespace Examples.TCPServerTest
 
         public static void StartTcpServer(object self)
         {
-            ((TCP_ServerTest)self)._tpts = new ThreadPoolTcpSrvr();
-            ((TCP_ServerTest)self)._tpts.StartListening();
+            ((TcpServerTest)self)._tpts = new ThreadPoolTcpSrvr();
+            ((TcpServerTest)self)._tpts.StartListening();
         }
         
         public static void Main()
         {
-            var app = new TCP_ServerTest();
+            var app = new TcpServerTest();
             app.Run();
         }
 
