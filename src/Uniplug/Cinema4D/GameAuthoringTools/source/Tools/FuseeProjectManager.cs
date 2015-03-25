@@ -57,7 +57,10 @@ namespace FuseeAuthoringTools.tools
                     SolutionName = slnName
                 };
                 
-                // Save it to XML.    
+                // Create the xml project folder for the relations this tool uses.
+                if (!CreateProjectSettings())
+                    return ToolState.ERROR;    
+                    
                 SaveProject();
             }
             // Create a file manager so we can actually work with files ;)
@@ -156,6 +159,19 @@ namespace FuseeAuthoringTools.tools
         private String GenerateCsProjName(String pName)
         {
             return pName + ".csproj";
+        }
+
+        private bool CreateProjectSettings()
+        {
+            String slnPath = FuseeEngineProject.PathToSolutionFolder;
+
+            if (!File.Exists(slnPath + "/ProjectSettings/"))
+                File.Create(slnPath + "/ProjectSettings/");
+
+            if (!File.Exists(slnPath + "/ProjectSettings/"))
+                return false;
+                
+            return true;
         }
 
         public EngineProject FuseeEngineProject

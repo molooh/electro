@@ -85,6 +85,53 @@ namespace FuseeAuthoringTools
     }
 
     /// <summary>
+    /// Asset and Code Relationship Data.
+    /// A containter to save an asset code file relation.
+    /// </summary>
+    public struct ACRelationData
+    {
+        /// <summary>
+        /// An id or hash from the asset file from c4d.
+        /// </summary>
+        [XmlElement("AssetID")]
+        public String AssetID;
+
+        /// <summary>
+        /// The name of the asset in c4d.
+        /// </summary>
+        [XmlElement("AssetName")]
+        public String AssetName;
+
+        /// <summary>
+        /// The name of the code file added to the asset.
+        /// </summary>
+        [XmlElement("CodeFileName")]
+        public String CodeFileName;
+
+        /// <summary>
+        /// This is the path to the code file.
+        /// </summary>
+        [XmlElement("CodeFilePath")]
+        public String CodeFilePath;
+
+        /// <summary>
+        /// This is a hash to uniquely identify this connection.
+        /// The hash should be generated out of the assetid and the codefilename.
+        /// </summary>
+        [XmlElement("ConnectionID")]
+        public String ConnectionID;
+
+        /// <summary>
+        /// Retuns the complete path to the code file.
+        /// </summary>
+        /// <returns></returns>
+        public String GetPathToCodeFile()
+        {
+            return CodeFilePath + CodeFileName;
+        }
+    }
+
+    /// <summary>
     /// This is instanciated for every object that has an asset tag applied and code added
     /// to it. It represents the connection between modeling editor objects and code so
     /// the connections can be re-established when loading a project.

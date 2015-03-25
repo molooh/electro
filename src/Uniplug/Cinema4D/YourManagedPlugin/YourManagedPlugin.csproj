@@ -28,7 +28,6 @@
       <HintPath>$(C4D_DIR)\plugins\ManagedPlugIn\x64\C4d.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Fusee.Math.Conversion">  <HintPath>$(C4D_DIR)\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
     <Reference Include="Fusee.Math.Conversion">
       <HintPath>$(C4D_DIR)\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
     </Reference>
