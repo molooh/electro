@@ -129,7 +129,7 @@ namespace GameAuthoring
 
         public override EXECUTIONRESULT Execute(BaseTag tag, BaseDocument doc, BaseObject op, BaseThread bt, int priority, EXECUTIONFLAGS flags)
         {
-            tag.GetData().GetBool((int)TGameAuthoring.POWER_SWITCH);
+            //tag.GetData().GetBool((int)TGameAuthoring.POWER_SWITCH);
 
             return EXECUTIONRESULT.EXECUTIONRESULT_OK;
         }

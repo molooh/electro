@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Serialization;
 using FuseeProjectGenerator;
 
@@ -110,13 +112,39 @@ namespace FuseeAuthoringTools.tools
             return ToolState.OK;
         }
 
-        public ToolState AddCodeComponent(String pathToCode)
+        public ToolState AddCodeComponent(String assetName, String codeFileName, String codeFilePath, String assetID)
         {
-            // TODO: Create struct with relation between asset id and path to code
-            // TODO: Serialize struct
+            ACRelationData acr = new ACRelationData()
+            {
+                AssetID = assetID,
+                ConnectionID = GenerateHash(assetID, GenerateHash(codeFilePath + codeFileName)),
+                AssetName = assetName,
+                CodeFileName = codeFileName,
+                CodeFilePath = codeFilePath
+            };
+
+            SerializeAssetRelationToXML(acr, acr.ConnectionID);
+
             // TODO: Insert the relation in the csproj of the engine project.
+            // How?
 
             return ToolState.OK;
+        }
+
+        private string GenerateHash(String h1, String h2 = null)
+        {
+            // Code idea from msdn.
+            UnicodeEncoding UE = new UnicodeEncoding();
+
+            String hashStr = h2 == null ? h1 : h1 + h2;
+
+            byte[] MessageBytes = UE.GetBytes(hashStr);
+
+            SHA1Managed SHhash = new SHA1Managed();
+
+            var hash = SHhash.ComputeHash(MessageBytes);
+
+            return hash.ToString();
         }
 
         public ToolState ExportSceneToFus()
@@ -141,11 +169,31 @@ namespace FuseeAuthoringTools.tools
                 return _engineProject;
 
             XmlSerializer des = new XmlSerializer(typeof(EngineProject));
-            TextReader tr = new StreamReader(pathToXML + "/projects/" + pName + "/" + pName + ".xml"); // path to xml.
+            TextReader tr = new StreamReader(pathToXML + "/projects/" + pName + "/" + pName + ".xml");
             var ep = (EngineProject)des.Deserialize(tr);
             tr.Close();
 
             return ep;
+        }
+
+        private ToolState SerializeAssetRelationToXML(ACRelationData acr, String hash)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(EngineProject));
+            TextWriter tw = new StreamWriter(FuseeEngineProject.PathToSolutionFolder + "ProjectSettings/" + hash + ".xml");
+            ser.Serialize(tw, acr);
+            tw.Close();
+
+            return ToolState.OK;
+        }
+
+        private ACRelationData DeserializeAssetRelationFromXML(String Name, String hash)
+        {
+            XmlSerializer des = new XmlSerializer(typeof(ACRelationData));
+            TextReader tr = new StreamReader(FuseeEngineProject.PathToSolutionFolder + "/ProjectSettings/" + hash + ".xml");
+            var acr = (ACRelationData)des.Deserialize(tr);
+            tr.Close();
+
+            return acr;
         }
 
         private Boolean DoesProjectExist(String pName, String pPath)
@@ -165,13 +213,10 @@ namespace FuseeAuthoringTools.tools
         {
             String slnPath = FuseeEngineProject.PathToSolutionFolder;
 
-            if (!File.Exists(slnPath + "/ProjectSettings/"))
-                File.Create(slnPath + "/ProjectSettings/");
+            if (!Directory.Exists(slnPath + "/ProjectSettings"))
+                Directory.CreateDirectory(slnPath + "/ProjectSettings");
 
-            if (!File.Exists(slnPath + "/ProjectSettings/"))
-                return false;
-                
-            return true;
+            return Directory.Exists(slnPath + "/ProjectSettings");
         }
 
         public EngineProject FuseeEngineProject
