@@ -25,6 +25,20 @@ namespace C4d
         /// This is the constructor for the attribute.
         /// </summary>
         /// <param name="id">Plugin ID</param>
+        public TagPluginAttribute() : base()
+        {
+            ID = 0;
+            Name = "Plugin";
+            IconFile = "icon.tif";
+            Info = TagInfoFlag.TAG_VISIBLE;
+            Description = "tagplugin";
+            Disklevel = 0;
+        }
+
+        /// <summary>
+        /// This is the constructor for the attribute.
+        /// </summary>
+        /// <param name="id">Plugin ID</param>
         public TagPluginAttribute(int id) : base (id)
         {
             Name = "Plugin";

@@ -11,6 +11,11 @@ namespace C4d
         public string Name;
         public string IconFile;
 
+        public PluginBaseAttribute()
+        {
+
+        }
+
         public PluginBaseAttribute(int id)
         {
             ID = id;
@@ -26,5 +31,7 @@ namespace C4d
             Name = name;
             IconFile = iconFile;
         }
+
+        
     }
 }

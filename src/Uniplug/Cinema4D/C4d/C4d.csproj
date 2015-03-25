@@ -799,7 +799,6 @@
     <Compile Include="PluginAttributes\PluginBaseAttribute.cs" />
     <Compile Include="PluginAttributes\CommandPluginAttribute.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="MyCommandData.cs" />
     <Compile Include="PluginAttributes\ObjectPluginAttribute.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginAttributes\PluginAttribute.cs" />

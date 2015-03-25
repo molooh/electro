@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C4d, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\C4d.dll</HintPath>
+    </Reference>
     <Reference Include="Fusee.Math.Conversion">
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
     </Reference>

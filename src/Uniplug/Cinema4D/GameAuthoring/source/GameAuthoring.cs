@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using C4d;
-
 using Fusee.Math;
 using FuseeAuthoringTools;
 using FuseeAuthoringTools.c4dSet;
 
-
-namespace GameAuthoring
+namespace GameAuthoring.source
 {
     struct PluginReferenceHelper
     {
@@ -93,7 +88,7 @@ namespace GameAuthoring
     [ TagPlugin(1034424,
         Name = "Fusee Asset Tag",
         IconFile = "icon.tif",
-        Info = C4d.TagInfoFlag.TAG_VISIBLE,
+        Info = TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
     class FuseeGameAuthoring : TagData
@@ -101,13 +96,10 @@ namespace GameAuthoring
         // private
         private FuseeAuthoringToolsC4D fat;
 
-        // static
-        private static readonly int CIRCLEOBJECT_RAD = 10000;           // values 1000.3000 already reserved from includes
-        private static readonly int CIRCLEOBJECT_NEWTAB = 10001;
-        private static readonly int CIRCLEOBJECT_SUBGROUP = 10002;
-        private static readonly int CIRCLEOBJECT_CHECKME = 10003;
-
-        public FuseeGameAuthoring() : base() {
+        public FuseeGameAuthoring() : base(false) { }
+        
+        public override bool Init(GeListNode node)
+        {
             // Creating a connection to the logic behind.
             fat = new FuseeAuthoringToolsC4D();
 
@@ -116,15 +108,8 @@ namespace GameAuthoring
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
             // TODO: Work with tag stuff here.
-            
-        }
 
-        
-        public override bool Init(GeListNode node)
-        {
-            Logger.Debug("From Init." + GetObjectName(node));
-
-            return base.Init(node);
+            return true;
         }
 
         public override EXECUTIONRESULT Execute(BaseTag tag, BaseDocument doc, BaseObject op, BaseThread bt, int priority, EXECUTIONFLAGS flags)
@@ -147,7 +132,7 @@ namespace GameAuthoring
         public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
         {
             int i = 0;
-            return base.Message(node, type, data);
+            return true;
         }
 
         public override bool GetModifiedObjects(BaseTag tag, BaseDocument doc, SWIGTYPE_p_p_BaseObject op, SWIGTYPE_p_Bool pluginownedop, ref double4x4 op_mg, double lod, int flags, BaseThread thread) {

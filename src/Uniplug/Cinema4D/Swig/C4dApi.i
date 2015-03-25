@@ -1159,11 +1159,31 @@ BaseMaterial *
 %include "c4d_filterplugin.h";
 
 //////////////////////////////////////////////////////////////////
-// "c4d_tagdata.h""
+// "c4d_tagdata.h"
+//%include "c4d_tagdata.h";
+
+//////////////////////////////////////////////////////////////////
+// "c4d_tagdata.h"
+//%include "c4d_tagdata.h";
+%feature("director") TagData;
+%csmethodmodifiers TagData::TagData "private";
+%typemap(cscode) TagData %{
+  public TagData(bool memOwn) : this(C4dApiPINVOKE.new_TagData(), memOwn) {
+    SwigDirectorConnect();
+  }
+%}
 %include "c4d_tagdata.h";
 
 //////////////////////////////////////////////////////////////////
 // "c4d_tagplugin.h"
+//%include "c4d_tagplugin.h";
+%feature("director") TagPlugin;
+%csmethodmodifiers TagPlugin::TagPlugin "private";
+%typemap(cscode) TagPlugin %{
+  public TagPlugin(bool memOwn) : this(C4dApiPINVOKE.new_TagPlugin(), memOwn) {
+    SwigDirectorConnect();
+  }
+%}
 %include "c4d_tagplugin.h";
 
 //////////////////////////////////////////////////////////////////
