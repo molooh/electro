@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace fuProjectGen.Templates
+namespace FuseeProjectGenerator.Templates
 {
     using System;
     
@@ -15,7 +15,7 @@ namespace fuProjectGen.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\MainFile.tt"
+    #line 1 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\MainFile.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class MainFile : MainFileBase
     {
@@ -27,14 +27,14 @@ namespace fuProjectGen.Templates
         {
             this.Write("using Fusee.Engine;\r\nusing Fusee.Math;\r\n\r\nnamespace Examples.");
             
-            #line 5 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\MainFile.tt"
+            #line 5 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\MainFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n    public class ");
             
-            #line 7 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\MainFile.tt"
+            #line 7 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\MainFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -68,7 +68,7 @@ namespace fuProjectGen.Templates
         {
             var app = new ");
             
-            #line 34 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\MainFile.tt"
+            #line 34 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\MainFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default

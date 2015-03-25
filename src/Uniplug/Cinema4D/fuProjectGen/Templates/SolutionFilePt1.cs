@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace fuProjectGen.Templates
+namespace FuseeProjectGenerator.Templates
 {
     using System;
     

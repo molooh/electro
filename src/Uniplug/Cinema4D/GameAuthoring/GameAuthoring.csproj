@@ -61,14 +61,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="res\description\TGameAuthoring.cs" />
+    <Compile Include="res\description\ProjectHandler.cs" />
     <Compile Include="source\GameAuthoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="res\description\TGameAuthoring.res" />
+    <None Include="res\description\ProjectHandler.res" />
     <None Include="res\strings_us\c4d_strings.str" />
-    <None Include="res\strings_us\TGameAuthoring.str" />
+    <None Include="res\strings_us\ProjectHandler.str" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="res\icon.tif">
@@ -80,9 +80,9 @@
     <Folder Include="res\strings_us\dialogs\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameAuthoringTools\GameAuthoringTools.csproj">
+    <ProjectReference Include="..\GameAuthoringTools\FuseeAuthoringTools.csproj">
       <Project>{704C2980-2108-4BE8-9290-D659FD25E353}</Project>
-      <Name>GameAuthoringTools</Name>
+      <Name>FuseeAuthoringTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

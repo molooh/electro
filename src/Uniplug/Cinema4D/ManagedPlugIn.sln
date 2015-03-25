@@ -41,12 +41,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAuthoring", "GameAuthor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{6EC14B97-C793-4EBB-9130-5163187A60B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAuthoringTools", "GameAuthoringTools\GameAuthoringTools.csproj", "{704C2980-2108-4BE8-9290-D659FD25E353}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseeAuthoringTools", "GameAuthoringTools\FuseeAuthoringTools.csproj", "{704C2980-2108-4BE8-9290-D659FD25E353}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4} = {3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fuProjectGen", "fuProjectGen\fuProjectGen.csproj", "{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseeProjectGenerator", "fuProjectGen\FuseeProjectGenerator.csproj", "{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuseeExport", "FuseeExport\FuseeExport.csproj", "{412A0C56-93B0-45AF-91CC-DA7B58B09B92}"
 EndProject

@@ -1,0 +1,7 @@
+﻿STRINGTABLE ProjectHandler
+{
+  NAME ProjectHandler;
+
+  ELEMENT_1 "Long Name";
+  ELEMENT_2 "Long Name" "Short Name";
+}

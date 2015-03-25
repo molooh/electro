@@ -101,6 +101,12 @@ namespace GameAuthoring
         // private
         private FuseeAuthoringToolsC4D fat;
 
+        // static
+        private static readonly int CIRCLEOBJECT_RAD = 10000;           // values 1000.3000 already reserved from includes
+        private static readonly int CIRCLEOBJECT_NEWTAB = 10001;
+        private static readonly int CIRCLEOBJECT_SUBGROUP = 10002;
+        private static readonly int CIRCLEOBJECT_CHECKME = 10003;
+
         public FuseeGameAuthoring() : base() {
             // Creating a connection to the logic behind.
             fat = new FuseeAuthoringToolsC4D();
@@ -151,10 +157,8 @@ namespace GameAuthoring
 
         public override bool GetDDescription(GeListNode node, Description description, SWIGTYPE_p_DESCFLAGS_DESC flags)
         {
-            int i = 1;
-            return base.GetDDescription(node, description, flags);
+            return true;
         }
-
 
         private String GetObjectName(GeListNode node)
         {

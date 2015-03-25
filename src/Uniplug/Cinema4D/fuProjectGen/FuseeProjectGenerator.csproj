@@ -8,8 +8,8 @@
     <ProjectGuid>{3113CB4E-28E4-46FB-B269-ED6E51BBD3F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>fuProjectGen</RootNamespace>
-    <AssemblyName>fuProjectGen</AssemblyName>
+    <RootNamespace>FuseeProjectGenerator</RootNamespace>
+    <AssemblyName>FuseeProjectGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

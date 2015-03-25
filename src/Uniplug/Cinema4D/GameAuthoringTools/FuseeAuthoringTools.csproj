@@ -31,15 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="fuProjectGen, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\fuProjectGen.dll</HintPath>
-    </Reference>
     <Reference Include="Fusee.Math.Conversion">
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Conversion.dll</HintPath>
     </Reference>
     <Reference Include="Fusee.Math.Core">
       <HintPath>..\..\..\..\..\Cinema 4D\plugins\ManagedPlugIn\x64\Fusee.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FuseeProjectGenerator, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Cinema 4D\plugins\FuseeAuthoringTools\FuseeProjectGenerator.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />

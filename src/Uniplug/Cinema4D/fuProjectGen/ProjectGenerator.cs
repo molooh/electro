@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using fuProjectGen.Templates;
+using FuseeProjectGenerator.Templates;
 
-namespace fuProjectGen
+namespace FuseeProjectGenerator
 {
     public class ProjectGenerator
     {

@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace fuProjectGen.Templates
+namespace FuseeProjectGenerator.Templates
 {
     using System;
     
@@ -15,7 +15,7 @@ namespace fuProjectGen.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+    #line 1 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class ProjFile : ProjFileBase
     {
@@ -38,14 +38,14 @@ namespace fuProjectGen.Templates
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Examples.");
             
-            #line 13 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+            #line 13 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("</RootNamespace>\r\n    <AssemblyName>Examples.");
             
-            #line 14 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+            #line 14 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -62,7 +62,7 @@ namespace fuProjectGen.Templates
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\..\Bin\Debug\Examples\");
             
-            #line 24 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+            #line 24 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -78,7 +78,7 @@ namespace fuProjectGen.Templates
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\..\Bin\Release\Examples\");
             
-            #line 33 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+            #line 33 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -98,7 +98,7 @@ namespace fuProjectGen.Templates
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\..\Bin\Debug\Examples\");
             
-            #line 46 "C:\Users\mch\Documents\_DEV\fuTools\fuProjectGen\fuProjectGen\Templates\ProjFile.tt"
+            #line 46 "C:\Users\dominik\Development\Fusee\src\Uniplug\Cinema4D\fuProjectGen\Templates\ProjFile.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default

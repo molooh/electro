@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using fuProjectGen;
+using FuseeProjectGenerator;
 
 namespace FuseeAuthoringTools.tools
 {
@@ -107,9 +107,19 @@ namespace FuseeAuthoringTools.tools
             return ToolState.OK;
         }
 
+        public ToolState AddCodeComponent(String pathToCode)
+        {
+            // TODO: Create struct with relation between asset id and path to code
+            // TODO: Serialize struct
+            // TODO: Insert the relation in the csproj of the engine project.
+
+            return ToolState.OK;
+        }
+
         public ToolState ExportSceneToFus()
         {
             // TODO: Export the scene to fus somehow.
+            return ToolState.OK;
         }
 
         private ToolState SerializeToXML(EngineProject p)

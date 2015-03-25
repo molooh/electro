@@ -1,4 +1,4 @@
-﻿namespace fuProjectGen.Templates
+﻿namespace FuseeProjectGenerator.Templates
 {
     partial class ProjFile
     {
