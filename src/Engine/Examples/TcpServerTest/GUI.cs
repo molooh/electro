@@ -1,4 +1,5 @@
-﻿using Fusee.Engine;
+﻿using System;
+using Fusee.Engine;
 using Fusee.Math;
 
 namespace Examples.TcpServerTest
@@ -34,8 +35,8 @@ namespace Examples.TcpServerTest
             _guiPanel = new GUIPanel("TCP Server Test", _fontMedium, 10, 10, 330, 150);
 
             _fps = new GUIText("FPS", _fontMedium, 30, 55, _color2);
-            _serverMsg = new GUIText("Message received:", _fontMedium, 30,95,_color2);
-            
+            _serverMsg = new GUIText("Message received:", _fontMedium, 30, 95, _color2);
+
             _guiPanel.ChildElements.Add(_fps);
             _guiPanel.ChildElements.Add(_serverMsg);
 
@@ -45,23 +46,21 @@ namespace Examples.TcpServerTest
 
         public void RenderFps(float fps)
         {
-            _fps.Text = "FPS: " + fps;
-            _guiHandler.RenderGUI();
+            _fps.Text = "FPS: " + fps; //TODO: manage RAM usage!            
         }
 
         public void RenderMsg(string serverMsg)
         {
-            _serverMsg.Text = "Message received: " + serverMsg;
+            _serverMsg.Text = "Message received: " + serverMsg; //TODO: manage RAM usage!
             _guiHandler.RenderGUI();
         }
 
 
-        
+
 
         public void ShowGUI()
         {
             _guiHandler.Clear();
-
             _guiHandler.Add(_guiPanel);
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Fusee.Engine;
@@ -37,7 +38,7 @@ namespace Examples.TcpServerTest
         {
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
             float fps = Time.Instance.FramePerSecond;
-            _gui.RenderFps(fps);
+            _gui.RenderFps(fps);     
 
             try
             {
@@ -48,6 +49,7 @@ namespace Examples.TcpServerTest
                     sb.Append("// ");
                 }
                 _gui.RenderMsg(sb.ToString());
+                
             }
             catch(NullReferenceException)
             {
@@ -82,8 +84,7 @@ namespace Examples.TcpServerTest
 
         public void Render(string cont)
         {
-        _guiHandler.RenderGUI();
-                     
+            _guiHandler.RenderGUI();
         }
     }
     
