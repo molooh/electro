@@ -314,16 +314,16 @@ namespace Fusee.Engine
             for (uint i = 32; i < 256; i++)
             {
                 face.LoadChar(i, LoadFlags.Default, LoadTarget.Normal);
-
-                if (rowW + (face.Glyph.Advance.X >> 6) + 1 >= maxWidth)
+                
+                if (rowW + ((int) face.Glyph.Advance.X) + 1 >= maxWidth)
                 {
                     h += rowH;
                     rowW = 0;
                     rowH = 0;
                 }
 
-                rowW += (face.Glyph.Advance.X >> 6) + 1;
-                rowH = System.Math.Max(face.Glyph.Metrics.Height >> 6, rowH);
+                rowW += ((int) face.Glyph.Advance.X) + 1;
+                rowH = System.Math.Max((int) face.Glyph.Metrics.Height, rowH);
             }
 
             // for resizing to non-power-of-two
@@ -385,8 +385,8 @@ namespace Fusee.Engine
                     OpenTK.Graphics.OpenGL.PixelFormat.Alpha, PixelType.UnsignedByte, face.Glyph.Bitmap.Buffer);
 
                 // char informations
-                texAtlas.CharInfo[i].AdvanceX = face.Glyph.Advance.X >> 6;
-                texAtlas.CharInfo[i].AdvanceY = face.Glyph.Advance.Y >> 6;
+                texAtlas.CharInfo[i].AdvanceX = (int) face.Glyph.Advance.X;
+                texAtlas.CharInfo[i].AdvanceY = (int) face.Glyph.Advance.Y;
 
                 texAtlas.CharInfo[i].BitmapW = face.Glyph.Bitmap.Width;
                 texAtlas.CharInfo[i].BitmapH = face.Glyph.Bitmap.Rows;
@@ -428,7 +428,7 @@ namespace Fusee.Engine
                 var leftChar = texAtlas.Face.GetCharIndex(text[c]);
                 var rightChar = texAtlas.Face.GetCharIndex(text[c + 1]);
 
-                fixX += (texAtlas.Face.GetKerning(leftChar, rightChar, KerningMode.Default).X >> 6)*scaleX;
+                fixX += ((int) texAtlas.Face.GetKerning(leftChar, rightChar, KerningMode.Default).X)*scaleX;
 
                 vertices[fixVert++].x += fixX;
                 vertices[fixVert++].x += fixX;
@@ -1557,20 +1557,26 @@ namespace Fusee.Engine
 
         #region Picking related Members
 
-        public Bitmap GetPixelColor(int x, int y, int w = 1, int h = 1)
+        public ImageData GetPixelColor(int x, int y, int w = 1, int h = 1)
         {
+            ImageData image = CreateImage(w, h, "black");
+            GL.ReadPixels(x, y, w, h, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, image.PixelData);
+            return image;
+            
+            /*
             System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, w, h);
             Bitmap bmp = new Bitmap(w, h);
-            BitmapData data = bmp.LockBits(rect, flags: ImageLockMode.WriteOnly, format: PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
             GL.ReadPixels(x, y, w, h, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
 
             bmp.UnlockBits(data);
             return bmp;
+            */
         }
 
         public float GetPixelDepth(int x, int y)
         {
-            var depth = new float();
+            float depth = 0;
             GL.ReadPixels(x, y, 1, 1, OpenTK.Graphics.OpenGL.PixelFormat.DepthComponent, PixelType.UnsignedByte, ref depth);
 
             return depth;

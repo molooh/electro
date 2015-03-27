@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,27 +10,6 @@ using Fusee.Engine.SimpleScene;
 
 namespace Examples.SceneViewer
 {
-    internal class MySceneVisitor : SceneVisitor
-    {
-        [VisitMethod]
-        void HowzitMesh(MeshComponent mesh)
-        {
-            Diagnostics.Log("Here's a mesh with " + mesh.Vertices.Length + " vertices shaping " + mesh.Triangles.Length + " triangles.");
-        }
-
-        [VisitMethod]
-        void GDayMaterial(MaterialComponent material)
-        {
-            float3 col = material.Diffuse.Color;
-            Diagnostics.Log("Here's a material showing (" + col.r + ", " + col.g + ", " + col.b + ").");
-        }
-
-        [VisitMethod]
-        void HelloNode(SceneNodeContainer node)
-        {
-            Diagnostics.Log("A node called " + node.Name  + ".");
-        }
-    }
 
     public class SceneViewer : RenderCanvas
     {
@@ -46,6 +26,7 @@ namespace Examples.SceneViewer
         private Mesh _meshFace;
         private Mesh _meshTea;
         private SceneRenderer _sr;
+        private SceneContainer _scene;
         private ShaderProgram _sColor;
         private IShaderParam _colorParam;
 
@@ -59,7 +40,8 @@ namespace Examples.SceneViewer
         public void AdjustModelScaleOffset()
         {
             AABBf? box = null;
-            if (_sr == null || (box = _sr.GetAABB()) == null)
+
+            if (_scene == null || (box = box = new AABBCalculator(_scene).GetBox()) == null)
             {
                 _modelScaleOffset = float4x4.Identity;
             }
@@ -71,9 +53,6 @@ namespace Examples.SceneViewer
         // is called on startup
         public override void Init()
         {
-            //TestSerialize();
-            //TestDeserialize();
-            
             // GUI initialization
             _zVal = 500;
             _guiHandler = new GUIHandler();
@@ -97,29 +76,25 @@ namespace Examples.SceneViewer
             _guiHandler.Add(_guiSubText);
 
             // Scene loading
-            SceneContainer scene;
             var ser = new Serializer();
             using (var file = File.OpenRead(@"Assets/Model.fus"))
             {
-                scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+                _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }
 
-            // Scene Visitor Test
-            new MySceneVisitor().Traverse(scene);
-
-            _sr = new SceneRenderer(scene, "Assets");
+            _sr = new SceneRenderer(_scene, "Assets");
             AdjustModelScaleOffset();
             _guiSubText.Text = "FUSEE 3D Scene";
-            if (scene.Header.CreatedBy != null || scene.Header.CreationDate != null)
+            if (_scene.Header.CreatedBy != null || _scene.Header.CreationDate != null)
             {
                 _guiSubText.Text += " created";
-                if (scene.Header.CreatedBy != null)
+                if (_scene.Header.CreatedBy != null)
                 {
-                    _guiSubText.Text += " by " + scene.Header.CreatedBy;
+                    _guiSubText.Text += " by " + _scene.Header.CreatedBy;
                 }
-                if (scene.Header.CreationDate != null)
+                if (_scene.Header.CreationDate != null)
                 {
-                    _guiSubText.Text += " on " + scene.Header.CreationDate;
+                    _guiSubText.Text += " on " + _scene.Header.CreationDate;
                 }
             }
 
@@ -132,6 +107,10 @@ namespace Examples.SceneViewer
             RC.SetShaderParam(_colorParam, new float4(1, 1, 1, 1));
             RC.ClearColor = new float4(1, 1, 1, 1);
         }
+
+
+
+
 
         private void _guiFuseeLink_OnGUIButtonLeave(GUIButton sender, MouseEventArgs mea)
         {
@@ -204,7 +183,7 @@ namespace Examples.SceneViewer
 
             
             // first mesh
-            //RC.ModelView = mtxCam * mtxRot /* float4x4.CreateScale(100) * */;
+            //RC.Model = mtxCam * mtxRot /* float4x4.CreateScale(100) * */;
             //RC.SetShader(_spColor);
             //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
             //RC.Render(_meshTea);
@@ -269,9 +248,11 @@ namespace Examples.SceneViewer
 
             var aChild = new SceneNodeContainer()
             {
-                Transform = new TransformContainer(){Rotation = new float3(0, 0, 0), Translation = new float3(0.11f, 0.11f, 0), Scale = new float3(1, 1, 1)}
+                Components = new List<SceneComponentContainer>(new SceneComponentContainer[]{
+                    new TransformComponent() {Rotation = new float3(0, 0, 0), Translation = new float3(0.11f, 0.11f, 0), Scale = new float3(1, 1, 1)},
+                    aMesh
+                })
             };
-            aChild.AddComponent(aMesh);
 
             var parent = new SceneContainer()
             {
