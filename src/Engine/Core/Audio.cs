@@ -40,7 +40,7 @@ namespace Fusee.Engine
 
         internal void CloseDevice()
         {
-            _audioImp.CloseDevice();
+            //_audioImp.CloseDevice();
         }
 
         /// <summary>
@@ -87,6 +87,11 @@ namespace Fusee.Engine
         public void SetPanning(float val)
         {
             _audioImp.SetPanning(val);
+        }
+
+        internal void Dispose()
+        {
+            _instance = null;
         }
 
         /// <summary>
