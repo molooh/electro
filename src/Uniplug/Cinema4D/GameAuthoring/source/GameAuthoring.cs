@@ -46,6 +46,7 @@ namespace GameAuthoring.source
         }
     }
 
+    // Plugin ID is final.
     [CommandPlugin(1035056,
        Name = "Fusee Game Authoring Project Helper",
        HelpText = "Opens a Fusee Project and keeps it in memory.'",
@@ -117,6 +118,7 @@ namespace GameAuthoring.source
             return true;
         }
 
+        //TODO: This should accept C4dApi.DocumentInfoData typed instance etc. as the third paramter.
         public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
         {
 
@@ -139,8 +141,9 @@ namespace GameAuthoring.source
                 //DocumentInfoData dInfoData = data;
                 // TODO: Here comes an objeft from type DocumentInfoData with void*
                 // TODO: Need to parse it somehow and then i can grab all the types from DocumentInfoData()->type
+                // TODO: At least it should work like this.
 
-                //DocumentInfoData d = (DocumentInfoData)data;
+                DocumentInfoData d = (DocumentInfoData)data;
                 
                 if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE)
                 {

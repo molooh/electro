@@ -451,7 +451,6 @@ BaseMaterial *
 %enddef 
 // </map-functionpointers-to-delegates>
 
-
 //////////////////////////////////////////////////////////////////////////// 
 //
 // This code is taken from 
@@ -795,7 +794,19 @@ BaseMaterial *
 %typemap(csin) DataAllocator*, DataAllocator*& "$csinput /* DataAllocator*_csin */" 
 // %enddef 
 
+
+//%cs_callback(void*, DocumentInfoData)
+//%define %cs_callback(TYPE, CSTYPE) 
+%typemap(ctype) void*, void*& "void* /* void* */" 
+%typemap(in) void*  %{ $1 = (void*)$input; /* void*_in */%} 
+%typemap(in) void*& %{ $1 = (void**)&$input;  /* void*&_in */%} 
+%typemap(imtype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_imtype */" 
+%typemap(cstype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_cstype */" 
+%typemap(csin) void*, void*& "$csinput /* DocumentInfo_csin */" 
+// %enddef
+
 %include "c4d_nodedata.h";
+%clean(void*);
 
 //////////////////////////////////////////////////////////////////
 // obase.h
