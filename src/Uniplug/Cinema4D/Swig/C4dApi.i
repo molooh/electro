@@ -72,6 +72,7 @@
 #include "ObjectDataM.h"
 #include "c4d_customdatatype.h" // New
 #include "customgui_inexclude.h" // New
+#include "c4d_gui.h"
 
 // POD (plain old datatype = no construcors or methods) version of C4D's Vector.
 // We need this type as return values for swig-generated C++ stubs. If we use
@@ -797,16 +798,15 @@ BaseMaterial *
 
 //%cs_callback(void*, DocumentInfoData)
 //%define %cs_callback(TYPE, CSTYPE) 
-%typemap(ctype) void*, void*& "void* /* void* */" 
-%typemap(in) void*  %{ $1 = (void*)$input; /* void*_in */%} 
-%typemap(in) void*& %{ $1 = (void**)&$input;  /* void*&_in */%} 
-%typemap(imtype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_imtype */" 
-%typemap(cstype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_cstype */" 
-%typemap(csin) void*, void*& "$csinput /* DocumentInfo_csin */" 
+//%typemap(ctype) void*, void*& "void* /* void* */" 
+//%typemap(in) void*  %{ $1 = (void*)$input; /* void*_in */%} 
+//%typemap(in) void*& %{ $1 = (void**)&$input;  /* void*&_in */%} 
+//%typemap(imtype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_imtype */" 
+//%typemap(cstype, out="global::System.IntPtr") void*, void*& "DocumentInfoData /* DocumentInfoData_cstype */" 
+//%typemap(csin) void*, void*& "$csinput /* DocumentInfo_csin */" 
 // %enddef
 
 %include "c4d_nodedata.h";
-%clean(void*);
 
 //////////////////////////////////////////////////////////////////
 // obase.h
@@ -1270,3 +1270,8 @@ void MessageDialog(const String &str);
 Bool QuestionDialog(const String& str);
 void GePrint(const String &str);
 BaseContainer GetCustomDataTypeDefault(Int32 type);
+
+//////////////////////////////////////////////////////////////////
+// c4d_gui.h
+// New by Dominik 30.03.2015
+%include "c4d_gui.h";

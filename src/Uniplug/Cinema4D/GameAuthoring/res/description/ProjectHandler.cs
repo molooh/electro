@@ -5,8 +5,8 @@
     /// </summary>
     public enum ProjectHandler
     {
-        BSP_TXT_1 = 10001,
-        BSP_TXT_2 = 10002,
+        BSP_TXT_1 = 3001,
+        BSP_TXT_2 = 3002,
     };
 
 }

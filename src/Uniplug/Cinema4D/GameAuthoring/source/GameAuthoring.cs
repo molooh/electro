@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using C4d;
 using Fusee.Math;
 using FuseeAuthoringTools;
@@ -55,11 +56,18 @@ namespace GameAuthoring.source
     class FuseeProjectLoader : CommandData
     {
         private FuseeAuthoringToolsC4D fat;
+        private CmdUIDialog cmdUi;
 
         public FuseeProjectLoader() : base(false) { }
 
         public override bool Execute(BaseDocument doc)
         {
+            cmdUi = new CmdUIDialog();
+            cmdUi.InitValues();
+
+            cmdUi.CreateLayout();
+            cmdUi.Open(DLG_TYPE.DLG_TYPE_MODAL_RESIZEABLE, 1035056, 200, 200, 350, 200);
+
             fat = new FuseeAuthoringToolsC4D();
 
             String slnName = "Engine";
@@ -143,7 +151,7 @@ namespace GameAuthoring.source
                 // TODO: Need to parse it somehow and then i can grab all the types from DocumentInfoData()->type
                 // TODO: At least it should work like this.
 
-                DocumentInfoData d = (DocumentInfoData)data;
+                //DocumentInfoData d = (DocumentInfoData)data;
                 
                 if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE)
                 {
@@ -197,6 +205,52 @@ namespace GameAuthoring.source
             BaseObject bo = tag.GetObject();
 
             return bo.GetName();;
+        }
+    }
+
+    /// <summary>
+    /// Handles the GUI functions for the command plugin.
+    /// </summary>
+    public class CmdUIDialog : GeDialog
+    {
+        public override bool InitValues()
+        {
+            Logger.Debug("From UI Init.");
+            return true;
+        }
+
+        public override int Message(BaseContainer msg, BaseContainer result)
+        {
+            Logger.Debug("From ui Message.");
+            // TODO: return true if taken care of message, return false if otherwise.
+            int msgid = msg.GetId();
+
+            return 0;
+        }
+
+        public override bool CreateLayout()
+        {
+            Logger.Debug("From create Layout.");
+            
+            SetTitle("My Dialog");
+            
+            bool b1 = GroupBegin(100010, 0, 1, 0, "", 0);
+            {
+                bool b2 = GroupSpace(4, 4);
+                bool b3 = GroupBorderSpace(4, 4, 4, 4);
+                AddStaticText(-1, 0, 0, 0, "Hello World!", 0);
+            }
+
+            GroupEnd();
+
+            if (AddDlgGroup(C4dApi.DLG_OK | C4dApi.DLG_CANCEL) == false)
+            {
+                Logger.Debug("Error in AddDlgGroup. Buttons could not be added.");
+                return false;
+            }
+                
+
+            return true;
         }
     }
 }
