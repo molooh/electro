@@ -55,6 +55,9 @@ namespace GameAuthoring.source
     ]
     class FuseeProjectLoader : CommandData
     {
+        //Plugin stuff.
+        private int PL_PLUGINID = 1035056;
+
         private FuseeAuthoringToolsC4D fat;
         private CmdUiDialog cmdUi;
 
@@ -66,7 +69,10 @@ namespace GameAuthoring.source
             cmdUi.InitValues();
 
             cmdUi.CreateLayout();
-            cmdUi.Open(DLG_TYPE.DLG_TYPE_MODAL_RESIZEABLE, 1035056, 200, 200, 350, 200);
+            
+            cmdUi.AddStaticText(3003, C4dApi.BFH_CENTER, 200, 30, "Textfeld", C4dApi.BORDER_NONE);
+            
+            cmdUi.Open(DLG_TYPE.DLG_TYPE_MODAL_RESIZEABLE, PL_PLUGINID, 200, 200, 350, 200);
 
             fat = new FuseeAuthoringToolsC4D();
 
@@ -213,9 +219,36 @@ namespace GameAuthoring.source
     /// </summary>
     public class CmdUiDialog : GeDialog
     {
+        private int EDITTEXT = 3001;
+        private int STATICTEXT = 3002;
+
         public override bool InitValues()
         {
             Logger.Debug("From UI Init.");
+
+            return true;
+        }
+
+        public override bool CreateLayout()
+        {
+            Logger.Debug("From create Layout.");
+
+            SetTitle("My Dialog");
+
+            bool b1 = GroupBegin(100010, C4dApi.BFH_CENTER, 1, 0, "Title of Group", 0);
+            bool b2 = GroupSpace(4, 4);
+            bool b3 = GroupBorderSpace(4, 4, 4, 4);
+
+            AddStaticText(STATICTEXT, C4dApi.BFH_CENTER, 0, 0, "Text:", C4dApi.BORDER_NONE);
+
+            GroupEnd();
+
+            if (AddDlgGroup(C4dApi.DLG_OK | C4dApi.DLG_CANCEL) == false)
+            {
+                Logger.Debug("Error in AddDlgGroup. Buttons could not be added.");
+                return false;
+            }
+
             return true;
         }
 
@@ -226,30 +259,6 @@ namespace GameAuthoring.source
             int msgid = msg.GetId();
 
             return 0;
-        }
-
-        public override bool CreateLayout()
-        {
-            Logger.Debug("From create Layout.");
-            
-            SetTitle("My Dialog");
-            
-            bool b1 = GroupBegin(100010, C4dApi.BFH_CENTER, 1, 0, "Title of Group", 0);
-            bool b2 = GroupSpace(4, 4);
-            bool b3 = GroupBorderSpace(4, 4, 4, 4);
-            AddStaticText(-1, 0, 0, 0, "Hello World!", 0);
-            AddEditText(3003, C4dApi.BFH_CENTER, 100, 30);
-
-            GroupEnd();
-
-            if (AddDlgGroup(C4dApi.DLG_OK | C4dApi.DLG_CANCEL) == false)
-            {
-                Logger.Debug("Error in AddDlgGroup. Buttons could not be added.");
-                return false;
-            }
-                
-
-            return true;
         }
     }
 }
