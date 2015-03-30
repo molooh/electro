@@ -73,6 +73,7 @@
 #include "c4d_customdatatype.h" // New
 #include "customgui_inexclude.h" // New
 #include "c4d_gui.h"
+#include "gui.h"
 
 // POD (plain old datatype = no construcors or methods) version of C4D's Vector.
 // We need this type as return values for swig-generated C++ stubs. If we use
@@ -1275,3 +1276,8 @@ BaseContainer GetCustomDataTypeDefault(Int32 type);
 // c4d_gui.h
 // New by Dominik 30.03.2015
 %include "c4d_gui.h";
+
+//////////////////////////////////////////////////////////////////
+// c4d_gui.h
+// New by Dominik 30.03.2015
+%include "gui.h";

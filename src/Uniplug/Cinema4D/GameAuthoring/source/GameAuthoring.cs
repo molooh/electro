@@ -56,13 +56,13 @@ namespace GameAuthoring.source
     class FuseeProjectLoader : CommandData
     {
         private FuseeAuthoringToolsC4D fat;
-        private CmdUIDialog cmdUi;
+        private CmdUiDialog cmdUi;
 
         public FuseeProjectLoader() : base(false) { }
 
         public override bool Execute(BaseDocument doc)
         {
-            cmdUi = new CmdUIDialog();
+            cmdUi = new CmdUiDialog();
             cmdUi.InitValues();
 
             cmdUi.CreateLayout();
@@ -211,7 +211,7 @@ namespace GameAuthoring.source
     /// <summary>
     /// Handles the GUI functions for the command plugin.
     /// </summary>
-    public class CmdUIDialog : GeDialog
+    public class CmdUiDialog : GeDialog
     {
         public override bool InitValues()
         {
@@ -234,12 +234,11 @@ namespace GameAuthoring.source
             
             SetTitle("My Dialog");
             
-            bool b1 = GroupBegin(100010, 0, 1, 0, "", 0);
-            {
-                bool b2 = GroupSpace(4, 4);
-                bool b3 = GroupBorderSpace(4, 4, 4, 4);
-                AddStaticText(-1, 0, 0, 0, "Hello World!", 0);
-            }
+            bool b1 = GroupBegin(100010, C4dApi.BFH_CENTER, 1, 0, "Title of Group", 0);
+            bool b2 = GroupSpace(4, 4);
+            bool b3 = GroupBorderSpace(4, 4, 4, 4);
+            AddStaticText(-1, 0, 0, 0, "Hello World!", 0);
+            AddEditText(3003, C4dApi.BFH_CENTER, 100, 30);
 
             GroupEnd();
 

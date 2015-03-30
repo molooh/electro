@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="res\description\ProjectHandler.res" />
+    <None Include="res\dialogs\OPENPROJECT.res" />
     <None Include="res\strings_us\c4d_strings.str" />
     <None Include="res\strings_us\ProjectHandler.str" />
   </ItemGroup>
@@ -76,7 +77,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="res\dialogs\" />
     <Folder Include="res\strings_us\dialogs\" />
   </ItemGroup>
   <ItemGroup>
