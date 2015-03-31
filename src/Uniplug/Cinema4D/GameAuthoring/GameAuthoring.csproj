@@ -61,15 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="res\description\ProjectHandler.cs" />
     <Compile Include="source\GameAuthoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="res\description\ProjectHandler.res" />
-    <None Include="res\dialogs\OPENPROJECT.res" />
-    <None Include="res\strings_us\c4d_strings.str" />
-    <None Include="res\strings_us\ProjectHandler.str" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="res\icon.tif">
@@ -77,6 +72,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="res\description\" />
+    <Folder Include="res\dialogs\" />
     <Folder Include="res\strings_us\dialogs\" />
   </ItemGroup>
   <ItemGroup>

@@ -70,8 +70,6 @@ namespace GameAuthoring.source
 
             cmdUi.CreateLayout();
             
-            cmdUi.AddStaticText(3003, C4dApi.BFH_CENTER, 200, 30, "Textfeld", C4dApi.BORDER_NONE);
-            
             cmdUi.Open(DLG_TYPE.DLG_TYPE_MODAL_RESIZEABLE, PL_PLUGINID, 200, 200, 350, 200);
 
             fat = new FuseeAuthoringToolsC4D();
@@ -123,12 +121,12 @@ namespace GameAuthoring.source
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
             // TODO: Work with tag stuff here.
-            Logger.Debug("Asset Tag initialized.");
+            Logger.Debug("From TagData Init: initialized.");
             return true;
         }
 
         public override bool Draw(BaseTag tag, BaseObject op, BaseDraw bd, BaseDrawHelp bh) {
-            Logger.Debug("From Draw()");
+            //Logger.Debug("From Draw()");
             return true;
         }
 
@@ -180,8 +178,8 @@ namespace GameAuthoring.source
     /// </summary>
     public class CmdUiDialog : GeDialog
     {
-        private int EDITTEXT = 3001;
-        private int STATICTEXT = 3002;
+        private const int FILEPATHTXT = 3001;
+        private const int PROJECTNAMETXT = 3002;
 
         public override bool InitValues()
         {
@@ -192,25 +190,32 @@ namespace GameAuthoring.source
 
         public override bool CreateLayout()
         {
+            bool res = base.CreateLayout();
+            if (!res)
+            {
+                Logger.Debug("Parent call to GeDialog->CreateLayout() result in an ERROR.");
+            }
+
             Logger.Debug("From create Layout.");
 
             SetTitle("My Dialog");
 
-            bool b1 = GroupBegin(100010, C4dApi.BFH_CENTER, 1, 0, "Title of Group", 0);
-            bool b2 = GroupSpace(4, 4);
-            bool b3 = GroupBorderSpace(4, 4, 4, 4);
+            bool b1 = GroupBegin(0, C4dApi.BFH_SCALEFIT, 5, 0, "GroupOne", 0);
+            {
+                bool b2 = GroupSpace(4, 4);
+                bool b3 = GroupBorderSpace(4, 4, 4, 4);
 
-            AddStaticText(STATICTEXT, C4dApi.BFH_CENTER, 0, 0, "Text:", C4dApi.BORDER_NONE);
-
+                AddEditText(FILEPATHTXT, C4dApi.BFH_CENTER, 200, 30, C4dApi.EDITTEXT_HELPTEXT);
+            }            
             GroupEnd();
 
             if (AddDlgGroup(C4dApi.DLG_OK | C4dApi.DLG_CANCEL) == false)
             {
-                Logger.Debug("Error in AddDlgGroup. Buttons could not be added.");
+                Logger.Debug("Error in AddDlgGroup. Buttons have not been added.");
                 return false;
             }
 
-            return true;
+            return res;
         }
 
         public override int Message(BaseContainer msg, BaseContainer result)
