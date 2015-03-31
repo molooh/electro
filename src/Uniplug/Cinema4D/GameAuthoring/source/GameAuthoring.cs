@@ -123,7 +123,7 @@ namespace GameAuthoring.source
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
             // TODO: Work with tag stuff here.
-
+            Logger.Debug("Asset Tag initialized.");
             return true;
         }
 
@@ -134,84 +134,37 @@ namespace GameAuthoring.source
 
         public override bool MessageDocumentInfo(GeListNode node, DocumentInfoData data)
         {
-            Logger.Debug("In Message" + data.filename);
+            // TODO: Check what the message is saying.
+            if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVE_BEFORE)
+            {
+                Logger.Debug("MSG_DOCUMENTINFO_TYPE_SAVE_BEFORE");
+            }
+            else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVE_AFTER)
+            {
+                Logger.Debug("MSG_DOCUMENTINFO_TYPE_SAVE_AFTER");
+            }
+            else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE)
+            {
+                Logger.Debug("MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE");
+            }
+            else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_AFTER)
+            {
+                Logger.Debug("MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_AFTER");
+            }
+            else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_LOAD)
+            {
+                Logger.Debug("MSG_DOCUMENTINFO_TYPE_LOAD");
+            }
+
             return true;
         }
-
-        /*
-        //TODO: This should accept C4dApi.DocumentInfoData typed instance etc. as the third paramter.
+/*
         public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
         {
-
-            if (type == C4dApi.MSG_EDIT)
-            {
-                Logger.Debug("MSG_EDIT = " + type);
-            }
-            else if (type == C4dApi.MSG_GETCUSTOMICON)
-            {
-                Logger.Debug("MSG_GETCUSTOMICON = " + type);
-            }
-            else if (type == C4dApi.COLORSYSTEM_HSVTAB)
-            {
-                Logger.Debug("MSG_COLORSYSTEM_HSVTAB = " + type);
-            }
-            else if (type == C4dApi.MSG_DOCUMENTINFO)
-            {
-                Logger.Debug("MSG_DOCUMENTINFO = " + type);
-
-                //DocumentInfoData dInfoData = data;
-                // TODO: Here comes an objeft from type DocumentInfoData with void*
-                // TODO: Need to parse it somehow and then i can grab all the types from DocumentInfoData()->type
-                // TODO: At least it should work like this.
-
-                //DocumentInfoData d = (DocumentInfoData)data;
-                
-                if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE)
-                {
-                    Logger.Debug("INFODATA: -> MSG_DOCUMENTINFO_TYPE_BEFORE = " + type);
-                }
-                else if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_AFTER)
-                {
-                    Logger.Debug("INFODATA: -> MSG_DOCUMENTINFO_TYPE_AFTER = " + type);
-                }
-                else if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_TAG_INSERT)
-                {
-                    Logger.Debug("INFODATA: -> MSG_DOCUMENTINFO_TYPE_TAG_INSERT = " + type);
-                }
-                else if (type == C4dApi.MSG_DOCUMENTINFO_TYPE_LOAD)
-                {
-                    Logger.Debug("INFODATA: -> MSG_DOCUMENTINFO_TYPE_TAG_LOAD = " + type);
-                }
-
-            }
-            else if (type == C4dApi.MSG_DESCRIPTION_GETINLINEOBJECT)
-            {
-                Logger.Debug("MSG_DESCRIPTION_GETINLINEOBJECT = " + type);
-            }
-            else if (type == C4dApi.DRAW_PARAMETER_OGL_PRIMITIVERESTARTINDEX)
-            {
-                Logger.Debug("DRAW_PARAMETER_OGL_PRIMITIVERESTARTINDEX = " + type);
-            }
-            else
-            {
-                Logger.Debug("MSG_ID: " + type);
-            }
-                    
-            //Logger.Debug("From Message, node: " + node.GetNodeID());
-
-            string filename = node.GetDocument().GetDocumentName().GetString();
-            //Logger.Debug("fname: " + filename);
-
-            return true;
+            Logger.Debug("From Message old.");
+            return false;
         }
-        */
-
-        public override bool GetDDescription(GeListNode node, Description description, SWIGTYPE_p_DESCFLAGS_DESC flags)
-        {
-            Logger.Debug("From GetDDescription: " + description.GetDescription());
-            return true;
-        }
-
+*/
         private String GetObjectName(GeListNode node)
         {
             // Call some info.

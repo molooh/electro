@@ -11,8 +11,7 @@ public:
 
 };
 
-class TagDataM :
-	public TagData
+class TagDataM : public TagData
 {
 public:
 	TagDataM(void);

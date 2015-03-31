@@ -10,6 +10,7 @@ TagDataM::TagDataM(void)
 
 TagDataM::~TagDataM(void)
 {
+
 }
 
 Bool TagDataM::Message(GeListNode *node, Int32 type, void *data)
