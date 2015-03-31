@@ -239,6 +239,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C4dApiExtensions\ObjectDataM.cpp" />
+    <ClCompile Include="C4dApiExtensions\TagDataM.cpp" />
     <ClCompile Include="C4dApiWrapper.cpp" />
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
@@ -247,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C4dApiExtensions\ObjectDataM.h" />
+    <ClInclude Include="C4dApiExtensions\TagDataM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

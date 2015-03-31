@@ -214,7 +214,7 @@ namespace C4d
                     TagPluginAttribute attr = (TagPluginAttribute)Attribute.GetCustomAttribute(t, typeof(TagPluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [TagPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
 
-                    if (InheritsFrom(t, typeof(TagData)))
+                    if (InheritsFrom(t, typeof(TagDataM)))
                     {
                         // Register the tag plugin
                         string name;

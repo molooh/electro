@@ -6,6 +6,9 @@
     <ClCompile Include="C4dApiExtensions\ObjectDataM.cpp">
       <Filter>C4dApiExtensions</Filter>
     </ClCompile>
+    <ClCompile Include="C4dApiExtensions\TagDataM.cpp">
+      <Filter>C4dApiExtensions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="mono.def" />
@@ -17,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C4dApiExtensions\ObjectDataM.h">
+      <Filter>C4dApiExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="C4dApiExtensions\TagDataM.h">
       <Filter>C4dApiExtensions</Filter>
     </ClInclude>
   </ItemGroup>

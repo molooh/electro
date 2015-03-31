@@ -70,6 +70,7 @@
 #include "gvobject.h"
 #include "gvmath.h"
 #include "ObjectDataM.h"
+#include "TagDataM.h"
 #include "c4d_customdatatype.h" // New
 #include "customgui_inexclude.h" // New
 #include "c4d_gui.h"
@@ -1176,14 +1177,16 @@ BaseMaterial *
 //////////////////////////////////////////////////////////////////
 // "c4d_tagdata.h"
 //%include "c4d_tagdata.h";
-%feature("director") TagData;
-%csmethodmodifiers TagData::TagData "private";
-%typemap(cscode) TagData %{
-  public TagData(bool memOwn) : this(C4dApiPINVOKE.new_TagData(), memOwn) {
+%feature("director") TagDataM;
+%csmethodmodifiers TagDataM::TagDataM "private";
+%typemap(cscode) TagDataM %{
+	public TagDataM(bool memOwn) : this(C4dApiPINVOKE.new_TagDataM(), memOwn) {
     SwigDirectorConnect();
   }
 %}
 %include "c4d_tagdata.h";
+%include "TagDataM.h";
+
 
 //////////////////////////////////////////////////////////////////
 // "c4d_tagplugin.h"

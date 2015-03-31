@@ -80,21 +80,21 @@ namespace GameAuthoring.source
             String projectName = "TestProjekt";
             String fuseeBinProjPath = "C:/Users/dominik/Development/TestFusee";
 
+            /*
             if (fat.CreateProject(slnName, projectName, fuseeBinProjPath))
             {
                 Logger.Debug("Project opened or created.");
                 Logger.Debug("A project is ready: " + fat.GetEngineProject().NameofCsProject);
 
-                /*
                 fat.CreateNewClass("TestClassDominik");
                 Logger.Debug("Class created!");
-                 */
+                 
             }
             else
             {
                 Logger.Debug("ERROR creating new project!");
             }
-
+            */
             return true;
         }
     }
@@ -106,7 +106,7 @@ namespace GameAuthoring.source
         Info = TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
-    class FuseeGameAuthoring : TagData
+    class FuseeGameAuthoring : TagDataM
     {
         // private
         private FuseeAuthoringToolsC4D fat;
@@ -132,6 +132,13 @@ namespace GameAuthoring.source
             return true;
         }
 
+        public override bool MessageDocumentInfo(GeListNode node, DocumentInfoData data)
+        {
+            Logger.Debug("In Message" + data.filename);
+            return true;
+        }
+
+        /*
         //TODO: This should accept C4dApi.DocumentInfoData typed instance etc. as the third paramter.
         public override bool Message(GeListNode node, int type, SWIGTYPE_p_void data)
         {
@@ -197,6 +204,7 @@ namespace GameAuthoring.source
 
             return true;
         }
+        */
 
         public override bool GetDDescription(GeListNode node, Description description, SWIGTYPE_p_DESCFLAGS_DESC flags)
         {
