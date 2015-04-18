@@ -66,6 +66,8 @@
 #include "c4d_nodedata.h"
 #include "c4d_tagdata.h" // New by Dominik
 #include "c4d_tagplugin.h" // New by Dominik
+#include "c4d_messagedata.h" // New by Dominik
+//#include "c4d_baseplugin.h" // New by Dominik
 #include "gvdynamic.h"
 #include "gvobject.h"
 #include "gvmath.h"
@@ -1199,6 +1201,22 @@ BaseMaterial *
   }
 %}
 %include "c4d_tagplugin.h";
+
+//////////////////////////////////////////////////////////////////
+// "c4d_messagedata.h"
+// %include "c4d_messagedata.h";
+%feature("director") MessageData;
+%csmethodmodifiers MessageData::MessageData "private";
+%typemap(cscode) MessageData %{
+	public MessageData(bool memOwn) : this(C4dApiPINVOKE.new_MessageData(), memOwn) {
+		SwigDirectorConnect();
+	}
+%}
+%include "c4d_messagedata.h";
+
+//////////////////////////////////////////////////////////////////
+// "c4d_baseplugin.h"
+//%include "c4d_baseplugin.h";
 
 //////////////////////////////////////////////////////////////////
 //%include "c4d_customdatatype.h";

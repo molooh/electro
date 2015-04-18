@@ -21,29 +21,22 @@ namespace GameAuthoring.source
     
     /// <summary>
     /// This communicates between the plugins.
+    /// TODO: Might not be needed?
     /// </summary>
-    class PluginCommunicator
+    [MessagePlugin(ID = 1035161, Name = "MessageHandler", Info = 1 << 29)]
+    class FatPluginCommunicator : MessageData
     {
-        private PluginReferenceHelper _pluginReferenceHelper;
-        private FuseeProjectLoader _fuseeProjectLoader;
-        private FuseeGameAuthoring _fuseeGameAuthoring;
+        public FatPluginCommunicator() : base(false) { }
 
-        public PluginReferenceHelper PluginReferenceHelper
+        public override bool CoreMessage(int id, BaseContainer bc)
         {
-            get { return _pluginReferenceHelper;}
-            set { _pluginReferenceHelper = value; }
+            Logger.Debug("MessageHandler ID: " + id);
+            return false;
         }
 
-        public FuseeProjectLoader FuseeProjectLoader
+        public override int GetTimer()
         {
-            get { return _fuseeProjectLoader;}
-            set { _fuseeProjectLoader = value; }
-        }
-
-        public FuseeGameAuthoring FuseeGameAuthoring
-        {
-            get { return _fuseeGameAuthoring;}
-            set { _fuseeGameAuthoring = value; }
+            return 100;
         }
     }
 
@@ -53,7 +46,7 @@ namespace GameAuthoring.source
        HelpText = "Opens a Fusee Project and keeps it in memory.'",
        IconFile = "icon.tif")
     ]
-    class FuseeProjectLoader : CommandData
+    class FatProjectLoaderPlugin : CommandData
     {
         //Plugin stuff.
         private int PL_PLUGINID = 1035056;
@@ -61,7 +54,7 @@ namespace GameAuthoring.source
         private FuseeAuthoringToolsC4D fat;
         private CmdUiDialog cmdUi;
 
-        public FuseeProjectLoader() : base(false) { }
+        public FatProjectLoaderPlugin() : base(false) { }
 
         public override bool Execute(BaseDocument doc)
         {
@@ -95,6 +88,12 @@ namespace GameAuthoring.source
             */
             return true;
         }
+
+        public override bool Message(int type, SWIGTYPE_p_void data)
+        {
+            Logger.Debug("Data type from Command Plugin Message: " + data.GetType());
+            return true;
+        }
     }
 
     // Plugin ID is final.
@@ -104,12 +103,12 @@ namespace GameAuthoring.source
         Info = TagInfoFlag.TAG_VISIBLE,
         Description = "tagplugin",
         Disklevel = 0) ]
-    class FuseeGameAuthoring : TagDataM
+    class FatAssetTagPlugin : TagDataM
     {
         // private
         private FuseeAuthoringToolsC4D fat;
 
-        public FuseeGameAuthoring() : base(false) { }
+        public FatAssetTagPlugin() : base(false) { }
         
         public override bool Init(GeListNode node)
         {
@@ -122,6 +121,10 @@ namespace GameAuthoring.source
 
             // TODO: Work with tag stuff here.
             Logger.Debug("From TagData Init: initialized.");
+
+            // TODO: Send message to my own plugin, so i can get data from the object.
+            C4dApi.SpecialEventAdd(1034424, 230187);
+
             return true;
         }
 
@@ -140,6 +143,7 @@ namespace GameAuthoring.source
             else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVE_AFTER)
             {
                 Logger.Debug("MSG_DOCUMENTINFO_TYPE_SAVE_AFTER");
+                // TODO: Now export .fus
             }
             else if (data.type == C4dApi.MSG_DOCUMENTINFO_TYPE_SAVEPROJECT_BEFORE)
             {

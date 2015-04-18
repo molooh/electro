@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Logger.cs" />
     <Compile Include="Plugin.cs" />
+    <Compile Include="PluginAttributes\MessagePluginAttribute.cs" />
     <Compile Include="PluginAttributes\CommandPluginAttribute.cs" />
     <Compile Include="PluginAttributes\ObjectPluginAttribute.cs" />
     <Compile Include="PluginAttributes\PluginAttribute.cs" />

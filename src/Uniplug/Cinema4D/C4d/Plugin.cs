@@ -209,7 +209,8 @@ namespace C4d
                                     " is attributed with [ObjectPlugin] but does not inherit from ObjectData");
                     }
                 }
-                else if (t.IsDefined(typeof(TagPluginAttribute), true)) // TODO: Fix some problems here.
+                // Is it a TagPlugin?
+                else if (t.IsDefined(typeof(TagPluginAttribute), true))
                 {
                     TagPluginAttribute attr = (TagPluginAttribute)Attribute.GetCustomAttribute(t, typeof(TagPluginAttribute), true);
                     Logger.Debug("  Class " + t.Name + " is attributed with [TagPlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
@@ -251,7 +252,7 @@ namespace C4d
                                     break;
                             }
 
-                            // Call to c4d api. This call hands over all the attributes from the plugin class.
+                            // Call to c4d api. This call hands over all the attributes from the plugin class' attributes.
                             C4dApi.RegisterTagPlugin(attr.ID, name, infoP, nda, attr.Description, bmp, attr.Disklevel);
                         }
                         else
@@ -264,6 +265,38 @@ namespace C4d
                         Logger.Warn("  Class " + t.Name + " in " + fi.Name + " is attributed with [TagPlugin] but does not inherit from TagData");
                     }
 
+                }
+                else if (t.IsDefined(typeof (MessagePluginAttribute), true))
+                {
+                    MessagePluginAttribute attr = (MessagePluginAttribute)Attribute.GetCustomAttribute(t, typeof(MessagePluginAttribute), true);
+                    Logger.Debug("  Class " + t.Name + " is attributed with [MessagePlugin(ID=" + attr.ID + ", Name=\"" + attr.Name + "\")]");
+
+                    if (InheritsFrom(t, typeof (MessageData)))
+                    {
+                        // Register the message plugin
+                        string name;
+                        BaseBitmap bmp;
+                        GetPluginDescription(t, attr, out name, out bmp);
+
+                         ConstructorInfo ctor = t.GetConstructor(Type.EmptyTypes);
+                        if (ctor != null)
+                        {
+                            PluginAllocator pa = new PluginAllocator(ctor);
+                            NodeDataAllocator nda = pa.Allocate;
+                            _nodeAllocatorList.Add(nda);
+
+                            // Call to c4d api. This call hands over all the attributes from the plugin class' attributes.
+                            C4dApi.RegisterMessagePlugin(attr.ID, name, attr.Info, attr.Data);
+                        }
+                        else
+                        {
+                            Logger.Warn("Class " + t.Name + " in " + fi.Name + " is missing a parameterless constructor");
+                        }
+                    }
+                    else
+                    {
+                        Logger.Warn("  Class " + t.Name + " in " + fi.Name + " is attributed with [TagPlugin] but does not inherit from TagData");
+                    }
                 }
                 else
                     Logger.Info("Could not recognize dll type: " + t.ToString() + ".");
