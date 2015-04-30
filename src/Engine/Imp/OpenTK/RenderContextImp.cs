@@ -790,8 +790,14 @@ namespace Fusee.Engine
 
             int vboBytes;
             int vertsBytes = vertices.Length*3*sizeof (float);
-            if (((MeshImp) mr).VertexBufferObject == 0)
-                GL.GenBuffers(1, out ((MeshImp) mr).VertexBufferObject);
+            MeshImp meshImp = (MeshImp) mr;
+            if (!meshImp.VertexBufferValid)
+            {
+                if (meshImp.VertexBufferObject != 0)
+                    GL.DeleteBuffer(meshImp.VertexBufferObject);
+                GL.GenBuffers(1, out meshImp.VertexBufferObject);
+                meshImp.VertexBufferValid = true;
+            }
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, ((MeshImp) mr).VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertsBytes), vertices, BufferUsageHint.StaticDraw);
@@ -821,9 +827,16 @@ namespace Fusee.Engine
 
             int vboBytes;
             int normsBytes = normals.Length*3*sizeof (float);
-            if (((MeshImp) mr).NormalBufferObject == 0)
-                GL.GenBuffers(1, out ((MeshImp) mr).NormalBufferObject);
 
+            MeshImp meshImp = (MeshImp)mr;
+            if (!meshImp.NormalBufferValid)
+            {
+                if (meshImp.NormalBufferObject != 0)
+                    GL.DeleteBuffer(meshImp.NormalBufferObject);
+                GL.GenBuffers(1, out meshImp.NormalBufferObject);
+                meshImp.NormalBufferValid = true;
+            }
+            
             GL.BindBuffer(BufferTarget.ArrayBuffer, ((MeshImp) mr).NormalBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (normsBytes), normals, BufferUsageHint.StaticDraw);
             GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out vboBytes);
@@ -850,6 +863,16 @@ namespace Fusee.Engine
 
             int vboBytes;
             int uvsBytes = uvs.Length*2*sizeof (float);
+
+            MeshImp meshImp = (MeshImp)mr;
+            if (!meshImp.UVBufferValid)
+            {
+                if (meshImp.UVBufferObject != 0)
+                    GL.DeleteBuffer(meshImp.UVBufferObject);
+                GL.GenBuffers(1, out meshImp.UVBufferObject);
+                meshImp.UVBufferValid = true;
+            }
+            
             if (((MeshImp) mr).UVBufferObject == 0)
                 GL.GenBuffers(1, out ((MeshImp) mr).UVBufferObject);
 
@@ -946,9 +969,16 @@ namespace Fusee.Engine
 
             int vboBytes;
             int colsBytes = colors.Length*sizeof (uint);
-            if (((MeshImp) mr).ColorBufferObject == 0)
-                GL.GenBuffers(1, out ((MeshImp) mr).ColorBufferObject);
 
+            MeshImp meshImp = (MeshImp)mr;
+            if (!meshImp.ColorBufferValid)
+            {
+                if (meshImp.ColorBufferObject != 0)
+                    GL.DeleteBuffer(meshImp.ColorBufferObject);
+                GL.GenBuffers(1, out meshImp.ColorBufferObject);
+                meshImp.ColorBufferValid = true;
+            }
+                        
             GL.BindBuffer(BufferTarget.ArrayBuffer, ((MeshImp) mr).ColorBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (colsBytes), colors, BufferUsageHint.StaticDraw);
             GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out vboBytes);
@@ -976,8 +1006,15 @@ namespace Fusee.Engine
             int vboBytes;
             int trisBytes = triangleIndices.Length*sizeof (short);
 
-            if (((MeshImp) mr).ElementBufferObject == 0)
-                GL.GenBuffers(1, out ((MeshImp) mr).ElementBufferObject);
+            MeshImp meshImp = (MeshImp)mr;
+            if (!meshImp.ElementBufferValid)
+            {
+                if (meshImp.ElementBufferObject != 0)
+                    GL.DeleteBuffer(meshImp.ElementBufferObject);
+                GL.GenBuffers(1, out meshImp.ElementBufferObject);
+                meshImp.ElementBufferValid = true;
+            }
+                        
             // Upload the index buffer (elements inside the vertex buffer, not color indices as per the IndexPointer function!)
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ((MeshImp) mr).ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (trisBytes), triangleIndices,
