@@ -1,9 +1,7 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using Fusee.Engine;
-using Fusee.SceneManagement;
 using Fusee.Math;
 
 namespace Examples.TcpServerTest

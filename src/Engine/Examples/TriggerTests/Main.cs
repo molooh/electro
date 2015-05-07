@@ -1,10 +1,6 @@
 using System;
-using Fusee.Engine.SimpleScene;
-using Fusee.Serialization;
 using Fusee.Engine;
-using Fusee.SceneManagement;
 using Fusee.Math;
-using System.Collections;
 
 namespace Examples.TriggerTests
 {
@@ -170,7 +166,7 @@ namespace Examples.TriggerTests
                 var matrix = float4x4.Transpose(rb.WorldTransform);
 
                
-                if (rb.CollisionShape is Fusee.Engine.BoxShape)
+                if (rb.CollisionShape is BoxShape)
                 {
                     var shape = (BoxShape)rb.CollisionShape;
                     RC.ModelView = mtxCam * matrix * float4x4.Scale(shape.HalfExtents.x / 100, shape.HalfExtents.y / 100, shape.HalfExtents.z / 100);

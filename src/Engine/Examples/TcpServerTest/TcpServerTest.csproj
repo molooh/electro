@@ -71,10 +71,6 @@
       <Project>{B7FAC89A-4E75-4EAC-BBC3-BBDB89C94B8A}</Project>
       <Name>SerializationContainer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SceneManagement\SceneManagement.csproj">
-      <Project>{81B3A7F0-F8E4-45D0-BE69-B869C9B1803E}</Project>
-      <Name>SceneManagement</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Fusee.Engine.SimpleScene, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
