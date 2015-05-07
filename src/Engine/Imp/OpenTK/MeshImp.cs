@@ -7,11 +7,19 @@
     public class MeshImp : IMeshImp
     {
         #region Internal Fields
+        internal bool VertexBufferValid;
         internal int VertexBufferObject;
+        internal bool NormalBufferValid;
         internal int NormalBufferObject;
+        internal bool ColorBufferValid;
         internal int ColorBufferObject;
+        internal bool UVBufferValid;
         internal int UVBufferObject;
+
+        internal bool ElementBufferValid;
         internal int ElementBufferObject;
+
+        //TODO
         internal int TangentBufferObject;
         internal int BitangentBufferObject;
         internal int NElements;
@@ -23,7 +31,8 @@
         /// </summary>
         public void InvalidateVertices()
         {
-            VertexBufferObject = 0;
+            VertexBufferValid = false;
+            // VertexBufferObject = 0;
         }
         /// <summary>
         /// Gets a value indicating whether [vertices set].
@@ -31,14 +40,14 @@
         /// <value>
         ///   <c>true</c> if [vertices set]; otherwise, <c>false</c>.
         /// </value>
-        public bool VerticesSet { get { return VertexBufferObject != 0; } }
+        public bool VerticesSet { get { return VertexBufferValid; } }
 
         /// <summary>
         /// Invalidates the normals.
         /// </summary>
         public void InvalidateNormals()
         {
-            NormalBufferObject = 0;
+            NormalBufferValid = false;
         }
         /// <summary>
         /// Gets a value indicating whether [normals set].
@@ -46,14 +55,14 @@
         /// <value>
         ///   <c>true</c> if [normals set]; otherwise, <c>false</c>.
         /// </value>
-        public bool NormalsSet { get { return NormalBufferObject != 0; } }
+        public bool NormalsSet { get { return NormalBufferValid; } }
 
         /// <summary>
         /// Implementation Tasks: Invalidates the colors, e.g. reset the ColorBufferObject of this instance by setting it to 0.
         /// </summary>
         public void InvalidateColors()
         {
-            ColorBufferObject = 0;
+            ColorBufferValid = false;
         }
         /// <summary>
         /// Gets a value indicating whether [colors set].
@@ -61,7 +70,7 @@
         /// <value>
         ///   <c>true</c> if [colors set]; otherwise, <c>false</c>.
         /// </value>
-        public bool ColorsSet { get { return ColorBufferObject != 0; } }
+        public bool ColorsSet { get { return ColorBufferValid; } }
 
         /// <summary>
         /// Gets a value indicating whether [u vs set].
@@ -69,14 +78,14 @@
         /// <value>
         ///   <c>true</c> if [u vs set]; otherwise, <c>false</c>.
         /// </value>
-        public bool UVsSet { get { return UVBufferObject != 0; } }
+        public bool UVsSet { get { return UVBufferValid; } }
 
         /// <summary>
         /// Invalidates the UV's.
         /// </summary>
         public void InvalidateUVs()
         {
-            UVBufferObject = 0;
+            UVBufferValid = false;
         }
 
         /// <summary>
@@ -84,7 +93,7 @@
         /// </summary>
         public void InvalidateTriangles()
         {
-            ElementBufferObject = 0;
+            ElementBufferValid = false;
             NElements = 0;
         }
         /// <summary>
@@ -93,7 +102,7 @@
         /// <value>
         ///   <c>true</c> if [triangles set]; otherwise, <c>false</c>.
         /// </value>
-        public bool TrianglesSet { get { return ElementBufferObject != 0; } }
+        public bool TrianglesSet { get { return ElementBufferValid; } }
         #endregion
     }
 }

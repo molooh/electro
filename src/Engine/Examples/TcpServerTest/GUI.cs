@@ -46,12 +46,12 @@ namespace Examples.TcpServerTest
 
         public void RenderFps(float fps)
         {
-            _fps.Text = "FPS: " + fps; //TODO: manage RAM usage!            
+           _fps.Text = "FPS: " + fps; //TODO: manage RAM usage!            
         }
 
         public void RenderMsg(string serverMsg)
         {
-            _serverMsg.Text = "Message received: " + serverMsg; //TODO: manage RAM usage!
+            //_serverMsg.Text = "Message received: " + serverMsg; //TODO: manage RAM usage!
             _guiHandler.RenderGUI();
         }
 
