@@ -52,9 +52,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\41b5ba712c40c45f2abbb8be491b63c0.jpg" />
+    <Content Include="Assets\Bark2.jpg" />
+    <Content Include="Assets\commic-stone.jpg" />
     <Content Include="Assets\Island.jpg" />
-    <Content Include="Assets\WasseKugel.jpg" />
-    <Content Include="Assets\Waterplants0037_L.jpg" />
+    <Content Include="Assets\Unbenannt-3.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\Engine\Common\Common.csproj">
@@ -69,16 +71,31 @@
       <Project>{E95FA1C8-6491-4B4B-BBE1-EDA6B16B2C6A}</Project>
       <Name>Math.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Serialization\SerializationContainer.csproj">
+      <Project>{B7FAC89A-4E75-4EAC-BBC3-BBDB89C94B8A}</Project>
+      <Name>SerializationContainer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\SimpleScene\SimpleScene.csproj">
+      <Project>{10DA02FC-109F-4D71-864A-9F5B1E9A0D70}</Project>
+      <Name>SimpleScene</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Fusee.SerializationSerializer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Bin\Debug\Fusee.SerializationSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\ExternalBinaries\protobuf\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Fireball_Baked.obj.model" />
-    <None Include="Assets\Island_prototype.obj.model" />
-    <None Include="Assets\Island_texture_try.obj.model" />
-    <None Include="Assets\NEW_ISLAND.obj.model" />
-    <None Include="Assets\WorldTry.obj.model" />
+    <None Include="Assets\FUSEE_Scene_try.fus" />
+    <None Include="Assets\NEW_ISLAND.fus" />
+    <None Include="Assets\NEW_ISLAND_alone.fus" />
+    <None Include="Assets\NEW_ISLAND_way.fus" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)/Microsoft.CSharp.targets" />
   <PropertyGroup>
