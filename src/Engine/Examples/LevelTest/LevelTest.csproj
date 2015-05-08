@@ -52,11 +52,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\41b5ba712c40c45f2abbb8be491b63c0.jpg" />
-    <Content Include="Assets\Bark2.jpg" />
-    <Content Include="Assets\commic-stone.jpg" />
-    <Content Include="Assets\Island.jpg" />
-    <Content Include="Assets\Unbenannt-3.jpg" />
+    <Content Include="Assets\41b5ba712c40c45f2abbb8be491b63c0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Bark2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\commic-stone.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Island.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Unbenannt-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\Engine\Common\Common.csproj">
@@ -92,10 +102,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\FUSEE_Scene_try.fus" />
-    <None Include="Assets\NEW_ISLAND.fus" />
-    <None Include="Assets\NEW_ISLAND_alone.fus" />
-    <None Include="Assets\NEW_ISLAND_way.fus" />
+    <Content Include="Assets\FUSEE_Scene_try.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\NEW_ISLAND.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\NEW_ISLAND_alone.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\NEW_ISLAND_way.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)/Microsoft.CSharp.targets" />
   <PropertyGroup>
