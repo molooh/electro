@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Fusee.Engine;
 using Fusee.Engine.SimpleScene;
 using Fusee.Math;
@@ -50,7 +52,7 @@ namespace Examples.Quest_test_physics
             }
 
 
-            using (var file = File.OpenRead(@"Assets/SimpleLab2.fus"))
+            using (var file = File.OpenRead(@"Assets/lab_rot_inner.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
                 //MeshComponent mc = _scene.Children.FindComponents<MeshComponent>(comp => true).First();
