@@ -40,12 +40,12 @@ namespace Examples.KameraTest
 
 
         private int _aa;
-        private int _bb;
+        private int _bb ;
         private int _cc = 300;
         private int _dd;
         private int _ee = 600;
         private int _ff;
-
+       
 
         // is called on startup
         public override void Init()
@@ -64,7 +64,7 @@ namespace Examples.KameraTest
             _meshCubeB6 = MeshReader.LoadMesh(@"Assets/Cube.obj.model");
             _meshCubeB7 = MeshReader.LoadMesh(@"Assets/Cube.obj.model");
             _Rechteck = MeshReader.LoadMesh(@"Assets/Rechteck.obj.model");
-
+           
 
             _spColor = MoreShaders.GetDiffuseColorShader(RC);
             // _spTexture = MoreShaders.GetTextureShader(RC);
@@ -82,151 +82,207 @@ namespace Examples.KameraTest
         public override void RenderAFrame()
         {
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
+            //Array for Players Position 
+            float3 [] playerPos = new float3[3];
 
-            var ace = (_aa + _cc + _ee) / 3;
-            var bdf = (_bb + _dd + _ff) / 3;
-            var ab = (_aa + _bb) / 2;
-            var cd = (_cc + _dd) / 2;
+            //Array for new Players Position
+            float3 [] newPlayerPos = new float3[3];
+
+            //Array for input
+            float3[] move = new float3[3];
+
+            //Central Position of all Players
+            var averageNewPos = new float3(0,0,0);
+
+            //Camera Minimum and Maximum
+            var camMin = new float3(0, 0, 0);
+            var camMax = new float3(0, 0, 0);
+
+            playerPos[0].x = _aa;
+            playerPos[0].y = 0;
+            playerPos[0].z = _bb;
+
+            playerPos[1].x = _cc;
+            playerPos[1].y = 0;
+            playerPos[1].z = _dd;
+
+            playerPos[2].x = _ee;
+            playerPos[2].y = 0;
+            playerPos[2].z = _ff;
+            
 
 
-            var diffA = ace - _aa;
-            var diffB = bdf - _bb;
-            Console.WriteLine(_aa + "  " + ace + " " + diffA);
+
+            var inputA = 0;
+            var inputB = 0;
+            var inputC = 0;
+            var inputD = 0;
+            var inputE = 0;
+            var inputF = 0;
+           
+
 
             // move per keyboard (arrow keys)
-            if (diffA <= 750) { 
                 if (Input.Instance.IsKey(KeyCodes.Left)){
-                //_angleHorz -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                _aa -= 5;
-            }
-            }
+                    inputA = 5;
 
-                if (diffA >= -750) { 
+                    _aa -= (int)inputA;
+            }
                   if (Input.Instance.IsKey(KeyCodes.Right)){
-                      //_angleHorz += RotationSpeed * (float)Time.Instance.DeltaTime;
-                      _aa += 5;
+                      inputA = 5;
+                      _aa += (int)inputA;
               }
-}
-                if (diffB >= -950) { 
                     if (Input.Instance.IsKey(KeyCodes.Up)){
-                        //_angleVert -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                        _bb += 5;
+                        inputB = 5;
+                        _bb += (int)inputB;
                 }
-}
-                if (diffB <= 550) { 
                    if (Input.Instance.IsKey(KeyCodes.Down)){
-                       // _angleVert += RotationSpeed * (float)Time.Instance.DeltaTime;
-                       _bb -= 5;
+                       inputB = 5;
+                       _bb -= (int)inputB;
                }
-}
+
             // move per keyboard (W A S D)
             
                   if (Input.Instance.IsKey(KeyCodes.A)){
-                      //_angleHorz -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                      _cc -= 5;
+                      inputC = 5;
+                       _cc -= (int)inputC;
               }
 
            
                     if (Input.Instance.IsKey(KeyCodes.D)){
-                        //_angleHorz += RotationSpeed * (float)Time.Instance.DeltaTime;
-                        _cc += 5;
+                        inputC = 5;
+                        _cc += (int)inputC;
                 }
 
           
                     if (Input.Instance.IsKey(KeyCodes.W)){
-                        //_angleVert -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                        _dd += 5;
+                        inputD = 5;
+                        _dd += (int)inputD;
                 }
 
            
                      if (Input.Instance.IsKey(KeyCodes.S)){
-                         // _angleVert += RotationSpeed * (float)Time.Instance.DeltaTime;
-                         _dd -= 5;
+                         inputD = 5;
+                         _dd -= (int)inputD;
+
                  }
 
 
             //move per keybord U H J K
 
                  if (Input.Instance.IsKey(KeyCodes.H)) { 
-                      //_angleHorz -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                      _ee -= 5;
+
+                     inputE = 5;
+                     _ee -= (int)inputE;
                         }
                     if (Input.Instance.IsKey(KeyCodes.K)){
-                        //_angleHorz += RotationSpeed * (float)Time.Instance.DeltaTime;
-                        _ee += 5;
+                        inputE = 5;
+                        _ee += (int)inputE;
                         }
 
            
                     if (Input.Instance.IsKey(KeyCodes.U)){
-                        //_angleVert -= RotationSpeed * (float)Time.Instance.DeltaTime;
-                        _ff += 5;
+                        inputF = 5;
+                        _ff += (int)inputF;
                         }
                      if (Input.Instance.IsKey(KeyCodes.J)){
-                         // _angleVert += RotationSpeed * (float)Time.Instance.DeltaTime;
-                         _ff -= 5;
+                         inputF = 5;
+                         _ff -= (int)inputF;
 
                         }
+                     move[0].x = inputA;
+                     move[0].z = inputB;
+                     move[1].x = inputC;
+                     move[1].z = inputD;
+                     move[2].x = inputE;
+                     move[2].z = inputF;
+                     for (int i = 0; i < playerPos.Length; i++)
+                     {
+                         newPlayerPos[i].x = playerPos[i].x + move[i].x;
+                         newPlayerPos[i].z = playerPos[i].z + move[i].z;
+                         averageNewPos += newPlayerPos[i];
+
+                     //  Console.WriteLine(move[i]);
+                     }
+
+                     averageNewPos *= (float)(1.0 / playerPos.Length);
+                    // Console.WriteLine(averageNewPos);
+
+                     camMin = new float3(averageNewPos.x - 750, 0, averageNewPos.z - 550);
+                     camMax = new float3(averageNewPos.x + 750, 0, averageNewPos.z + 950);
+
+                    
 
 
-
+                    
             
           
-            var mtxCam = float4x4.LookAt(ace, 400, bdf - 1500, ace, 0 , bdf, 0, 1, 0);
-            
+            var mtxCam = float4x4.LookAt(averageNewPos.x, 400, averageNewPos.z - 1500, averageNewPos.x, 0 , averageNewPos.z, 0, 1, 0);
 
+            for (int i = 0; i < playerPos.Length; i++)
+            {
+                if (newPlayerPos[i].x <= camMin.x)
+                {
+                    playerPos[i].x = camMin.x;
+
+                }
+                else
+                {
+                    if (newPlayerPos[i].x >= camMax.x)
+                    {
+                        playerPos[i].x = camMax.x;
+
+                    }
+                    else
+                    {
+                        playerPos[i].x = newPlayerPos[i].x;
+                    }
+                }
+
+                if (newPlayerPos[i].z <= camMin.z)
+                {
+                    playerPos[i].z = camMin.z;
+
+                }
+                else
+                {
+                    if (newPlayerPos[i].z >= camMax.z)
+                    {
+                        playerPos[i].z = camMax.z;
+
+                    }
+                    else
+                    {
+                        playerPos[i].z = newPlayerPos[i].z;
+                    }
+                }
+            }
 
             // first mesh
+            
+            var mtxM1 = float4x4.CreateTranslation(playerPos[0].x, 0, playerPos[0].z);
 
-            var mtxM1 = float4x4.CreateTranslation(_aa, 0, _bb);
-
-            if (diffA <= -750)
-            {
-                var _aaNewR = ace + 750;
-                mtxM1 = float4x4.CreateTranslation(_aaNewR, 0, _bb);
-
-            }
-            if (diffA>=750)
-            {
-                var _aaNewL = ace - 750;
-                mtxM1 = float4x4.CreateTranslation(_aaNewL, 0, _bb);
-            }
-
-            if (diffB <= -950)
-            {
-                var _bbNewO = bdf + 950;
-                mtxM1 = float4x4.CreateTranslation(_aa, 0, _bbNewO);
-            }
-
-            if (diffB >= 550)
-            {
-                var _bbNewU = bdf - 550;
-                mtxM1 = float4x4.CreateTranslation(_aa, 0, _bbNewU);
-            }
+       
 
             RC.ModelView = mtxCam * mtxM1;
-          //  var mtxMVP = RC.ModelViewProjection;
-           // float4 vCube1 = mtxMVP * new float4(0, 0, 0, 1);
-           // float3 vCube1P = new float3(vCube1.x / vCube1.w, vCube1.y / vCube1.w, vCube1.z / vCube1.w);
-           // Console.WriteLine(vCube1P);
-
-
+     
             RC.SetShader(_spColor);
             RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
             
            
             RC.Render(_meshCube);
             
-          //  Console.WriteLine("_aa: " + _aa + "  _bb: " + _bb + "_cc: "+ _cc + "_dd: " + _dd +"diff: " +diff+"\n");
+         
 
             // second mesh
-            var mtxM2 = float4x4.CreateTranslation( _cc, 0, _dd);
+            var mtxM2 = float4x4.CreateTranslation( playerPos[1].x, 0, playerPos[1].z);
            
             RC.ModelView = mtxCam * mtxM2;
             RC.SetShaderParam(_colorParam, new float4(0.2f, 0.6f, 0.1f, 1));
             RC.Render(_meshCube2);
 
-            //third mesh static 
-            var mtxM3 = float4x4.CreateTranslation(_ee, 0, _ff);
+            //third mesh 
+            var mtxM3 = float4x4.CreateTranslation(playerPos[2].x, 0, playerPos[2].z);
 
             RC.ModelView = mtxCam * mtxM3;
             RC.SetShaderParam(_colorParam, new float4(0.4f, 0.5f, 0.8f, 1));
@@ -235,7 +291,7 @@ namespace Examples.KameraTest
             
           
 
-            // fourth mesh
+            // fourth mesh static
             RC.SetShaderParam(_colorParam, new float4(0.2f, 0.2f, 0.2f, 1));
             var mtxM4 = float4x4.CreateTranslation(-300, 0, 0);
             RC.ModelView = mtxCam * mtxM4;
@@ -244,43 +300,14 @@ namespace Examples.KameraTest
 
             // Rechteck Boden
 
-            var mtxR = float4x4.CreateTranslation(ace, -101, bdf + 200);
+            var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z + 200);
             RC.ModelView = mtxCam * mtxR;
             RC.Render(_Rechteck);
 
 
 
 
-         /*   //Boden aus Würfeln
-            
-            var mtxB1 = float4x4.CreateTranslation(-1300, -700, 0);
-            RC.ModelView = mtxCam*mtxB1;
-            RC.Render(_meshCubeB1);
-
-            var mtxB2 = float4x4.CreateTranslation(-1100, -700, 0);
-            RC.ModelView = mtxCam * mtxB2;
-            RC.Render(_meshCubeB2);
-
-            var mtxB3 = float4x4.CreateTranslation(-900, -700, 0);
-            RC.ModelView = mtxCam * mtxB3;
-            RC.Render(_meshCubeB3);
-
-            var mtxB4 = float4x4.CreateTranslation(-700, -700, 0);
-            RC.ModelView = mtxCam * mtxB4;
-            RC.Render(_meshCubeB4);
-
-            var mtxB5 = float4x4.CreateTranslation(-500, -700, 0);
-            RC.ModelView = mtxCam * mtxB5;
-            RC.Render(_meshCubeB5);
-
-            var mtxB6 = float4x4.CreateTranslation(-300, -700, 0);
-            RC.ModelView = mtxCam * mtxB6;
-            RC.Render(_meshCubeB6);
-
-            var mtxB7 = float4x4.CreateTranslation(-100, -700, 0);
-            RC.ModelView = mtxCam * mtxB7;
-            RC.Render(_meshCubeB7);
-           */
+     
 
           
 
