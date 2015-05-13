@@ -29,6 +29,7 @@ namespace Examples.Quest_test_physics
 
         private SceneContainer _scene;
         private IEnumerable<SceneNodeContainer> _sceneList;
+        private SceneComponentContainer transf;
 
         internal Mesh SphereMesh, LabMesh;
 
@@ -49,8 +50,13 @@ namespace Examples.Quest_test_physics
             using (var file = File.OpenRead(@"Assets/lab_rot_inner.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+                
             }
-            //Island
+
+           
+           
+
+            //Größe und Position durch aabb
             foreach (SceneNodeContainer node in  _scene.Children.FindNodes(node => node.Name.StartsWith("box")))
             {
                 AABBf? aabb = new AABBCalculator(node).GetBox();
@@ -60,10 +66,7 @@ namespace Examples.Quest_test_physics
                 float3 min = aabb.Value.min;
                 float3 max = aabb.Value.max;
 
-                
-
                 WallCollider = _world.AddBoxShape(boxSizeHalf.x, boxSizeHalf.y, boxSizeHalf.z);
-                //mass, float3 position, float3 orientation, CollisionShape colShape float3.Zero
                 var lab = _world.AddRigidBody(0, new float3(boxCenter.x, boxCenter.y, boxCenter.z), new float3(0, 0, 0), WallCollider);
 
                 lab.Restitution = 1;
@@ -72,31 +75,20 @@ namespace Examples.Quest_test_physics
 
             }
 
-            /**/
+            // Größe und Position, sowie Rotation durch Vertices und TransformComponent
             foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("rot")))
             {
                 MeshComponent middle = node.GetMesh();
                 float3[] verts = middle.Vertices;
-/*
-                node.Components.
+                TransformComponent transform = node.GetTransform();
                 
-                Components = new List<SceneComponentContainer>(new SceneComponentContainer[]
-                {
-                    new TransformComponent()
-                    {
-                        Rotation = new float3(0, 0, 0),
-                        Translation = new float3(0.11f, 0.11f, 0),
-                        Scale = new float3(1, 1, 1)
-                    },
-                    aMesh
-                });
+                //Rotation des Modells
+                float3 rot = transform.Rotation;
+             
 
-                float3 rot = new TransformComponent().Rotation;
-               
-*/
+                //Größe des Modells
                 float3 minVert = verts[0];
                 float3 maxVert = verts[0];
-
 
                 for (int i = 1; i < verts.Length; i++)
                 {
@@ -107,30 +99,21 @@ namespace Examples.Quest_test_physics
                     if (verts[i].y > maxVert.y) maxVert.y = verts[i].y;
                     if (verts[i].z > maxVert.z) maxVert.z = verts[i].z;
                 }
-                Debug.WriteLine("######## " + maxVert.x + "######## " + maxVert.y + "######## " + maxVert.z );
-                Debug.WriteLine("######## " + minVert.x + "######## " + minVert.y + "######## " + minVert.z);
-
+                
                 float3 size = (maxVert/2 - minVert/2);
-                float3 center = (maxVert + minVert) * 0.5f;
+                float3 center = (maxVert + minVert)/2;
 
                 
-
+                //Collider 
                 WallCollider = _world.AddBoxShape(size.x, size.y, size.z);
-                //mass, float3 position, float3 orientation, CollisionShape colShape float3.Zero
-                inner = _world.AddRigidBody(0, new float3(center.x, center.y, center.z), new float3(0, -0.5f, 0), WallCollider);
+                //Parameter: Masse, Position, Rotation
+                inner = _world.AddRigidBody(0, new float3(center.x, center.y, center.z), new float3(rot.x, rot.y, rot.z), WallCollider);
 
                 inner.Restitution = 1;
                 inner.Friction = 1;
                 inner.SetDrag(0.0f, 0.05f);
- /*
-               
-                //rotation modell + Größe ohne bounding box TransformComponent min max aus vertices mesh (aabb calc?)
 
-
-                 */
-            }
-            //MySphereCollider = _world.AddSphereShape(5);
-            
+            }           
         }
 
         public void GroundPlane(float3 pos, float3 rot)
@@ -152,7 +135,7 @@ namespace Examples.Quest_test_physics
            
             sphere0 = _world.AddRigidBody(10, new float3(30, 30, 0), float3.Zero, World.AddSphereShape(5));
             sphere0.Restitution = 0.5f;
-            //sphere0.Friction = 0.8f;
+            sphere0.Friction = 0.2f;
             //sphere0.CollisionShape = MySphereCollider;
 
             // sphere.SetDrag(0.0f, 0.05f);
