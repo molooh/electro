@@ -38,6 +38,11 @@ namespace Fusee.Engine.SimpleScene
             return GetComponent(sncThis, typeof (TComp), inx);
         }
 
+        public static TransformComponent GetTransform(this SceneNodeContainer sncThis, int inx = 0)
+        {
+            return (TransformComponent)GetComponent<TransformComponent>(sncThis, inx);
+        }
+
         public static MeshComponent GetMesh(this SceneNodeContainer sncThis, int inx = 0)
         {
             return (MeshComponent) GetComponent<MeshComponent>(sncThis, inx);
