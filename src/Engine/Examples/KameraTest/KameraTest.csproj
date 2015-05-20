@@ -84,7 +84,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\Rechteck.fus" />
-    <None Include="Assets\Rechteck.obj" />
     <Content Include="Assets\Rechteck.obj.model">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

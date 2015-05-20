@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Fusee.Engine;
 using Fusee.Engine.SimpleScene;
 using Fusee.Math;
@@ -19,17 +17,6 @@ namespace Examples.LevelTest
         private const float Damping = 0.92f;
 
         // model variables
-        private Mesh _meshCube;
-        private Mesh _meshCube2;
-        private Mesh _meshCube3;
-        private Mesh _meshCube4;
-        private Mesh _meshCubeB1;
-        private Mesh _meshCubeB2;
-        private Mesh _meshCubeB3;
-        private Mesh _meshCubeB4;
-        private Mesh _meshCubeB5;
-        private Mesh _meshCubeB6;
-        private Mesh _meshCubeB7;
         private Mesh _Rechteck;
 
         private SceneRenderer _srSky;
@@ -79,7 +66,7 @@ namespace Examples.LevelTest
 
             //Scene Skybox
             var serSky = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Skybox.fus"))
+            using (var file = File.OpenRead(@"Assets/Skybox1.fus"))
             {
                 _sceneSky = serSky.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }
@@ -373,14 +360,12 @@ namespace Examples.LevelTest
             _srEarth.Render(RC);
 
             //Air
-            //RC.SetShaderParam(_colorParam, new float4(0.2f, 0.2f, 0.2f, 1));
             var mtxM4 = float4x4.CreateTranslation(300, 0, 300);
             RC.ModelView = mtxCam * mtxRot * mtxM4 * mtxScalePlayer;
             _srAir.Render(RC);
             
             //Skybox
-            //var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z + 200);
-            var mtxScale = float4x4.CreateScale(90);
+            var mtxScale = float4x4.CreateScale(1.5f);
             RC.ModelView = mtxCam * mtxRot * mtxR * mtxScale;
             _srSky.Render(RC);
 
