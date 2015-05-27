@@ -36,6 +36,10 @@ namespace FuseeAuthoringTools.tools
 
         }
 
+        /// <summary>
+        /// Reference to the projectmanagers instance.
+        /// Is used to make calls that change something in the project.
+        /// </summary>
         private readonly FuseeProjectManager _projectManager;
         private List<String> csprojfile = null;
         private String csProjPath = "";

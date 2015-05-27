@@ -9,14 +9,27 @@ namespace FuseeAuthoringTools.c4dSet
     /// </summary>
     public class FuseeAuthoringToolsC4D : IFuseeAuthoringTools
     {
-        // Tool Classes for communication
+        /// <summary>
+        /// The reference to the manager of the FuseeAT project.
+        /// </summary>
         private FuseeProjectManager _projectManager;
 
+        /// <summary>
+        /// Constructor for the module.
+        /// </summary>
         public FuseeAuthoringToolsC4D()
         {
             _projectManager = new FuseeProjectManager();
         }
 
+        /// <summary>
+        /// Creates a project using the parameters given.
+        /// Returns true - converts fuseeAT state - if the project is created correctly.
+        /// </summary>
+        /// <param name="slnName"></param>
+        /// <param name="pName"></param>
+        /// <param name="pPath"></param>
+        /// <returns></returns>
         public bool CreateProject(String slnName, String pName, String pPath)
         {
             if (_projectManager.CreateProject(slnName, pName, pPath) == ToolState.OK)
@@ -25,6 +38,10 @@ namespace FuseeAuthoringTools.c4dSet
             return false;
         }
 
+        /// <summary>
+        /// Saves a project to a FuseeEngineProject typed object.
+        /// </summary>
+        /// <returns></returns>
         public bool SaveProject()
         {
             if (_projectManager.SaveProject() == ToolState.OK)
@@ -33,6 +50,12 @@ namespace FuseeAuthoringTools.c4dSet
             return false;
         }
 
+        /// <summary>
+        /// Can open a project if existing.
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="pPath"></param>
+        /// <returns></returns>
         public bool OpenProject(String pName, String pPath)
         {
             if (_projectManager.OpenProject(pName, pPath) == ToolState.OK)
@@ -41,11 +64,21 @@ namespace FuseeAuthoringTools.c4dSet
             return false;
         }
 
+        /// <summary>
+        /// Updates a project with different new information.
+        /// </summary>
+        /// <returns></returns>
         public bool UpdateProject()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates a new class in the C# project.
+        /// The class is named with the parameter.
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <returns></returns>
         public bool CreateNewClass(String pName)
         {
             
@@ -55,6 +88,12 @@ namespace FuseeAuthoringTools.c4dSet
             return false;
         }
 
+        /// <summary>
+        /// Creates a new file that is not a class. Not used right now.
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <param name="fpath"></param>
+        /// <returns></returns>
         public bool CreateNewFile(String fname, String fpath)
         {
             // TODO: Check if the file is existing in the correct location.
@@ -62,6 +101,10 @@ namespace FuseeAuthoringTools.c4dSet
             return false;
         }
 
+        /// <summary>
+        /// Calls the build manager to build the project.
+        /// </summary>
+        /// <returns></returns>
         public bool BuildProject()
         {
             _projectManager.BuildProject(_projectManager.FuseeEngineProject);

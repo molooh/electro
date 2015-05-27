@@ -18,9 +18,13 @@ namespace FuseeAuthoringTools
         WARNING = 2,
     }
 
+    /// <summary>
+    /// This is the state of the project.
+    /// It can help to prevent working with corrupt files when used correctly.
+    /// </summary>
     public enum ProjectState
     {
-        Clean = 0, // means open, too
+        Clean = 0, // means open and okay, too
         Dirty = 1,
         Corrupt = 2,
         Closed = 3
@@ -68,16 +72,28 @@ namespace FuseeAuthoringTools
         [XmlElement("CurrentProjectState")]
         public ProjectState ProjectState;
 
+        /// <summary>
+        /// Accessor for the project path.
+        /// </summary>
+        /// <returns></returns>
         public String GetPathToProjectFolder()
         {
             return this.PathToSolutionFolder + this.PathToProjectFolder;
         }
 
+        /// <summary>
+        /// Accessor for the source code path of the project.
+        /// </summary>
+        /// <returns></returns>
         public String GetPathToProjectSource()
         {
             return this.PathToSolutionFolder + this.PathToProjectFolder + "/Source/";
         }
 
+        /// <summary>
+        /// Accessor for the projects name.
+        /// </summary>
+        /// <returns></returns>
         public String GetProjectFileName()
         {
             return this.NameofCsProject + ".csproj";
@@ -132,7 +148,7 @@ namespace FuseeAuthoringTools
     }
 
     /// <summary>
-    /// This is instanciated for every object that has an asset tag applied and code added
+    /// This is/should be instanciated for every object that has an asset tag applied and code added
     /// to it. It represents the connection between modeling editor objects and code so
     /// the connections can be re-established when loading a project.
     /// </summary>
@@ -157,19 +173,73 @@ namespace FuseeAuthoringTools
     /// </summary>
     interface IFuseeAuthoringTools
     {
+        /// <summary>
+        /// Creates a project from different parameters.
+        /// </summary>
+        /// <param name="slnName"></param>
+        /// <param name="pName"></param>
+        /// <param name="pPath"></param>
+        /// <returns></returns>
         Boolean CreateProject(String slnName, String pName, String pPath);
+
+        /// <summary>
+        /// Saves a project that is currently opened.
+        /// </summary>
+        /// <returns></returns>
         Boolean SaveProject();
+
+        /// <summary>
+        /// Opens an existing FuseeAT project.
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="pPath"></param>
+        /// <returns></returns>
         Boolean OpenProject(String pName, String pPath);
+
+        /// <summary>
+        /// Updates a project state etc.
+        /// </summary>
+        /// <returns></returns>
         Boolean UpdateProject();
 
+        /// <summary>
+        /// Creates a new C# code class and inserts it to the project.
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <returns></returns>
         Boolean CreateNewClass(String pName);
+
+        /// <summary>
+        /// Creates every filetype that is not a C# code file.
+        /// </summary>
+        /// <param name="fname"></param>
+        /// <param name="fpath"></param>
+        /// <returns></returns>
         Boolean CreateNewFile(String fname, String fpath);
 
+        /// <summary>
+        /// Should build the project with the msbuild framework.
+        /// </summary>
+        /// <returns></returns>
         Boolean BuildProject();
 
+        /// <summary>
+        /// Exports something to the fus file format.
+        /// Using the fusee exporter library.
+        /// </summary>
+        /// <returns></returns>
         Boolean ExportToFus();
 
+        /// <summary>
+        /// Accessor for the engine project.
+        /// </summary>
+        /// <returns></returns>
         EngineProject GetEngineProject();
+
+        /// <summary>
+        /// Accessor for the project state.
+        /// </summary>
+        /// <returns></returns>
         int GetEngineProjectState();
     }
 }
