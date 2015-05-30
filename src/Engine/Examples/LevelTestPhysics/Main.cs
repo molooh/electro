@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using Fusee.Engine;
 using Fusee.Engine.SimpleScene;
 using Fusee.Math;
@@ -47,6 +51,12 @@ namespace Examples.LevelTestPhysics
         private IShaderParam _textureParam;
 
         private ITexture _iTex;
+
+        //Physic
+        private Physic _physic;
+        private Mesh _meshWater;
+        private Mesh _meshBall;
+        float3 _impulse;
 
         private int _aa;
         private int _bb;
@@ -102,12 +112,23 @@ namespace Examples.LevelTestPhysics
             _srFire = new SceneRenderer(_sceneElement1, "Assets");
 
             //Water
+            /*
             var serWater = new Serializer();
             using (var file = File.OpenRead(@"Assets/Player_water.fus"))
             {
-                _sceneWater = serWater.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+                var sceneWater = serWater.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+                MeshComponent mc = _sceneWater.Children.FindComponents<MeshComponent>(comp => true).First();
+                _meshWater = SceneRenderer.MakeMesh(mc);
             }
-            _srWater = new SceneRenderer(_sceneWater, "Assets");
+            //_srWater = new SceneRenderer(_sceneWater, "Assets");
+            */
+            var ser = new Serializer();
+            using (var file = File.OpenRead(@"Assets/Sphere.fus"))
+            {
+                var scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+                MeshComponent mc = scene.Children.FindComponents<MeshComponent>(comp => true).First();
+                _meshBall = SceneRenderer.MakeMesh(mc);
+            }
 
             //Earth
             var serEarth = new Serializer();
@@ -140,6 +161,10 @@ namespace Examples.LevelTestPhysics
             //Central Position of all Players
             var averageNewPos = new float3(0, 0, 0);
 
+            _physic = new Physic();
+
+            _physic.InitScene();
+
         }
 
         // is called once a frame
@@ -147,6 +172,12 @@ namespace Examples.LevelTestPhysics
         {
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
 
+            //Physics
+            RigidBody rbSphere = _physic.GetWaterSphere();
+            //Debug.WriteLine("POSITION START " + rbSphere.Position);
+
+           // _physic.World.StepSimulation((float)Time.Instance.DeltaTime, (Time.Instance.FramePerSecondSmooth / 60), 1 / 60);//???
+           
             //Array for Players Position 
             float3[] playerPos = new float3[3];
 
@@ -197,30 +228,35 @@ namespace Examples.LevelTestPhysics
 
             _angleHorz += _angleVelHorz;
             _angleVert += _angleVelVert;
+
+
             
-
-
             if (averageNewPos.x > -2000) { //GAMEMODE 0
             // move per keyboard (arrow keys) in gamemode 0
-            if (Input.Instance.IsKey(KeyCodes.Left))
+            if (Input.Instance.IsKeyUp(KeyCodes.Left))
             {
-                inputA = 30;
+                inputA = 0;// 30;
                 _aa -= (int)inputA;
+                _impulse = new float3(-30, 0, 0);
+                rbSphere.ApplyCentralImpulse = new float3(-30, 0, 0);
             }
-            if (Input.Instance.IsKey(KeyCodes.Right))
+            if (Input.Instance.IsKeyUp(KeyCodes.Right))
             {
-                inputA = 30;
+                inputA = 0;//30;
                 _aa += (int)inputA;
+                _impulse = new float3(30, 0, 0);
             }
-            if (Input.Instance.IsKey(KeyCodes.Up))
+            if (Input.Instance.IsKeyUp(KeyCodes.Up))
             {
-                inputB = 30;
+                inputB = 0;// 30;
                 _bb += (int)inputB;
+                _impulse = new float3(0, 0, 30);
             }
-            if (Input.Instance.IsKey(KeyCodes.Down))
+            if (Input.Instance.IsKeyUp(KeyCodes.Down))
             {
-                inputB = 30;
+                inputB = 0;// 30;
                 _bb -= (int)inputB;
+                _impulse = new float3(0, 0, -30);
             }
 
             // move per keyboard (W A S D) in gamemode 0
@@ -287,7 +323,7 @@ namespace Examples.LevelTestPhysics
             move[1].z = inputD;
             move[2].x = inputE;
             move[2].z = inputF;
-            Console.WriteLine( "Bin im Gamemode 0");
+            //Console.WriteLine( "Bin im Gamemode 0");
             averageNewPos = new float3(0, 0, 0); 
             
             for (int i = 0; i < playerPos.Length; i++)
@@ -296,7 +332,7 @@ namespace Examples.LevelTestPhysics
                 newPlayerPos[i].z = playerPos[i].z + move[i].z;
                 averageNewPos += newPlayerPos[i];
 
-                //  Console.WriteLine(move[i]);
+                //Console.WriteLine("PLAYERPOS#######################" + playerPos[i]);
             }
 
             averageNewPos *= (float)(1.0 / playerPos.Length);
@@ -325,6 +361,11 @@ namespace Examples.LevelTestPhysics
                     else
                     {
                         playerPos[i].x = newPlayerPos[i].x;
+                        if (i == 0)
+                        {
+                            rbSphere.ApplyCentralImpulse = _impulse;
+                        }
+                        
                     }
                 }
 
@@ -343,6 +384,11 @@ namespace Examples.LevelTestPhysics
                     else
                     {
                         playerPos[i].z = newPlayerPos[i].z;
+
+                        if (i == 0)
+                        {
+                            rbSphere.ApplyCentralImpulse = _impulse;
+                        }
                     }
                 }
             }
@@ -361,9 +407,21 @@ namespace Examples.LevelTestPhysics
             _srFire.Render(RC);
 
             //Water
-            var mtxM1 = float4x4.CreateTranslation(playerPos[0].x, 0, playerPos[0].z);
-            RC.ModelView = mtxCam * mtxRot * mtxM1 * mtxScalePlayer;
-            _srWater.Render(RC);
+            //var mtxM1 = float4x4.CreateTranslation(playerPos[0].x, 0, playerPos[0].z);
+            if (rbSphere.CollisionShape is SphereShape)
+            {
+                //RC.ModelView = mtxCam * mtxRot * mtxScalePlayer; //* mtxM1
+                Debug.WriteLine("#######rbSphere Position: " + rbSphere.Position);
+                var shape = (SphereShape)rbSphere.CollisionShape;
+                var pos = float4x4.Transpose(rbSphere.WorldTransform);
+                Debug.WriteLine("Wolrdtransform WATER SPHERE " + pos );
+                RC.ModelView = mtxCam  * mtxScalePlayer * pos;
+                RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
+               // _srWater.Render(RC);
+                RC.Render(_meshBall);
+                
+            }
+            
 
             //Earth
             var mtxM3 = float4x4.CreateTranslation(playerPos[2].x, 0, playerPos[2].z);
