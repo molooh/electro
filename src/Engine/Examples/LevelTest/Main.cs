@@ -30,8 +30,6 @@ namespace Examples.LevelTest
         private const float Damping = 0.92f;
 
         // model variables
-        private Mesh _Rechteck;
-
         private SceneRenderer _srSky;
         private SceneContainer _sceneSky;
 
@@ -53,6 +51,9 @@ namespace Examples.LevelTest
 
         private SceneRenderer _srEarth;
         private SceneContainer _sceneEarth;
+
+        private SceneRenderer _srBorder;
+        private SceneContainer _sceneBorder;
 
        // variables for shader
         private ShaderProgram _spTexture;
@@ -81,10 +82,18 @@ namespace Examples.LevelTest
             tcpServer.IsBackground = true;
             tcpServer.Start(this);
 
-            RC.ClearColor = new float4(0.1f, 0.1f, 0.1f, 1);
-            _Rechteck = MeshReader.LoadMesh(@"Assets/Rechteck.obj.model");
-
             _gui = new GUI(RC);
+
+            RC.ClearColor = new float4(0.1f, 0.1f, 0.1f, 1);
+            
+            //Border
+            var serBorder = new Serializer();
+            using (var file = File.OpenRead(@"Assets/border.fus"))
+            {
+                _sceneBorder = serBorder.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
+            }
+
+            _srBorder = new SceneRenderer(_sceneBorder, "Assets");
 
 
             //Scene Skybox
@@ -128,7 +137,6 @@ namespace Examples.LevelTest
             foreach (SceneNodeContainer node in _sceneFire.Children.FindNodes(node => node.Name.Equals("Fire")))
             {
                 TransformComponent transform = node.GetTransform();
-                Console.WriteLine(node.Name);
                 //rotation component
                 rot = transform.Rotation;                
             }               
@@ -249,8 +257,7 @@ namespace Examples.LevelTest
             }
 
             _angleHorz += _angleVelHorz;
-            _angleVert += _angleVelVert;
-            
+            _angleVert += _angleVelVert;           
 
 
             if (averageNewPos.x > -2000) { //GAMEMODE 0
@@ -406,10 +413,10 @@ namespace Examples.LevelTest
 
             
             RC.SetShader(_spColor);
-           // Rechteck Boden
+           // border 
             var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z + 200);
             RC.ModelView = mtxCam * mtxRot * mtxR;
-            RC.Render(_Rechteck);
+            _srBorder.Render(RC);
 
             //Fire
             var mtxM2 = float4x4.CreateTranslation(playerPos[1].x, 0, playerPos[1].z);
@@ -602,10 +609,10 @@ namespace Examples.LevelTest
 
                // Console.WriteLine(averageNewPos + " " +playerPos[0]);
                 RC.SetShader(_spColor);
-                // Rechteck Boden
-                var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z + 200);
+                // border
+                var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z+200);
                 RC.ModelView = mtxCam * mtxRot * mtxR;
-                RC.Render(_Rechteck);
+                _srBorder.Render(RC);
 
                 //Fire
                 var mtxM2 = float4x4.CreateTranslation(playerPos[1].x, 0, playerPos[1].z);
