@@ -42,7 +42,8 @@ namespace Examples.LevelTest
         private SceneContainer _sceneDeko;
 
         private SceneRenderer _srFire;
-        private SceneContainer _sceneElement1;
+        private SceneContainer _sceneFire;
+        float3 rot;
 
         private SceneRenderer _srWater;
         private SceneContainer _sceneWater;
@@ -118,9 +119,20 @@ namespace Examples.LevelTest
             var serFire = new Serializer();
             using (var file = File.OpenRead(@"Assets/player_fire.fus"))
             {
-                _sceneElement1 = serFire.Deserialize(file, null, typeof (SceneContainer)) as SceneContainer;
+                _sceneFire = serFire.Deserialize(file, null, typeof (SceneContainer)) as SceneContainer;
             }
-            _srFire = new SceneRenderer(_sceneElement1, "Assets");
+            _srFire = new SceneRenderer(_sceneFire, "Assets");
+
+
+            //rotation of firesphere
+            foreach (SceneNodeContainer node in _sceneFire.Children.FindNodes(node => node.Name.Equals("Fire")))
+            {
+                TransformComponent transform = node.GetTransform();
+                Console.WriteLine(node.Name);
+                //rotation component
+                rot = transform.Rotation;                
+            }               
+
 
             //Water
             var serWater = new Serializer();
@@ -197,7 +209,6 @@ namespace Examples.LevelTest
 
             //Array for input
             float3[] move = new float3[3];
-
             
 
             //Camera Minimum and Maximum
@@ -285,7 +296,9 @@ namespace Examples.LevelTest
             {
                 inputD = 30;
                 _dd += (int)inputD;
-                
+
+                rot.z += 20;
+                Console.WriteLine(rot);                
             }
 
 
@@ -294,7 +307,9 @@ namespace Examples.LevelTest
                 inputD = 30;
                 _dd -= (int)inputD;
 
-            }
+            }     
+               
+            
 
 
             //move per keybord U H J K in gamemode 0
