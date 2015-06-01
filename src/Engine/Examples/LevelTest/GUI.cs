@@ -1,8 +1,7 @@
-﻿using System;
-using Fusee.Engine;
+﻿using Fusee.Engine;
 using Fusee.Math;
 
-namespace Examples.TcpServerTest
+namespace Examples.LevelTest
 {
     // ReSharper disable once InconsistentNaming
     class GUI
@@ -18,7 +17,7 @@ namespace Examples.TcpServerTest
         private GUIText _fps, _serverMsg;
 
         private readonly float4 _color1 = new float4(1f, 1f, 1f, 1);
-        private readonly float4 _color2 = new float4(0, 0, 0, 1);
+        private readonly float4 _color2 = new float4(1, 1, 1, 1);
 
         public GUI(RenderContext rc)
         {
@@ -46,12 +45,12 @@ namespace Examples.TcpServerTest
 
         public void RenderFps(float fps)
         {
-           _fps.Text = "FPS: " + fps; //TODO: manage RAM usage!            
+           _fps.Text = "FPS: " + fps;            
         }
 
         public void RenderMsg(string serverMsg)
         {
-            _serverMsg.Text = "Message received: " + serverMsg; //TODO: manage RAM usage!
+            _serverMsg.Text = "Message received: " + serverMsg; 
             _guiHandler.RenderGUI();
         }
 

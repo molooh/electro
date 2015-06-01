@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text;
+using System.Threading;
 using Fusee.Engine;
 using Fusee.Engine.SimpleScene;
 using Fusee.Math;
@@ -10,6 +12,17 @@ namespace Examples.LevelTest
 {
     public class LevelTest : RenderCanvas
     {
+        //server varialbles
+        private ThreadPoolTcpSrvr _tpts;
+
+        //gui variables
+        private GUIText _guiSubText;
+        private GUIText _serverText;
+        private IFont _guiLatoBlack;
+        private GUIHandler _guiHandler;
+
+        private GUI _gui;
+
         // angle variables
         private static float _angleHorz, _angleVert, _angleVelHorz, _angleVelVert;
 
@@ -62,8 +75,15 @@ namespace Examples.LevelTest
         // is called on startup
         public override void Init()
         {
-            RC.ClearColor = new float4(0.1f, 0.1f, 0.5f, 1);
+            //creates thread for TcpServer, sets it as backgroundthread, starts the thread
+            var tcpServer = new Thread(StartTcpServer);
+            tcpServer.IsBackground = true;
+            tcpServer.Start(this);
+
+            RC.ClearColor = new float4(0.1f, 0.1f, 0.1f, 1);
             _Rechteck = MeshReader.LoadMesh(@"Assets/Rechteck.obj.model");
+
+            _gui = new GUI(RC);
 
 
             //Scene Skybox
@@ -146,7 +166,28 @@ namespace Examples.LevelTest
         // is called once a frame
         public override void RenderAFrame()
         {
+
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
+
+            //GUI
+            float fps = Time.Instance.FramePerSecond;
+            _gui.RenderFps(fps);
+
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (TcpConnection connection in _tpts.GetConnections())
+                {
+                    sb.Append(connection.Message);
+                    sb.Append("// ");
+                }
+                _gui.RenderMsg(sb.ToString());
+
+            }
+            catch (NullReferenceException)
+            {
+                _gui.RenderMsg("Nichts empfangen!");
+            }
 
             //Array for Players Position 
             float3[] playerPos = new float3[3];
@@ -288,7 +329,7 @@ namespace Examples.LevelTest
             move[1].z = inputD;
             move[2].x = inputE;
             move[2].z = inputF;
-            Console.WriteLine( "Bin im Gamemode 0");
+            //Console.WriteLine( "Bin im Gamemode 0");
             averageNewPos = new float3(0, 0, 0); 
             
             for (int i = 0; i < playerPos.Length; i++)
@@ -479,7 +520,7 @@ namespace Examples.LevelTest
                 move[2].x = inputE;
                 move[2].z = inputF;
 
-                Console.WriteLine("bin im Gamemode 1");
+                //Console.WriteLine("bin im Gamemode 1");
                 averageNewPos = new float3(0, 0, 0); 
                 for (int i = 0; i < playerPos.Length; i++)
                 {
@@ -500,7 +541,7 @@ namespace Examples.LevelTest
                 var mtxRot = float4x4.Identity;
                 var mtxCam = float4x4.CreateTranslation(averageNewPos.x, 0, averageNewPos.z) * float4x4.CreateRotationY(-_angleHorz) * float4x4.CreateRotationX(-_angleVert) * float4x4.CreateTranslation(0, 0, -2500);
                 mtxCam.Invert();
-                Console.WriteLine(_angleVert + " " + _angleHorz);
+                //Console.WriteLine(_angleVert + " " + _angleHorz);
 
                 // var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
                 // var mtxCam = float4x4.LookAt(averageNewPos.x, 400, averageNewPos.z - 2500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
@@ -596,6 +637,12 @@ namespace Examples.LevelTest
 
             var aspectRatio = Width / (float)Height;
             RC.Projection = float4x4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 100000);
+        }
+
+        public static void StartTcpServer(object self)
+        {
+            ((LevelTest)self)._tpts = new ThreadPoolTcpSrvr();
+            ((LevelTest)self)._tpts.StartListening();
         }
 
         public static void Main()
