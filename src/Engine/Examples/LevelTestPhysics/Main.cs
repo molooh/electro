@@ -58,7 +58,7 @@ namespace Examples.LevelTestPhysics
             _way = MeshReader.LoadMesh(@"Assets/way.obj.model");
 
             var ser = new Serializer();
-            using (var file = File.OpenRead(@"Assets/SphereB.fus"))
+            using (var file = File.OpenRead(@"Assets/Sphere.fus"))
             {
                 _sceneSphere = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
                 //MeshComponent mc = scene.Children.FindComponents<MeshComponent>(comp => true).First();
@@ -67,7 +67,7 @@ namespace Examples.LevelTestPhysics
             _srSphere = new SceneRenderer(_sceneSphere, "Assests");
 
             var serI = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_split.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_wAssets_woScale.fus"))
             {
                 _scene = serI.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
                 //MeshComponent mc = _scene.Children.FindComponents<MeshComponent>(comp => true).First();
@@ -93,8 +93,11 @@ namespace Examples.LevelTestPhysics
         // is called once a frame
         public override void RenderAFrame()
         {
-
+           // Console.WriteLine("##############################" + Time.Instance.FramePerSecond);
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
+
+            var rb = _physic.GetBall();
+            var rb2 = _physic.GetBall2();
 
             _physic.World.StepSimulation((float)Time.Instance.DeltaTime, (Time.Instance.FramePerSecondSmooth / 60), 1 / 60);//???
 
@@ -115,8 +118,7 @@ namespace Examples.LevelTestPhysics
             _angleHorz += _angleVelHorz;
             _angleVert += _angleVelVert;
 
-            var rb = _physic.GetBall();
-            var rb2 = _physic.GetBall2();
+            
             // move ball per keyboard
             if (Input.Instance.IsKeyUp(KeyCodes.Left))
             {
@@ -170,32 +172,34 @@ namespace Examples.LevelTestPhysics
             camMax = new float3(averageNewPos.x + 750, 0, averageNewPos.z + 950);
 
             var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
-            var mtxCam = float4x4.LookAt(averageNewPos.x + 200, 800, averageNewPos.z - 2500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
+            var mtxCam = float4x4.LookAt(averageNewPos.x + 100, 200, averageNewPos.z - 500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
 
             RC.SetShader(_spColor);
 
             // Rechteck Boden
+            /*
             var mtxR = float4x4.CreateTranslation(averageNewPos.x, 0, averageNewPos.z + 200);
-            RC.ModelView = mtxCam * mtxRot * mtxR;// *float4x4.CreateScale(0.2f);
+            RC.ModelView = mtxCam * mtxRot * mtxR * float4x4.CreateScale(0.2f);
             RC.Render(_Rechteck);
+             * */
 
             if (rb.CollisionShape is SphereShape)
             {
                 var shape = (SphereShape)rb.CollisionShape;
-                var pos = float4x4.Transpose(rb.WorldTransform);
-                Debug.WriteLine("##################################### " + rb.Position);
+                var pos = float4x4.CreateTranslation(rb.Position);  // float4x4.Transpose(rb.WorldTransform);
+                //Debug.WriteLine("rb Pposition ************ " + rb.Position);
                 RC.ModelView = mtxCam * pos * mtxRot;// *float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
                 //RC.Render(_meshBall);
                 _srSphere.Render(RC);
             }
-
+/**/
             if (rb2.CollisionShape is SphereShape)
             {
                 var shape = (SphereShape)rb.CollisionShape;
-                var pos = float4x4.Transpose(rb2.WorldTransform);
-                //Debug.WriteLine("##################################### " + rb.Position);
+                var pos = float4x4.CreateTranslation(rb2.Position);
+                //Debug.WriteLine("rb2 Pposition ############## " + rb2.Position);
                 RC.ModelView = mtxCam * pos * mtxRot;// *float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
