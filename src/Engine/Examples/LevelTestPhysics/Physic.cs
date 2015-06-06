@@ -46,16 +46,16 @@ namespace Examples.LevelTestPhysics
         {
 
             var ser = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_wAssets_woScale.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_resized_woTexture.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
 
             }
-            
+
             foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("box")))
             {
                 /**/
-                if (node.Name.Contains("Auswahl") || node.Name.Contains("Twigs"))
+                if (node.Name.Contains("Auswahl") )
                 {
                     continue;
                 }
@@ -65,51 +65,12 @@ namespace Examples.LevelTestPhysics
                 float3 boxSize = aabb.Value.Size;
                 float3 boxSizeHalf = boxSize / 2;
                 float3 boxCenter = aabb.Value.Center;
-                float3 min = aabb.Value.min;
-                float3 max = aabb.Value.max;
 
                 TransformComponent transform = node.GetTransform();
-                float3 rot = transform.Rotation;
-
-                if (node.Name.Contains("Baum"))
-                {
-                    boxSizeHalf = new float3(18,35,18);
-                    boxCenter.y = 0;
-
-                }
-
-                Debug.WriteLine("-------# " + " - " + node.Name);
-                Debug.WriteLine("BBox Size: " +   boxSizeHalf);
-                Debug.WriteLine("BBox Center: " + boxCenter);
-                Debug.WriteLine("-------------------------------");
-
-                BoxCollider = _world.AddBoxShape(boxSizeHalf.x, boxSizeHalf.y, boxSizeHalf.z);
-                //Parameter: Masse, Position, Rotation
-                box = _world.AddRigidBody(0, new float3(boxCenter.x, boxCenter.y, boxCenter.z), new float3(rot.x, rot.y, rot.z), BoxCollider);
-                box.Restitution = 1;
-                box.Friction = 1;
-                box.SetDrag(0.0f, 0.05f);
-
-            }
-
-            //SphereCollider
-            foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("sphere") || node.Name.StartsWith("Sphere")))
-            {
-                MeshComponent mesh = node.GetMesh();
-
-                if (mesh.Vertices == null)
-                {
-                    continue;
-                }
-
-
-                float3[] verts = mesh.Vertices;
-                TransformComponent transform = node.GetTransform();
-
-                //Rotation des Modells
                 float3 rot = transform.Rotation;
 
                 //Größe des Modells
+                float3[] verts = node.GetMesh().Vertices; 
                 float3 minVert = verts[0];
                 float3 maxVert = verts[0];
 
@@ -123,21 +84,64 @@ namespace Examples.LevelTestPhysics
                     if (verts[i].z > maxVert.z) maxVert.z = verts[i].z;
                 }
 
+                float3 size = (maxVert / 2 - minVert / 2);
                 float3 center = (maxVert + minVert) / 2;
-                float3 radius = ((maxVert - minVert) / 2) * 5;
-/*
-                Debug.WriteLine("radius SphereCollider: " + radius);
 
-                //Collider 
-                SphereCollider = _world.AddSphereShape(radius.x);
+                if (node.Name.Contains("Baum"))
+                {
+                    size.x = 20;
+                    size.z = 20;
+
+                }
+
+                Debug.WriteLine("-------# " + " - " + node.Name);
+                Debug.WriteLine("BBox Size: " +   boxSizeHalf);
+                Debug.WriteLine("Verts Size: " + size);
+                Debug.WriteLine("BBox Center: " + boxCenter);
+                Debug.WriteLine("Verts center: " + center);
+                Debug.WriteLine("Box Rotation: " + rot);
+                Debug.WriteLine("-------------------------------");
+
+                BoxCollider = _world.AddBoxShape(size.x, size.y, size.z);
                 //Parameter: Masse, Position, Rotation
-               var sphere = _world.AddRigidBody(0, new float3(center.x, 150, center.z), new float3(rot.x, rot.y, rot.z), SphereCollider);
+                box = _world.AddRigidBody(0, new float3(center.x, center.y, center.z), new float3(rot.x, rot.y, rot.z), BoxCollider);
+                box.Restitution = 1;
+                box.Friction = 1;
+                box.SetDrag(0.0f, 0.05f);
+
+            }
+
+            //SphereCollider
+            foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("sphere") || node.Name.StartsWith("Sphere")))
+            {
+                MeshComponent mesh = node.GetMesh();
+
+                if (node.Name.Contains("Auswahl"))
+                {
+                    continue;
+                }
+
+                AABBf? aabb = new AABBCalculator(node).GetBox();
+                float3 boxSize = aabb.Value.Size;
+                float radius = boxSize.x/2;
+                float3 center = aabb.Value.Center;
+
+                TransformComponent transform = node.GetTransform();
+                float3 rot = transform.Rotation;
+
+                Debug.WriteLine("-------# " + " - " + node.Name);
+                Debug.WriteLine("Sphere radius: " + radius);
+                Debug.WriteLine("Sphere Center: " + center);
+                Debug.WriteLine("-------------------------------");
+
+                SphereCollider = _world.AddSphereShape(radius);
+                //Parameter: Masse, Position, Rotation
+                var sphere = _world.AddRigidBody(0, new float3(center.x, 150, center.z), new float3(rot.x, rot.y, rot.z), SphereCollider);
 
                 sphere.Restitution = 0.5f;
                 sphere.Friction = 0.2f;
                 sphere.SetDrag(0.0f, 0.05f);
- */
-               
+           
             }
         }
 
@@ -158,12 +162,12 @@ namespace Examples.LevelTestPhysics
             InitColliders();
             //GroundPlane(float3.Zero, float3.Zero);
 
-            var shape =  World.AddSphereShape(5);
-            sphere = _world.AddRigidBody(1, new float3(50, 100, 0), float3.Zero, shape);
+            var shape =  World.AddSphereShape(5*4);
+            sphere = _world.AddRigidBody(1, new float3(940, 100, 0), float3.Zero, shape);
             sphere.Restitution = 0.5f;
             sphere.Friction = 0.2f;
           
-            sphere2 = _world.AddRigidBody(1, new float3(150, 200, 0), float3.Zero,shape);
+            sphere2 = _world.AddRigidBody(1, new float3(1000, 200, 0), float3.Zero,shape);
             sphere2.Restitution = 0.5f;
             sphere2.Friction = 0.2f;
             

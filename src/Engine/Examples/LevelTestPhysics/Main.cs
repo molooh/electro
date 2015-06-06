@@ -67,7 +67,7 @@ namespace Examples.LevelTestPhysics
             _srSphere = new SceneRenderer(_sceneSphere, "Assests");
 
             var serI = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_wAssets_woScale.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_resized_woTexture.fus"))
             {
                 _scene = serI.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
                 //MeshComponent mc = _scene.Children.FindComponents<MeshComponent>(comp => true).First();
@@ -172,7 +172,7 @@ namespace Examples.LevelTestPhysics
             camMax = new float3(averageNewPos.x + 750, 0, averageNewPos.z + 950);
 
             var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
-            var mtxCam = float4x4.LookAt(averageNewPos.x + 100, 200, averageNewPos.z - 500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
+            var mtxCam = float4x4.LookAt(averageNewPos.x + 100, 200, averageNewPos.z - 500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0) * mtxRot;
 
             RC.SetShader(_spColor);
 
@@ -188,7 +188,7 @@ namespace Examples.LevelTestPhysics
                 var shape = (SphereShape)rb.CollisionShape;
                 var pos = float4x4.CreateTranslation(rb.Position);  // float4x4.Transpose(rb.WorldTransform);
                 //Debug.WriteLine("rb Pposition ************ " + rb.Position);
-                RC.ModelView = mtxCam * pos * mtxRot;// *float4x4.Scale(4);
+                RC.ModelView = mtxCam * pos * float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
                 //RC.Render(_meshBall);
@@ -200,7 +200,7 @@ namespace Examples.LevelTestPhysics
                 var shape = (SphereShape)rb.CollisionShape;
                 var pos = float4x4.CreateTranslation(rb2.Position);
                 //Debug.WriteLine("rb2 Pposition ############## " + rb2.Position);
-                RC.ModelView = mtxCam * pos * mtxRot;// *float4x4.Scale(4);
+                RC.ModelView = mtxCam * pos * float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
                 //RC.Render(_meshBall);
@@ -209,7 +209,7 @@ namespace Examples.LevelTestPhysics
 
             //RC.SetShaderParam(_colorParam, new float4(0.8f, 0.1f, 0.1f, 1));
             RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
-            RC.ModelView = mtxCam * mtxRot;//* float4x4.CreateScale(0.1f)* float4x4.CreateTranslation(-100, 0, 0); ;
+            RC.ModelView = mtxCam;//* float4x4.CreateScale(0.1f)* float4x4.CreateTranslation(-100, 0, 0); ;
             _sr.Render(RC);
 
             /*
