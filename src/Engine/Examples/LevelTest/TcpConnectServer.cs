@@ -10,13 +10,14 @@ namespace Examples.LevelTest
     public class ThreadPoolTcpSrvr
     {
         private TcpListener _listener;
-        private List<TcpConnection> Connections;
+        private List<TcpConnection> _connections;
 
-        
+
+
         //Make List accessable in other classes
         public List<TcpConnection> GetConnections()
         {
-            return Connections;
+            return _connections;
         }
 
         //Get IP Address
@@ -36,7 +37,7 @@ namespace Examples.LevelTest
 
         public ThreadPoolTcpSrvr()
         {
-            Connections = new List<TcpConnection>();
+            _connections = new List<TcpConnection>();
         }
         
         public void StartListening()
@@ -56,9 +57,9 @@ namespace Examples.LevelTest
                 
                 var newconnection = new TcpConnection(this);
                 newconnection.ThreadListener = _listener;
-                lock (Connections)
+                lock (_connections)
                 {
-                    Connections.Add(newconnection);
+                    _connections.Add(newconnection);
                 }
                 ThreadPool.QueueUserWorkItem(newconnection.HandleConnection, client);
             }            

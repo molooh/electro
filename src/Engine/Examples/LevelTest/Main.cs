@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Fusee.Engine;
@@ -64,12 +67,18 @@ namespace Examples.LevelTest
 
         private ITexture _iTex;
 
+        // For now using a Dictionary is the best I came up with. Feel freeto correct me.
+        private Dictionary<string, List<float>> _playerOrientations = new Dictionary<string, List<float>>();
+
         private int _aa;
         private int _bb;
         private int _cc = 300;
         private int _dd;
         private int _ee = 600;
         private int _ff;
+
+        // some logic
+        private bool isEmpty;
 
 
         private float3 averageNewPos;
@@ -81,6 +90,11 @@ namespace Examples.LevelTest
             var tcpServer = new Thread(StartTcpServer);
             tcpServer.IsBackground = true;
             tcpServer.Start(this);
+
+
+            
+            
+            
 
             _gui = new GUI(RC);
 
@@ -193,6 +207,43 @@ namespace Examples.LevelTest
             float fps = Time.Instance.FramePerSecond;
             _gui.RenderFps(fps);
 
+            isEmpty = !_tpts.GetConnections().Any();
+            if (isEmpty)
+            {
+                Console.WriteLine("Awaiting Connections");
+            }
+            else
+            {
+                var playerOrientation = ExtractNumbers(_tpts.GetConnections().First().Message);
+                if (playerOrientation != null)
+                    //Console.WriteLine("P: {0}, R: {1}", playerOrientation[0], playerOrientation[1]);
+                foreach (var connection in _tpts.GetConnections())
+                {
+                    try
+                    {
+                        var ip = connection.Address.ToString();
+                        List<float> value = new List<float>();
+                        if (!_playerOrientations.TryGetValue(ip, out value))
+                            _playerOrientations.Add(ip, ExtractNumbers(connection.Message));
+                        else
+                        {
+                            _playerOrientations.TryGetValue(ip, out value);
+                            _playerOrientations.Remove(ip);
+                            _playerOrientations.Add(ip, ExtractNumbers(connection.Message));
+                            Console.WriteLine(_playerOrientations[ip]);
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        return;
+                    }
+                    
+                    
+                    //
+                    //
+                }
+            }
+
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -200,6 +251,7 @@ namespace Examples.LevelTest
                 {
                     sb.Append(connection.Message);
                     sb.Append("// ");
+                    //Console.WriteLine(ExtractNumbers(connection.Message).Length);
                 }
                 _gui.RenderMsg(sb.ToString());
 
@@ -262,7 +314,7 @@ namespace Examples.LevelTest
 
             if (averageNewPos.x > -2000) { //GAMEMODE 0
             // move per keyboard (arrow keys) in gamemode 0
-            if (Input.Instance.IsKey(KeyCodes.Left))
+            /*if (Input.Instance.IsKey(KeyCodes.Left))
             {
                 inputA = 30;
                 _aa -= (int)inputA;
@@ -281,7 +333,16 @@ namespace Examples.LevelTest
             {
                 inputB = 30;
                 _bb -= (int)inputB;
-            }
+            }*/
+                if (_playerOrientations.Count != 0)
+                {
+                    var controllArray = _playerOrientations.First().Value;
+                    inputA = -(int)controllArray[1];
+                    _aa += inputA;
+
+                    inputB = -(int)controllArray[0];
+                    _bb += inputB;
+                }
 
             // move per keyboard (W A S D) in gamemode 0
 
@@ -351,7 +412,7 @@ namespace Examples.LevelTest
             move[1].z = inputD;
             move[2].x = inputE;
             move[2].z = inputF;
-            //Console.WriteLine( "Bin im Gamemode 0");
+            Console.WriteLine( "Bin im Gamemode 0");
             averageNewPos = new float3(0, 0, 0); 
             
             for (int i = 0; i < playerPos.Length; i++)
@@ -542,7 +603,7 @@ namespace Examples.LevelTest
                 move[2].x = inputE;
                 move[2].z = inputF;
 
-                //Console.WriteLine("bin im Gamemode 1");
+                Console.WriteLine("bin im Gamemode 1");
                 averageNewPos = new float3(0, 0, 0); 
                 for (int i = 0; i < playerPos.Length; i++)
                 {
@@ -650,6 +711,32 @@ namespace Examples.LevelTest
             }
             
             Present();
+        }
+
+        private List<float> ExtractNumbers(string message)
+        {
+            List<float> orientation = new List<float>();
+            //string pitch = string.Empty;
+            //string roll = string.Empty;
+            if (message.Length == 0) return orientation;
+
+            string[] split = message.Split(new char[] {':', ' ', ',', ';'});
+
+            float tempNumber = 0;
+
+            foreach(char numChar in message.ToCharArray())
+            {
+               // if (Char.IsNumber(numChar)) figure += numChar.ToString();
+            }
+            //if (figure == string.Empty) return "";
+            tempNumber = float.Parse(split[1]);
+            split[2] = "0," + split[2];
+            orientation.Add(float.Parse(split[2]) + tempNumber);
+            tempNumber = float.Parse(split[6]);
+            split[7] = "0," + split[7];
+            orientation.Add(float.Parse(split[7]) + tempNumber);
+
+            return orientation;
         }
 
         // is called when the window was resized
