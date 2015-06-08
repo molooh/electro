@@ -28,8 +28,6 @@ namespace Examples.LevelTestPhysics
         private RigidBody box;
         public RigidBody sphere;
         public RigidBody sphere2;
-        public RigidBody[] boxesWay = new RigidBody[35];
-        int indexWays = 0;
 
         public Physic()
         {
@@ -46,7 +44,7 @@ namespace Examples.LevelTestPhysics
         {
 
             var ser = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_resized_woTexture.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_ph_woTexture.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
 
@@ -55,12 +53,11 @@ namespace Examples.LevelTestPhysics
             foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("box")))
             {
                 /**/
-                if (node.Name.Contains("Auswahl") )
+                if (node.Name.Contains("Auswahl"))
                 {
                     continue;
                 }
                 
-
                 AABBf? aabb = new AABBCalculator(node).GetBox();
                 float3 boxSize = aabb.Value.Size;
                 float3 boxSizeHalf = boxSize / 2;
@@ -70,7 +67,11 @@ namespace Examples.LevelTestPhysics
                 float3 rot = transform.Rotation;
 
                 //Größe des Modells
-                float3[] verts = node.GetMesh().Vertices; 
+                float3[] verts = node.GetMesh().Vertices;
+                if (verts == null)
+                {
+                    continue;
+                }
                 float3 minVert = verts[0];
                 float3 maxVert = verts[0];
 
@@ -103,11 +104,15 @@ namespace Examples.LevelTestPhysics
                 Debug.WriteLine("-------------------------------");
 
                 BoxCollider = _world.AddBoxShape(size.x, size.y, size.z);
+                
                 //Parameter: Masse, Position, Rotation
-                box = _world.AddRigidBody(0, new float3(center.x, center.y, center.z), new float3(rot.x, rot.y, rot.z), BoxCollider);
-                box.Restitution = 1;
-                box.Friction = 1;
+                box = _world.AddRigidBody(0, new float3(boxCenter.x, boxCenter.y, boxCenter.z), new float3(rot.x, rot.y, rot.z), BoxCollider);
+             
+                box.Restitution = 0.5f;
+                box.Friction = 0.2f;
                 box.SetDrag(0.0f, 0.05f);
+
+               
 
             }
 
@@ -163,7 +168,7 @@ namespace Examples.LevelTestPhysics
             //GroundPlane(float3.Zero, float3.Zero);
 
             var shape =  World.AddSphereShape(5*4);
-            sphere = _world.AddRigidBody(1, new float3(940, 100, 0), float3.Zero, shape);
+            sphere = _world.AddRigidBody(1, new float3(950, 100, 0), float3.Zero, shape);
             sphere.Restitution = 0.5f;
             sphere.Friction = 0.2f;
           
@@ -183,10 +188,6 @@ namespace Examples.LevelTestPhysics
             return sphere2;
         }
 
-        public RigidBody[] GetWay()
-        {
-            return boxesWay;
-        }
 
     }
 

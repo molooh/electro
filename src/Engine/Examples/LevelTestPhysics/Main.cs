@@ -23,7 +23,6 @@ namespace Examples.LevelTestPhysics
         private Mesh _meshLab;
         private Mesh _meshBall;
         private Mesh _Rechteck;
-        private Mesh _way;
 
         float3 camMin;
         float3 camMax;
@@ -55,30 +54,21 @@ namespace Examples.LevelTestPhysics
             RC.ClearColor = new float4(0.1f, 0.1f, 0.5f, 1);
             _Rechteck = MeshReader.LoadMesh(@"Assets/Rechteck.obj.model");
 
-            _way = MeshReader.LoadMesh(@"Assets/way.obj.model");
 
             var ser = new Serializer();
             using (var file = File.OpenRead(@"Assets/Sphere.fus"))
             {
                 _sceneSphere = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
-                //MeshComponent mc = scene.Children.FindComponents<MeshComponent>(comp => true).First();
-                //_meshBall = SceneRenderer.MakeMesh(mc);
             }
             _srSphere = new SceneRenderer(_sceneSphere, "Assests");
 
             var serI = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_resized_woTexture.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_ph_woTexture.fus"))
             {
                 _scene = serI.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
-                //MeshComponent mc = _scene.Children.FindComponents<MeshComponent>(comp => true).First();
-                //_meshLab = SceneRenderer.MakeMesh(mc);
             }
-
             _sr = new SceneRenderer(_scene, "Assets");
-            /* 
-           _meshBall = MeshReader.LoadMesh(@"Assets/Sphere.obj.model");
-          _meshLab = MeshReader.LoadMesh(@"Assets/SimpleLab45.obj.model");
-*/
+
             _spColor = MoreShaders.GetDiffuseColorShader(RC);
             _colorParam = _spColor.GetShaderParam("color");
 
@@ -143,6 +133,12 @@ namespace Examples.LevelTestPhysics
                 rb.ApplyCentralImpulse = new float3(0, 0, -10);
             }
 
+            if (Input.Instance.IsKeyUp(KeyCodes.Q))
+            {
+                rb.Mass = 1;
+                rb.ApplyCentralImpulse = new float3(0, -10, 0);
+            }
+
             if (Input.Instance.IsKeyUp(KeyCodes.A))
             {
                 rb2.ApplyCentralImpulse = new float3(-10, 0, 0);
@@ -181,29 +177,28 @@ namespace Examples.LevelTestPhysics
             var mtxR = float4x4.CreateTranslation(averageNewPos.x, 0, averageNewPos.z + 200);
             RC.ModelView = mtxCam * mtxRot * mtxR * float4x4.CreateScale(0.2f);
             RC.Render(_Rechteck);
-             * */
+            */ 
 
             if (rb.CollisionShape is SphereShape)
             {
                 var shape = (SphereShape)rb.CollisionShape;
                 var pos = float4x4.CreateTranslation(rb.Position);  // float4x4.Transpose(rb.WorldTransform);
                 //Debug.WriteLine("rb Pposition ************ " + rb.Position);
-                RC.ModelView = mtxCam * pos * float4x4.Scale(4);
+                RC.ModelView = mtxCam*pos * float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
                 //RC.Render(_meshBall);
                 _srSphere.Render(RC);
             }
-/**/
+
             if (rb2.CollisionShape is SphereShape)
             {
                 var shape = (SphereShape)rb.CollisionShape;
                 var pos = float4x4.CreateTranslation(rb2.Position);
                 //Debug.WriteLine("rb2 Pposition ############## " + rb2.Position);
-                RC.ModelView = mtxCam * pos * float4x4.Scale(4);
+                RC.ModelView = mtxCam*pos* float4x4.Scale(4);
                 //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
                 RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
-                //RC.Render(_meshBall);
                 _srSphere.Render(RC);
             }
 
@@ -212,15 +207,6 @@ namespace Examples.LevelTestPhysics
             RC.ModelView = mtxCam;//* float4x4.CreateScale(0.1f)* float4x4.CreateTranslation(-100, 0, 0); ;
             _sr.Render(RC);
 
-            /*
-                        //Animation Way
-                        _rbWay = _physic.GetWay();
-                        RigidBody way0 = _rbWay[0];
-                        way0.Gravity = new float3( 0,0,10);
-                        var posWay = float4x4.Transpose(way0.WorldTransform);
-                        RC.ModelView = mtxCam * posWay * mtxRot;// *float4x4.CreateScale(0.1f);
-                        RC.Render(_way);
-            */
             Present();
         }
 
@@ -244,7 +230,7 @@ namespace Examples.LevelTestPhysics
         {
 
             base.DeInit();
-            _physic.World.Dispose();    //???
+            _physic.World.Dispose();    
         }
     }
 }
