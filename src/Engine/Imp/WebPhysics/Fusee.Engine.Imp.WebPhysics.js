@@ -49,7 +49,6 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.RigidBodyImp", 
     $.Method({ Static: false, Public: true }, "get_Position",
        new JSIL.MethodSignature($fuseeMath.TypeRef("Fusee.Math.float3"), []),
        function get_Position() {
-           console.log("get_Posiotion");
            var trans = new Ammo.btTransform();
            this.BtRigidBody.getMotionState().getWorldTransform(trans);
            var retval = new $fuseeMath.Fusee.Math.float3();
@@ -62,7 +61,7 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.RigidBodyImp", 
     $.Method({ Static: false, Public: true }, "set_Position",
         new JSIL.MethodSignature(null, [$fuseeMath.TypeRef("Fusee.Math.float3")]),
         function set_Position(value) {
-            console.log("set_Position");
+           // console.log("set_Position");
             var trans = new Ammo.btTransform();
             trans.setIdentity();
             trans.setOrigin(new Ammo.btVector3(value.x, value.y, value.z));
@@ -131,7 +130,7 @@ JSIL.MakeClass($WebPhysics.TypeRef("Fusee.Engine.CollisionShapeImp"), "Fusee.Eng
     $.Method({ Static: false, Public: true }, "get_LocalScaling",
         new JSIL.MethodSignature($fuseeMath.TypeRef("Fusee.Math.float3"), []),
         function get_LocalScaling() {
-            return this.$BoxShapeImp$LocalScaling;
+            return this.BtBoxShape.getLocalScaling;
         }
     );
     $.Method({ Static: false, Public: true }, "set_LocalScaling",
@@ -144,13 +143,13 @@ JSIL.MakeClass($WebPhysics.TypeRef("Fusee.Engine.CollisionShapeImp"), "Fusee.Eng
     $.Method({ Static: false, Public: true }, "get_UserObject",
         new JSIL.MethodSignature($.Object, []),
         function get_UserObject() {
-            return this.CollisionShapeImp$UserObject
+            return this.$BoxShapeImp$UserObject
         }
     );
     $.Method({ Static: false, Public: true }, "set_UserObject",
         new JSIL.MethodSignature(null, [$.Object]),
         function set_UserObject(value) {
-            this.$CollisonShapeImp$UserObject$value = value;
+            this.$BoxShapeImp$UserObject$value = value;
         }
     );
 
@@ -167,6 +166,7 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp",
     $.Field({ Static: false, Public: false}, "World", $.Object, null);
     $.Property({ Static: false, Public: false }, "Gravity", $fuseeMath.TypeRef("Fusee.Math.float3"), null);
 
+
     $.Method({ Static: false, Public: true }, ".ctor",
         new JSIL.MethodSignature(null, []),
         function _ctor() {
@@ -182,46 +182,49 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp",
                 console.log("Brave New World");
                 
             }
-
-       }
+        }
     );
 
     //AddRigidBody
     $.Method({ Static: false, Public: true }, "AddRigidBody",
         new JSIL.MethodSignature($fuseeCommon.TypeRef("Fusee.Engine.IRigidbodyImp"), [$.Single, $fuseeMath.TypeRef("Fusee.Math.float3"), $fuseeMath.TypeRef("Fusee.Math.float3"), $fuseeCommon.TypeRef("Fusee.Engine.ICollisionShapeImp")]),
         function WebPhysicsImp_AddRigidBody(mass, worldTransform, orientation, colShape) {
-            console.log("AddRigiBbody");
+           // console.log("AddRigiBbody");
             //Todo: use the actual CollisionShape that was passed as a prarmeter
             //var colShape = new Ammo.btBoxShape(1);
             var btColShape;
             var shapeType = colShape.toString();
-            console.log("ShapeType " + shapeType);
+            //console.log("ShapeType " + shapeType);
             switch (shapeType) {
                 //Primitives
             case "Fusee.Engine.BoxShapeImp":
-                var boxShapeImp = new $WebPhysics.Fusee.Engine.BoxShapeImp();
-                boxShapeImp = colShape.BtBoxShape.UserObject;
-                var btBoxHalfExtents = boxShapeImp.HalfExtents;
-                btColShape = new Ammo.btBoxShape(btBoxHalfExtents);
+                //var boxShapeImp = colShape;
+                //boxShapeImp = colShape.UserObject;
+               // console.log("box user obejct : " + colShape.BtBoxShape.UserObject);
+                //var btBoxHalfExtents = boxShapeImp;
+               // var temp = colShape.BtBoxShape;
+                //hardcoded
+                //btColShape = new Ammo.btBoxShape(new Ammo.btVector3(2, 2, 2));
                 break;
             default:
                 console.log("default");
             }
 
+            var boxshape = new Ammo.btBoxShape(new Ammo.btVector3(2, 2, 2));
+            
             //Set the start Position of the Rigidbody
             var startTransform = new Ammo.btTransform();
             startTransform.setIdentity();
-            var mass = mass;
-            var isDynamic = (mass != 0);
-            var localInertia = new Ammo.btVector3(0, 0, 0);
-           /* if (isDynamic)
-                colShape.calculateLocalInertia(mass, localInertia);*/
             startTransform.setOrigin(new Ammo.btVector3(worldTransform.x, worldTransform.y, worldTransform.z));
+
+            var mass = mass;
+            var localInertia = new Ammo.btVector3(0, 0, 0);          
             var myMotionState = new Ammo.btDefaultMotionState(startTransform);
-            var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, btColShape, localInertia);
+            boxshape.calculateLocalInertia(mass, localInertia);
+            var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, boxshape, localInertia);
             var body = new Ammo.btRigidBody(rbInfo);
             this.World.addRigidBody(body);
-
+            
             var retval = new $WebPhysics.Fusee.Engine.RigidBodyImp();
             retval.BtRigidBody = body;
             body.UserObject = retval;
@@ -267,7 +270,7 @@ JSIL.MakeClass($jsilcore.TypeRef("System.Object"), "Fusee.Engine.WebPhysicsImp",
     $.Method({ Static: false, Public: true }, "get_Gravity",
         new JSIL.MethodSignature($fuseeMath.TypeRef("Fusee.Math.float3"), []),
         function get_Gravity() {
-            console.log("get_Gravity" + this.World.getGravity);
+            //console.log("get_Gravity" + this.World.getGravity);
             var retval = new $fuseeMath.Fusee.Math.float3(this.World.getGravity().x, this.World.getGravity().y, this.World.getGravity().z);
             return retval;
         }
