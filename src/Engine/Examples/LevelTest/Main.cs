@@ -102,7 +102,7 @@ namespace Examples.LevelTest
             
             //Border
             var serBorder = new Serializer();
-            using (var file = File.OpenRead(@"Assets/border.fus"))
+            using (var file = File.OpenRead(@"Assets/border1.fus"))
             {
                 _sceneBorder = serBorder.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }

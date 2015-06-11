@@ -191,6 +191,7 @@
     <None Include="Assets\border.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\border1.fus" />
     <None Include="Assets\Island_split.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -212,6 +213,7 @@
     <None Include="Assets\Player_water.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\Rechteck.obj.model" />
     <None Include="Assets\Skybox1.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
