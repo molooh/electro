@@ -83,6 +83,10 @@ namespace Examples.LevelTest
 
         private float3 averageNewPos;
 
+        //Physic
+        private Physic _physic;
+        private const int _velocity = 10;
+
         // is called on startup
         public override void Init()
         {
@@ -121,7 +125,7 @@ namespace Examples.LevelTest
 
             //Scene Level1
             var serLevel1 = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_split.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_physic.fus"))
             {
                 _sceneLevel1 = serLevel1.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }
@@ -195,6 +199,10 @@ namespace Examples.LevelTest
             //Central Position of all Players
             var averageNewPos = new float3(0, 0, 0);
 
+            //Physic
+            _physic = new Physic();
+            _physic.InitScene();
+
         }
 
         // is called once a frame
@@ -202,6 +210,9 @@ namespace Examples.LevelTest
         {
 
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
+
+            //Physic
+            _physic.World.StepSimulation((float)Time.Instance.DeltaTime, (Time.Instance.FramePerSecondSmooth / 60), 1 / 60);
 
             //GUI
             float fps = Time.Instance.FramePerSecond;
@@ -348,32 +359,25 @@ namespace Examples.LevelTest
 
             if (Input.Instance.IsKey(KeyCodes.A))
             {
-                inputC = 30;
-                _cc -= (int)inputC;
+                _physic.Sphere.LinearVelocity = new float3(-_velocity, 0, 0);
             }
 
 
             if (Input.Instance.IsKey(KeyCodes.D))
             {
-                inputC = 30;
-                _cc += (int)inputC;
+                _physic.Sphere.LinearVelocity = new float3(_velocity, 0, 0);
             }
 
 
             if (Input.Instance.IsKey(KeyCodes.W))
             {
-                inputD = 30;
-                _dd += (int)inputD;
-
-                rot.z += 20;
-                Console.WriteLine(rot);                
+                _physic.Sphere.LinearVelocity = new float3(0, 0, _velocity);               
             }
 
 
             if (Input.Instance.IsKey(KeyCodes.S))
             {
-                inputD = 30;
-                _dd -= (int)inputD;
+                _physic.Sphere.LinearVelocity = new float3(0, 0 ,-_velocity);
 
             }     
                
@@ -384,28 +388,21 @@ namespace Examples.LevelTest
 
             if (Input.Instance.IsKey(KeyCodes.H))
             {
-
-                inputE = 30;
-                _ee -= (int)inputE;
+                _physic.Sphere2.LinearVelocity = new float3(-_velocity, 0, 0);
             }
             if (Input.Instance.IsKey(KeyCodes.K))
             {
-                inputE = 30;
-                _ee += (int)inputE;
+                _physic.Sphere2.LinearVelocity = new float3(_velocity, 0, 0);
             }
-
-
             if (Input.Instance.IsKey(KeyCodes.U))
             {
-                inputF = 30;
-                _ff += (int)inputF;
+                _physic.Sphere2.LinearVelocity = new float3(0, 0, _velocity);
             }
             if (Input.Instance.IsKey(KeyCodes.J))
             {
-                inputF = 30;
-                _ff -= (int)inputF;
-
+                _physic.Sphere2.LinearVelocity = new float3(0, 0, -_velocity);
             }
+
             move[0].x = inputA;
             move[0].z = inputB;
             move[1].x = inputC;
@@ -424,14 +421,14 @@ namespace Examples.LevelTest
                 //  Console.WriteLine(move[i]);
             }
 
-            averageNewPos *= (float)(1.0 / playerPos.Length);
+            averageNewPos *= (_physic.Sphere.Position + _physic.Sphere2.Position)/2;
            //  Console.WriteLine(averageNewPos);
 
             camMin = new float3(averageNewPos.x - 750, 0, averageNewPos.z - 550);
             camMax = new float3(averageNewPos.x + 750, 0, averageNewPos.z + 950);
 
             var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
-            var mtxCam = float4x4.LookAt(averageNewPos.x, 400, averageNewPos.z - 2500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
+            var mtxCam = float4x4.LookAt(averageNewPos.x, 400, averageNewPos.z - 2500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0) * mtxRot;
 
             for (int i = 0; i < playerPos.Length; i++)
             {
@@ -476,39 +473,39 @@ namespace Examples.LevelTest
             RC.SetShader(_spColor);
            // border 
             var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z + 200);
-            RC.ModelView = mtxCam * mtxRot * mtxR;
+            RC.ModelView = mtxCam * mtxR;
             _srBorder.Render(RC);
 
             //Fire
-            var mtxM2 = float4x4.CreateTranslation(playerPos[1].x, 0, playerPos[1].z);
+            var mtxM2 = float4x4.CreateTranslation(_physic.Sphere.Position);
             var mtxScalePlayer = float4x4.CreateScale(5);
-            RC.ModelView = mtxCam * mtxRot * mtxM2 * mtxScalePlayer;
+            RC.ModelView = mtxCam * mtxM2 * mtxScalePlayer;
             _srFire.Render(RC);
 
             //Water
-            var mtxM1 = float4x4.CreateTranslation(playerPos[0].x, 0, playerPos[0].z);
-            RC.ModelView = mtxCam * mtxRot * mtxM1 * mtxScalePlayer;
+            var mtxM1 = float4x4.CreateTranslation(_physic.Sphere2.Position);
+            RC.ModelView = mtxCam * mtxM1 * mtxScalePlayer;
             _srWater.Render(RC);
 
             //Earth
             var mtxM3 = float4x4.CreateTranslation(playerPos[2].x, 0, playerPos[2].z);
-            RC.ModelView = mtxCam * mtxRot * mtxM3 * mtxScalePlayer;
+            RC.ModelView = mtxCam * mtxM3 * mtxScalePlayer;
             _srEarth.Render(RC);
 
             //Air
             var mtxM4 = float4x4.CreateTranslation(300, 0, 300);
-            RC.ModelView = mtxCam * mtxRot * mtxM4 * mtxScalePlayer;
+            RC.ModelView = mtxCam * mtxM4 * mtxScalePlayer;
             _srAir.Render(RC);
             
             //Skybox
             var mtxScale = float4x4.CreateScale(1.5f);
-            RC.ModelView = mtxCam * mtxRot * mtxR * mtxScale;
+            RC.ModelView = mtxCam * mtxR * mtxScale;
             _srSky.Render(RC);
 
             //Level1
             var mtxTranslLevel = float4x4.CreateTranslation(0, -101, 0);
             var mtxScaleLevel = float4x4.CreateScale(0.7f);
-            RC.ModelView = mtxCam * mtxRot * mtxTranslLevel * mtxScaleLevel;
+            RC.ModelView = mtxCam * mtxTranslLevel * mtxScaleLevel;
             _srLevel1.Render(RC);
 
             _srDeko.Render(RC);
