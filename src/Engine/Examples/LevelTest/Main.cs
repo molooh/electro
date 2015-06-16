@@ -77,6 +77,19 @@ namespace Examples.LevelTest
         private int _ee = 600;
         private int _ff;
 
+        private int durchlauf = 1;
+        private float3 NewAverageNewPos;
+
+        //Array for Players Position 
+        private float3[] playerPos = new float3[3];
+
+        //Array for new Players Position
+        private float3[] newPlayerPos = new float3[3];
+
+        //Array for input
+        private float3[] move = new float3[3];
+
+
         // some logic
         private bool isEmpty;
 
@@ -86,6 +99,9 @@ namespace Examples.LevelTest
         // is called on startup
         public override void Init()
         {
+
+
+
             //creates thread for TcpServer, sets it as backgroundthread, starts the thread
             var tcpServer = new Thread(StartTcpServer);
             tcpServer.IsBackground = true;
@@ -102,7 +118,7 @@ namespace Examples.LevelTest
             
             //Border
             var serBorder = new Serializer();
-            using (var file = File.OpenRead(@"Assets/border1.obj.model"))
+            using (var file = File.OpenRead(@"Assets/border.fus"))
             {
                 _sceneBorder = serBorder.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }
@@ -194,6 +210,10 @@ namespace Examples.LevelTest
 
             //Central Position of all Players
             var averageNewPos = new float3(0, 0, 0);
+            var NewAverageNewPos = new float3(0, 0, 0);
+                
+            _angleHorz = 1.56f;
+            _angleVert = -0.445f;
 
         }
 
@@ -261,32 +281,28 @@ namespace Examples.LevelTest
                 _gui.RenderMsg("Nichts empfangen!");
             }
 
-            //Array for Players Position 
-            float3[] playerPos = new float3[3];
-
-            //Array for new Players Position
-            float3[] newPlayerPos = new float3[3];
-
-            //Array for input
-            float3[] move = new float3[3];
             
 
             //Camera Minimum and Maximum
             var camMin = new float3(0, 0, 0);
             var camMax = new float3(0, 0, 0);
 
-            playerPos[0].x = _aa;
-            playerPos[0].y = 0;
-            playerPos[0].z = _bb;
 
-            playerPos[1].x = _cc;
-            playerPos[1].y = 0;
-            playerPos[1].z = _dd;
+            if (durchlauf == 1)
+            {
+                playerPos[0].x = _aa;
+                playerPos[0].y = 0;
+                playerPos[0].z = _bb;
 
-            playerPos[2].x = _ee;
-            playerPos[2].y = 0;
-            playerPos[2].z = _ff;
+                playerPos[1].x = _cc;
+                playerPos[1].y = 0;
+                playerPos[1].z = _dd;
 
+                playerPos[2].x = _ee;
+                playerPos[2].y = 0;
+                playerPos[2].z = _ff;
+                
+            }
             var inputA = 0;
             var inputB = 0;
             var inputC = 0;
@@ -348,8 +364,8 @@ namespace Examples.LevelTest
 
                   if (Input.Instance.IsKey(KeyCodes.A))
                 {
-                    inputD = 30;
-                    _dd -= (int)inputD;
+                    inputD = -30;
+                   _dd -= (int)inputD;
                 }
 
 
@@ -362,7 +378,7 @@ namespace Examples.LevelTest
 
                 if (Input.Instance.IsKey(KeyCodes.W))
                 {
-                    inputC = 30;
+                    inputC = -30;
                     _cc -= (int)inputC;
 
                 }
@@ -381,7 +397,7 @@ namespace Examples.LevelTest
                 if (Input.Instance.IsKey(KeyCodes.H))
                 {
 
-                    inputF = 30;
+                    inputF = -30;
                     _ff -= (int)inputF;
                 }
                 if (Input.Instance.IsKey(KeyCodes.K))
@@ -393,7 +409,7 @@ namespace Examples.LevelTest
 
                 if (Input.Instance.IsKey(KeyCodes.U))
                 {
-                    inputE = 30;
+                    inputE = -30;
                     _ee -= (int)inputE;
                 }
                 if (Input.Instance.IsKey(KeyCodes.J))
@@ -409,28 +425,65 @@ namespace Examples.LevelTest
                 move[2].x = inputE;
                 move[2].z = inputF;
 
-                Console.WriteLine("bin im Gamemode 1");
-                averageNewPos = new float3(0, 0, 0); 
+               
+                NewAverageNewPos = new float3(0, 0, 0); 
                 for (int i = 0; i < playerPos.Length; i++)
                 {
                     newPlayerPos[i].x = playerPos[i].x + move[i].x;
                     newPlayerPos[i].z = playerPos[i].z + move[i].z;
-                    averageNewPos += newPlayerPos[i];
+                    NewAverageNewPos += newPlayerPos[i];
 
                     //  Console.WriteLine(move[i]);
                 }
+                Console.WriteLine("average1: " + averageNewPos + " NewAveragePos : " + NewAverageNewPos);
+               NewAverageNewPos  *= (float)(1.0 / playerPos.Length);
+               // averageNewPos *= (float)(1.0 / playerPos.Length);
+                Console.WriteLine("average: " + averageNewPos + " NewAveragePos : " + NewAverageNewPos);
+                if (durchlauf == 1)
+                {
+                  
+                    averageNewPos = NewAverageNewPos;
+                    durchlauf++;
+                }
+                else
+                {
+                    if (averageNewPos.z == NewAverageNewPos.z)
+                    {
 
-                averageNewPos *= (float)(1.0 / playerPos.Length);
-              //  Console.WriteLine(averageNewPos);
+                    }
+                    else {
+                       
+                    if (NewAverageNewPos.z < averageNewPos.z)
+                    {
+                        if (_angleHorz < 1.66f)
+                        {
+                            _angleHorz += 0.015f;
+                        }
 
-                camMin = new float3(averageNewPos.x - 750, 0, averageNewPos.z - 550);
-                camMax = new float3(averageNewPos.x + 750, 0, averageNewPos.z + 950);
-                _angleHorz = 1.56f;
-                _angleVert = -0.445f;
+                    }
+                    if (NewAverageNewPos.z > averageNewPos.z)
+                    {
+                        if (_angleHorz > 1.46f)
+                        {
+                            _angleHorz -= 0.015f;
+                        }
+                    }
+                    
+                    }
+
+                }
+                averageNewPos = NewAverageNewPos;
+               
+
+                camMin = new float3(averageNewPos.x - 1500, 0, averageNewPos.z - 1500);
+                camMax = new float3(averageNewPos.x + 1500, 0, averageNewPos.z + 1500);
+              // _angleHorz = 1.56f;
+              // _angleVert = -0.445f;
+            //0.8f, 2.0f
                 var mtxRot = float4x4.Identity;
-                var mtxCam = float4x4.CreateTranslation(averageNewPos.x, 0, averageNewPos.z) * float4x4.CreateRotationY(-_angleHorz) * float4x4.CreateRotationX(-_angleVert) * float4x4.CreateTranslation(0, 0, -3500);
+                var mtxCam = float4x4.CreateTranslation(averageNewPos.x, 0, averageNewPos.z) * float4x4.CreateRotationY(-_angleHorz) * float4x4.CreateRotationX(-_angleVert) * float4x4.CreateTranslation(0, 0, -4000);
                 mtxCam.Invert();
-                //Console.WriteLine(_angleVert + " " + _angleHorz);
+                Console.WriteLine(_angleVert + " " + _angleHorz);
 
                 // var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
                 // var mtxCam = float4x4.LookAt(averageNewPos.x, 400, averageNewPos.z - 2500, averageNewPos.x, 0, averageNewPos.z, 0, 1, 0);
@@ -474,11 +527,12 @@ namespace Examples.LevelTest
                     }
                 }
 
-               // Console.WriteLine(averageNewPos + " " +playerPos[0]);
+              //  Console.WriteLine("average 2 : " + averageNewPos + " PPos 2: " +playerPos[1]);
                 RC.SetShader(_spColor);
+            var mtxScaleBorder = float4x4.CreateScale(2);
                 // border
-                var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z+200);
-                RC.ModelView = mtxCam * mtxRot * mtxR;
+                var mtxR = float4x4.CreateTranslation(averageNewPos.x, -101, averageNewPos.z);
+                RC.ModelView = mtxCam * mtxRot * mtxR * mtxScaleBorder;
                 _srBorder.Render(RC);
 
                 //Fire
