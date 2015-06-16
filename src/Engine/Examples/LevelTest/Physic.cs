@@ -21,8 +21,7 @@ namespace Examples.LevelTest
         internal SphereShape SphereCollider;
         private SceneContainer _scene;
         private RigidBody _box;
-        public RigidBody Sphere;
-        public RigidBody Sphere2;
+        
 
         public Physic()
         {
@@ -39,7 +38,7 @@ namespace Examples.LevelTest
         {
 
             var ser = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_split_physic_woTexture.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_edit.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
 
@@ -48,7 +47,7 @@ namespace Examples.LevelTest
             foreach (SceneNodeContainer node in _scene.Children.FindNodes(node => node.Name.StartsWith("box")))
             {
                 // Polygon-Auswahl ignorieren
-                if (node.Name.Contains("Auswahl"))
+                if (node.Name.Contains("Auswahl") || node.Name.Contains("Twigs") || node.Name.Contains("Stamm") || node.Name.Contains("Stamm") || node.Name.Contains("Ast"))
                 {
                     continue;
                 }
@@ -123,24 +122,21 @@ namespace Examples.LevelTest
             }
         }
 
-        public void InitSpheres()
+        public RigidBody InitSphere(float3 position)
         {
-            var shape = World.AddSphereShape(5 * 4);
-            Sphere = _world.AddRigidBody(1, new float3(950, 100, 0), float3.Zero, shape);
-            Sphere.Restitution = 0.5f;
-            Sphere.Friction = 0.2f;
+            var shape = World.AddSphereShape( 34); //5* 4 *0.2f)
 
-            Sphere2 = _world.AddRigidBody(1, new float3(1000, 200, 0), float3.Zero, shape);
-            Sphere2.Restitution = 0.5f;
-            Sphere2.Friction = 0.2f;
+            RigidBody sphereBody = _world.AddRigidBody(1, position, float3.Zero, shape);
+            sphereBody.Restitution = 0.5f;
+            sphereBody.Friction = 0.2f;
 
+            return sphereBody;
         }
 
         public void InitScene()
         {
             InitWorld();
             InitColliders();
-            InitSpheres();
    
         }
     }

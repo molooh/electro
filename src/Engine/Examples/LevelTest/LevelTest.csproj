@@ -198,10 +198,7 @@
     <None Include="Assets\Island_split1.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Assets\Island_split_physic.fus">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Assets\Island_split_physic_woTexture.fus">
+    <None Include="Assets\Island_split_edit.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\Lato-Black.ttf">
