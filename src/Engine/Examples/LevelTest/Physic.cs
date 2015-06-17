@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.IO;
 using Fusee.Engine;
 using Fusee.Engine.SimpleScene;
@@ -38,7 +39,7 @@ namespace Examples.LevelTest
         {
 
             var ser = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_split_edit.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_edit_way_woTexture.fus"))
             {
                 _scene = ser.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
 
@@ -87,6 +88,8 @@ namespace Examples.LevelTest
                     size.z = 20;
                 }
 
+                //Console.WriteLine("Name: " + node.Name + " ## Size: " + size + " ## position: " + boxCenter + " ## Rot: " + rot);
+
                 BoxCollider = _world.AddBoxShape(size.x, size.y, size.z);
                 //Parameter: Masse, Position, Rotation
                 _box = _world.AddRigidBody(0, new float3(boxCenter.x, boxCenter.y, boxCenter.z), new float3(rot.x, rot.y, rot.z), BoxCollider);
@@ -124,7 +127,7 @@ namespace Examples.LevelTest
 
         public RigidBody InitSphere(float3 position)
         {
-            var shape = World.AddSphereShape( 34); //5* 4 *0.2f)
+            var shape = World.AddSphereShape( 27); //5* 4 *0.2f)
 
             RigidBody sphereBody = _world.AddRigidBody(1, position, float3.Zero, shape);
             sphereBody.Restitution = 0.5f;

@@ -92,6 +92,8 @@ namespace Examples.LevelTest
         public RigidBody Player3;
         public RigidBody Player4;
 
+        public RigidBody[] PlayerArray = new RigidBody[8];
+
         // is called on startup
         public override void Init()
         {
@@ -130,7 +132,7 @@ namespace Examples.LevelTest
 
             //Scene Level1
             var serLevel1 = new Serializer();
-            using (var file = File.OpenRead(@"Assets/Island_split_edit.fus"))
+            using (var file = File.OpenRead(@"Assets/Island_split_edit_way_woTexture.fus"))
             {
                 _sceneLevel1 = serLevel1.Deserialize(file, null, typeof(SceneContainer)) as SceneContainer;
             }
@@ -212,6 +214,8 @@ namespace Examples.LevelTest
             Player3 = _physic.InitSphere(new float3(-200, 150, 0));
             Player4 = _physic.InitSphere(new float3(0,150, 200));
 
+
+
         }
 
         // is called once a frame
@@ -282,10 +286,10 @@ namespace Examples.LevelTest
             }
 
             //Array for Players Position 
-            float3[] playerPos = new float3[3];
+            float3[] playerPos = new float3[4];
 
             //Array for new Players Position
-            float3[] newPlayerPos = new float3[3];
+            float3[] newPlayerPos = new float3[4];
 
             //Array for input
             float3[] move = new float3[3];
@@ -295,17 +299,13 @@ namespace Examples.LevelTest
             var camMin = new float3(0, 0, 0);
             var camMax = new float3(0, 0, 0);
 
-            playerPos[0].x = _aa;
-            playerPos[0].y = 0;
-            playerPos[0].z = _bb;
+            playerPos[0] = Player1.Position;
 
-            playerPos[1].x = _cc;
-            playerPos[1].y = 0;
-            playerPos[1].z = _dd;
+            playerPos[1] = Player2.Position;
 
-            playerPos[2].x = _ee;
-            playerPos[2].y = 0;
-            playerPos[2].z = _ff;
+            playerPos[2] = Player3.Position;
+
+            playerPos[3] = Player4.Position;
 
             var inputA = 0;
             var inputB = 0;
@@ -423,9 +423,8 @@ namespace Examples.LevelTest
             
             for (int i = 0; i < playerPos.Length; i++)
             {
-                newPlayerPos[i].x = playerPos[i].x + move[i].x;
-                newPlayerPos[i].z = playerPos[i].z + move[i].z;
-                averageNewPos += newPlayerPos[i];
+                newPlayerPos[i] = playerPos[i];
+
 
                 //  Console.WriteLine(move[i]);
             }
@@ -488,9 +487,7 @@ namespace Examples.LevelTest
 
             //Fire
             var mtxM2 = float4x4.Transpose(Player1.WorldTransform);
-            var mtxScalePlayer = float4x4.CreateScale(5) ;
-            RC.ModelView = mtxCam * mtxM2;
-            RC.SetRenderState(new RenderStateSet { AlphaBlendEnable = false, ZEnable = true });
+            RC.ModelView = mtxCam*mtxM2;
             _srFire.Render(RC);
 
             //Water
@@ -500,12 +497,12 @@ namespace Examples.LevelTest
 
             //Earth
             var mtxM3 = float4x4.Transpose(Player3.WorldTransform);
-            RC.ModelView = mtxCam * mtxM3 * mtxScalePlayer * scale;
+                RC.ModelView = mtxCam*mtxM3;
             _srEarth.Render(RC);
 
             //Air
             var mtxM4 = float4x4.Transpose(Player4.WorldTransform);
-            RC.ModelView = mtxCam * mtxM4 * mtxScalePlayer * scale;
+                RC.ModelView = mtxCam*mtxM4;
             _srAir.Render(RC);
             
             //Skybox
@@ -514,9 +511,7 @@ namespace Examples.LevelTest
             _srSky.Render(RC);
 
             //Level1
-           // var mtxTranslLevel = float4x4.CreateTranslation(0, -101, 0);
-            var mtxScaleLevel = float4x4.CreateScale(0.7f);
-            RC.ModelView = mtxCam  * mtxScaleLevel;
+            RC.ModelView = mtxCam;
             _srLevel1.Render(RC);
 
             _srDeko.Render(RC);
