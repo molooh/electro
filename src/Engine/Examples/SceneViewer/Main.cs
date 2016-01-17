@@ -184,6 +184,11 @@ namespace Examples.SceneViewer
                 Console.WriteLine("Number of Markers: " + motivFrame.nMarkers);
                 Console.WriteLine("Number of Other Markers: " + motivFrame.nOtherMarkers);
                 Console.WriteLine("Number of ForcePlates: " + motivFrame.nForcePlates);
+
+                Console.WriteLine("Timecode: " + motivFrame.Timecode);
+                Console.WriteLine("Timecode subframe: " + motivFrame.TimecodeSubframe);
+
+                Console.WriteLine("Latency: " + motivFrame.fLatency);
             }
 
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
