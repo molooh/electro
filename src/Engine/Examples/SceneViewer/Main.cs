@@ -7,12 +7,18 @@ using Fusee.Engine;
 using Fusee.Math;
 using Fusee.Serialization;
 using Fusee.Engine.SimpleScene;
+using NatNetML;
 
 namespace Examples.SceneViewer
 {
 
     public class SceneViewer : RenderCanvas
     {
+        private NatNetClientML natNetClient;
+        private FrameOfMocapData motivFrame;
+
+        private UInt64 frameCounter;
+
         private float _angleHorz, _angleVert, _angleVelHorz, _angleVelVert;
         private float _zVel, _zVal;
 
@@ -54,6 +60,20 @@ namespace Examples.SceneViewer
         // is called on startup
         public override void Init()
         {
+            natNetClient = new NatNetClientML(1); //Connection: 0 = Multicast, 1 = Unicast
+            Console.Write("NatNet SDK Version: ");
+            Console.WriteLine(string.Join(".", natNetClient.NatNetVersion()));
+            Console.WriteLine("Connection to NatNet Server ...");
+            int natNetConnectionStatus = natNetClient.Initialize("192.168.10.2", "192.168.10.1");
+
+            if (natNetConnectionStatus == 0)
+            {
+                Console.WriteLine("Connection to NatNet Server - successful");
+            }
+            else
+            {
+                Console.WriteLine("Connection to NatNet Server - unsuccessful - Error: " + natNetConnectionStatus);
+            }
 
             // GUI initialization
             _zVal = 500;
@@ -148,6 +168,24 @@ namespace Examples.SceneViewer
         // is called once a frame
         public override void RenderAFrame()
         {
+            motivFrame = natNetClient.GetLastFrameOfData();
+
+            frameCounter++;
+
+            if (frameCounter%60 == 0)
+            {
+                Console.WriteLine("######################");
+                Console.WriteLine("Frame Nr: " + frameCounter);
+                Console.WriteLine("######################");
+
+                Console.WriteLine("Number of Skeletons: " + motivFrame.nSkeletons);
+                Console.WriteLine("Number of RigidBodies: " + motivFrame.nRigidBodies);
+                Console.WriteLine("Number of MarkerSets: " + motivFrame.nMarkerSets);
+                Console.WriteLine("Number of Markers: " + motivFrame.nMarkers);
+                Console.WriteLine("Number of Other Markers: " + motivFrame.nOtherMarkers);
+                Console.WriteLine("Number of ForcePlates: " + motivFrame.nForcePlates);
+            }
+
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
             // move per mouse
             if (Input.Instance.IsButton(MouseButtons.Left))

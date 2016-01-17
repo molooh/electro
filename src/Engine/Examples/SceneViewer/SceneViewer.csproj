@@ -89,6 +89,9 @@
     <Reference Include="Fusee.SerializationSerializer">
       <HintPath>..\..\..\..\Bin\Debug\Fusee.SerializationSerializer.dll</HintPath>
     </Reference>
+    <Reference Include="NatNetML">
+      <HintPath>..\..\..\..\ExternalBinaries\NatNetML.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\..\ExternalBinaries\protobuf\protobuf-net.dll</HintPath>
     </Reference>
