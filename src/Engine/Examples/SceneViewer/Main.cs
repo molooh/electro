@@ -7,17 +7,21 @@ using Fusee.Engine;
 using Fusee.Math;
 using Fusee.Serialization;
 using Fusee.Engine.SimpleScene;
+using VrpnClientLib;
 
 namespace Examples.SceneViewer
 {
-
     public class SceneViewer : RenderCanvas
     {
         private float _angleHorz, _angleVert, _angleVelHorz, _angleVelVert;
         private float _zVel, _zVal;
+        private float _xPos, _yPos, _zPos;
+
+        private Quaternion q;
 
         private const float RotationSpeed = 1f;
         private const float Damping = 0.92f;
+        private const float MovementScale = 1000f;
         private float _subtextWidth;
         private float _subtextHeight;
         private float4x4 _modelScaleOffset;
@@ -37,6 +41,8 @@ namespace Examples.SceneViewer
         private GUIText _guiSubText;
         private IFont _guiLatoBlack;
 
+        VrpnClientController VrpnClient;
+
         public void AdjustModelScaleOffset()
         {
             AABBf? box = null;
@@ -54,7 +60,10 @@ namespace Examples.SceneViewer
         // is called on startup
         public override void Init()
         {
-
+            VrpnClient = new VrpnClientController();
+            VrpnClient.RemoteAdd("Mouse0@localhost", 1);
+            VrpnClient.RemoteAdd("RB1@192.168.10.1", 3);
+            q = new Quaternion();
             // GUI initialization
             _zVal = 500;
             _guiHandler = new GUIHandler();
@@ -148,6 +157,8 @@ namespace Examples.SceneViewer
         // is called once a frame
         public override void RenderAFrame()
         {
+            VrpnClient.mainloop();
+
             RC.Clear(ClearFlags.Color | ClearFlags.Depth);
             // move per mouse
             if (Input.Instance.IsButton(MouseButtons.Left))
@@ -177,31 +188,28 @@ namespace Examples.SceneViewer
             _angleVert -= _angleVelVert;
             _zVal = Math.Max(100, Math.Min(_zVal + _zVel, 1000));
 
-            // move per keyboard
-            if (Input.Instance.IsKey(KeyCodes.Left))
-                _angleHorz -= RotationSpeed * (float)Time.Instance.DeltaTime;
-
-            if (Input.Instance.IsKey(KeyCodes.Right))
-                _angleHorz += RotationSpeed * (float)Time.Instance.DeltaTime;
-
-            if (Input.Instance.IsKey(KeyCodes.Up))
-                _angleVert -= RotationSpeed * (float)Time.Instance.DeltaTime;
-
-            if (Input.Instance.IsKey(KeyCodes.Down))
-                _angleVert += RotationSpeed * (float)Time.Instance.DeltaTime;
-
-            var mtxRot = float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
-            var mtxCam = float4x4.LookAt(0, 200, -_zVal, 0, 0, 0, 0, 1, 0);
-
             
-            // first mesh
-            //RC.Model = mtxCam * mtxRot /* float4x4.CreateScale(100) * */;
-            //RC.SetShader(_spColor);
-            //RC.SetShaderParam(_colorParam, new float4(0.5f, 0.8f, 0, 1));
-            //RC.Render(_meshTea);
+            _xPos = (float)(VrpnClient.GetAnalogData("Mouse0@localhost")[0] -0.5f) * MovementScale;
+            _yPos = (float)-(VrpnClient.GetAnalogData("Mouse0@localhost")[1] -0.5f) * MovementScale;
+
+//            _xPos = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[0] * MovementScale;
+//            _yPos = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[1] * MovementScale;
+//            _zPos = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[2] * MovementScale;
+
+            Console.WriteLine("x: " + _xPos + " y: " + _yPos + " z: " + _zPos);
+
+//            q.x = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[3];
+//            q.y = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[4];
+//            q.z = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[5];
+//            q.w = (float)VrpnClient.GetTrackerData("RB1@192.168.10.1")[6];
+
+            var mtxRot = Quaternion.QuaternionToMatrix(q);
+            var mtxCam = float4x4.LookAt(0, 200, -_zVal, 0, 0, 0, 0, 1, 0);
+            var mtxPos = float4x4.CreateTranslation(_xPos, _yPos, _zPos);
 
 
-            RC.ModelView = mtxCam * mtxRot *  _modelScaleOffset;
+
+            RC.ModelView = mtxCam * mtxPos * mtxRot * _modelScaleOffset;
             _sr.Render(RC);
             _sr.Animate();
             _guiHandler.RenderGUI();
