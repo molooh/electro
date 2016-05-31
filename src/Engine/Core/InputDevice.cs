@@ -34,7 +34,7 @@ namespace Fusee.Engine.Core
 
         private int _nextAxisId;
 
-        internal InputDevice(IInputDeviceImp inpDeviceImp)
+        protected internal InputDevice(IInputDeviceImp inpDeviceImp)
         {
             if (inpDeviceImp == null)
                 throw new ArgumentNullException(nameof(inpDeviceImp));

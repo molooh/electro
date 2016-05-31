@@ -220,7 +220,7 @@ namespace Fusee.Engine.Imp.Graphics.Desktop
         }
 
         /// <summary>
-        /// Returns a (hopefully) unique ID for this driver. Uniqueness is granted by using the 
+        /// Returns a (hopefully) unique ID for this device. Uniqueness is granted by using the 
         /// full class name (including namespace).
         /// </summary>
         public string Id

@@ -35,6 +35,14 @@ namespace Fusee.Engine.Common
         /// </summary>
         Skeleton,
         /// <summary>
+        /// A Vrpn device that provides a position and rotation in 3D space.
+        /// </summary>
+        VrpnTracker,
+        /// <summary>
+        /// A NatNet device that provides a position and rotation in 3D space.
+        /// </summary>
+        NatNetTracker,
+        /// <summary>
         /// A six-degrees-of-freedom input device such as a spacemouse.
         /// </summary>
         SixDOF,
@@ -108,6 +116,21 @@ namespace Fusee.Engine.Common
         /// Ids can be read from <see cref="AxisDescription.MaxValueOrAxis"/> and <see cref="AxisDescription.MinValueOrAxis"/> (cast to integer).
         /// </summary>
         OtherAxis,
+    }
+
+    /// <summary>
+    /// Symbolic value describing if the coordinate system is right- or lefthanded
+    /// </summary>
+    public enum CoordinatesystemOrientation
+    {
+        /// <summary>
+        /// Describes a lefthanded coordinatesystem.
+        /// </summary>
+        LeftHanded,
+        /// <summary>
+        /// Describes a lefthanded coordinatesystem.
+        /// </summary>
+        RightHanded
     }
 
     /// <summary>
